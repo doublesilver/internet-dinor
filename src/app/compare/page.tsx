@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ProductCard } from "@/components/sections/ProductCard";
-import { PromoBannerGrid } from "@/components/sections/PromoBannerGrid";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { getProducts, getSiteSettings } from "@/lib/repositories/content";
 
@@ -28,19 +26,6 @@ export default async function ComparePage() {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Promo Banner */}
-      <div className="container-page py-6">
-        <PromoBannerGrid />
-      </div>
-
-      {/* Quick Inquiry Form */}
-      <section className="section-space bg-gray-50">
-        <div className="container-page max-w-xl">
-          <SectionHeading eyebrow="Quick Inquiry" title="빠른 상담 문의" description="간단한 정보를 남겨주시면 전문 상담사가 빠르게 연락드립니다." />
-          <QuickInquiryForm sourcePage="/compare" submitLabel="빠른 견적 문의" />
         </div>
       </section>
     </SiteShell>

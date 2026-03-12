@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ReviewCard } from "@/components/sections/ReviewCard";
 import { SectionHeading } from "@/components/sections/SectionHeading";
@@ -61,12 +60,12 @@ export default async function ReviewsPage() {
                 {featured.length > 0 && (
                   <p className="text-xs font-bold uppercase tracking-wider text-brand-slate">전체 후기</p>
                 )}
-                <Link
+                <a
                   href="/reviews/write"
                   className="ml-auto rounded-xl bg-brand-orange px-4 py-2 text-sm font-bold text-white transition-opacity hover:opacity-90"
                 >
                   후기쓰기
-                </Link>
+                </a>
               </div>
               <div className="grid gap-5 lg:grid-cols-2">
                 {regular.map((review) => (

@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { SectionHeading } from "@/components/sections/SectionHeading";
-import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
-import { PromoBannerGrid } from "@/components/sections/PromoBannerGrid";
 import { Button } from "@/components/ui/Button";
 import { getFeaturedPosts, getPostsByType, getSiteSettings } from "@/lib/repositories/content";
 import { formatDate } from "@/lib/utils/date";
@@ -81,19 +79,6 @@ export default async function GuideListPage() {
           {featured.length === 0 && regular.length === 0 && (
             <p className="py-16 text-center text-brand-slate">등록된 가이드가 없습니다.</p>
           )}
-        </div>
-      </section>
-
-      {/* Promo Banner */}
-      <div className="container-page py-6">
-        <PromoBannerGrid />
-      </div>
-
-      {/* Quick Inquiry Form */}
-      <section className="section-space bg-gray-50">
-        <div className="container-page max-w-xl">
-          <SectionHeading eyebrow="Quick Inquiry" title="빠른 상담 문의" description="간단한 정보를 남겨주시면 전문 상담사가 빠르게 연락드립니다." />
-          <QuickInquiryForm sourcePage="/board/guide" submitLabel="빠른 견적 문의" />
         </div>
       </section>
     </SiteShell>

@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
-import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getPostByTypeAndSlug, getPostsByType, getProductBySlug, getSiteSettings } from "@/lib/repositories/content";
 import { formatDate } from "@/lib/utils/date";
@@ -71,14 +69,6 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ sl
               </Button>
             </div>
           </article>
-        </div>
-      </section>
-
-      {/* Quick Inquiry Form */}
-      <section className="section-space bg-gray-50">
-        <div className="container-page max-w-xl">
-          <SectionHeading eyebrow="Quick Inquiry" title="빠른 상담 문의" description="간단한 정보를 남겨주시면 전문 상담사가 빠르게 연락드립니다." />
-          <QuickInquiryForm sourcePage={`/board/guide/${slug}`} submitLabel="빠른 견적 문의" />
         </div>
       </section>
     </SiteShell>
