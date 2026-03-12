@@ -19,7 +19,7 @@ export default async function ComparePage() {
           <SectionHeading
             eyebrow="Compare"
             title="대표 상품 비교"
-            description="1차 제작물에서는 가상 데이터를 기준으로 비교 구조를 먼저 검증하고, 실제 운영 전 데이터만 교체할 수 있게 설계합니다."
+            description="KT, SK, LG, SKY, 헬로비전 대표 인터넷/TV 상품을 한눈에 비교하고 나에게 맞는 상품으로 맞춤 상담을 받아보세요."
           />
           <div className="grid gap-5 lg:grid-cols-3">
             {products.map((product) => (

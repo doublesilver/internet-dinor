@@ -6,6 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { applyInquirySchema } from "@/lib/validators/inquiries";
 import type { ApplyInquiryValues } from "@/lib/validators/inquiries";
 import Link from "next/link";
+import DaumPostcodeEmbed from "react-daum-postcode";
+
+const SITE_PHONE = "tel:16601234";
 
 const carrierOptions = [
   { value: "sk", label: "SK브로드밴드" },
@@ -91,12 +94,32 @@ const sourceOptions = [
 
 const mobileCarriers = ["SKT", "KT", "LG U+", "SK알뜰", "KT알뜰", "LG알뜰"];
 
+const bankOptions = [
+  "KB국민", "신한", "우리", "하나", "NH농협", "IBK기업", "SC제일", "씨티",
+  "카카오뱅크", "토스뱅크", "케이뱅크", "우체국", "새마을금고", "신협", "수협",
+  "광주", "전북", "경남", "대구", "부산", "제주"
+];
+
+const cardCompanyOptions = [
+  "삼성카드", "현대카드", "롯데카드", "신한카드", "KB국민카드", "우리카드",
+  "하나카드", "NH농협카드", "BC카드", "씨티카드"
+];
+
 export function ApplyInquiryForm() {
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [desiredCarrier, setDesiredCarrier] = useState("");
   const [customerType, setCustomerType] = useState("individual");
   const [installDateType, setInstallDateType] = useState("asap");
+
+  // Address state
+  const [showPostcode, setShowPostcode] = useState(false);
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState("");
+
+  // Payment state
+  const [paymentMethod, setPaymentMethod] = useState("auto_transfer");
+  const [giftSameAsPayment, setGiftSameAsPayment] = useState(false);
 
   const {
     register,
@@ -122,6 +145,9 @@ export function ApplyInquiryForm() {
     const payloadKeys = [
       "current_carrier", "desired_carrier", "internet_plan", "tv_plan",
       "customer_type", "mobile_carrier", "zipcode", "address", "address_detail",
+      "payment_method", "bank_name", "account_number", "account_holder",
+      "card_company", "card_number", "card_expiry",
+      "gift_bank_name", "gift_account_number", "gift_account_holder",
       "install_date_type", "install_date", "source_channel", "memo",
       "guardian_name", "guardian_relation"
     ];
@@ -284,14 +310,173 @@ export function ApplyInquiryForm() {
         <legend className="text-base font-bold text-brand-graphite">설치 주소</legend>
         <div className="grid gap-4">
           <div className="flex gap-2">
-            <input name="zipcode" className="field-base flex-1" placeholder="우편번호" readOnly />
+            <input
+              name="zipcode"
+              className="field-base flex-1"
+              placeholder="우편번호"
+              readOnly
+              value={zipcode}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPostcode(true)}
+              className="shrink-0 rounded-xl border border-brand-orange px-4 py-2 text-sm font-bold text-brand-orange hover:bg-orange-50"
+            >
+              주소 검색
+            </button>
           </div>
-          <input name="address" className="field-base" placeholder="주소 (지역 입력)" />
+          <input
+            name="address"
+            className="field-base"
+            placeholder="주소 (지역 입력)"
+            readOnly
+            value={address}
+          />
           <input name="address_detail" className="field-base" placeholder="상세주소를 입력해주세요" />
         </div>
+
+        {/* Daum Postcode Modal */}
+        {showPostcode && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            onClick={() => setShowPostcode(false)}
+          >
+            <div
+              className="relative w-full max-w-md rounded-2xl bg-white p-4 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setShowPostcode(false)}
+                className="absolute right-4 top-4 text-brand-slate hover:text-brand-graphite"
+                aria-label="닫기"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+              <p className="mb-3 text-sm font-bold text-brand-graphite">주소 검색</p>
+              <DaumPostcodeEmbed
+                onComplete={(data) => {
+                  setZipcode(data.zonecode);
+                  setAddress(data.roadAddress || data.jibunAddress);
+                  setShowPostcode(false);
+                }}
+                style={{ height: 400 }}
+              />
+            </div>
+          </div>
+        )}
       </fieldset>
 
-      {/* Section 8: Install date */}
+      {/* Section 8: Payment method */}
+      <fieldset className="surface-card space-y-4">
+        <legend className="text-base font-bold text-brand-graphite">납부방법</legend>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { value: "auto_transfer", label: "자동이체(은행)" },
+            { value: "credit_card", label: "신용카드" },
+            { value: "giro", label: "지로" }
+          ].map((opt) => (
+            <label key={opt.value} className="flex items-center gap-2 rounded-xl border border-brand-border px-4 py-2.5 text-sm cursor-pointer hover:border-brand-orange has-[:checked]:border-brand-orange has-[:checked]:bg-brand-orange/5">
+              <input
+                type="radio"
+                name="payment_method"
+                value={opt.value}
+                className="accent-brand-orange"
+                defaultChecked={opt.value === "auto_transfer"}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              {opt.label}
+            </label>
+          ))}
+        </div>
+
+        {/* Auto transfer fields */}
+        {paymentMethod === "auto_transfer" && (
+          <div className="grid gap-4 rounded-xl border border-brand-border bg-brand-surface p-4 md:grid-cols-2">
+            <div>
+              <label className="field-label">은행명</label>
+              <select name="bank_name" className="field-base" defaultValue="">
+                <option value="">선택해주세요</option>
+                {bankOptions.map((b) => (
+                  <option key={b} value={b}>{b}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="field-label">계좌번호</label>
+              <input name="account_number" className="field-base" placeholder="계좌번호를 입력해주세요" />
+            </div>
+            <div>
+              <label className="field-label">예금주</label>
+              <input name="account_holder" className="field-base" placeholder="예금주명" />
+            </div>
+          </div>
+        )}
+
+        {/* Credit card fields */}
+        {paymentMethod === "credit_card" && (
+          <div className="grid gap-4 rounded-xl border border-brand-border bg-brand-surface p-4 md:grid-cols-2">
+            <div>
+              <label className="field-label">카드사</label>
+              <select name="card_company" className="field-base" defaultValue="">
+                <option value="">선택해주세요</option>
+                {cardCompanyOptions.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="field-label">카드번호</label>
+              <input name="card_number" className="field-base" placeholder="카드번호를 입력해주세요" />
+            </div>
+            <div>
+              <label className="field-label">유효기간</label>
+              <input name="card_expiry" className="field-base" placeholder="MM/YY" />
+            </div>
+          </div>
+        )}
+      </fieldset>
+
+      {/* Section 9: Gift deposit account */}
+      <fieldset className="surface-card space-y-4">
+        <legend className="text-base font-bold text-brand-graphite">사은품 입금계좌</legend>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            className="accent-brand-orange"
+            checked={giftSameAsPayment}
+            onChange={(e) => setGiftSameAsPayment(e.target.checked)}
+          />
+          납부계좌 정보와 동일
+        </label>
+
+        {!giftSameAsPayment && (
+          <div className="grid gap-4 rounded-xl border border-brand-border bg-brand-surface p-4 md:grid-cols-2">
+            <div>
+              <label className="field-label">은행명</label>
+              <select name="gift_bank_name" className="field-base" defaultValue="">
+                <option value="">선택해주세요</option>
+                {bankOptions.map((b) => (
+                  <option key={b} value={b}>{b}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="field-label">계좌번호</label>
+              <input name="gift_account_number" className="field-base" placeholder="계좌번호를 입력해주세요" />
+            </div>
+            <div>
+              <label className="field-label">예금주</label>
+              <input name="gift_account_holder" className="field-base" placeholder="예금주명" />
+            </div>
+          </div>
+        )}
+        <p className="text-xs text-brand-slate">* 신청자와 예금주가 동일해야 합니다</p>
+      </fieldset>
+
+      {/* Section 10: Install date */}
       <fieldset className="surface-card space-y-4">
         <legend className="text-base font-bold text-brand-graphite">설치 희망일</legend>
         <div className="flex flex-wrap gap-2">
@@ -336,7 +521,7 @@ export function ApplyInquiryForm() {
         </div>
       </fieldset>
 
-      {/* Section 9: Source channel */}
+      {/* Section 11: Source channel */}
       <fieldset className="surface-card space-y-4">
         <legend className="text-base font-bold text-brand-graphite">유입 경로</legend>
         <div className="flex flex-wrap gap-2">
@@ -349,13 +534,13 @@ export function ApplyInquiryForm() {
         </div>
       </fieldset>
 
-      {/* Section 10: Memo */}
+      {/* Section 12: Memo */}
       <fieldset className="surface-card space-y-4">
         <legend className="text-base font-bold text-brand-graphite">남기실 말씀</legend>
         <textarea name="memo" className="field-base min-h-28" placeholder="상담 시 꼭 확인하고 싶은 내용을 적어주세요." />
       </fieldset>
 
-      {/* Section 11: Agreements */}
+      {/* Section 13: Agreements */}
       <div className="surface-card space-y-3">
         <label className="flex items-start gap-3 rounded-xl border border-brand-border px-4 py-3 text-sm text-brand-slate cursor-pointer hover:border-brand-orange">
           <input type="checkbox" className="mt-1 accent-brand-orange" {...register("termsAgreed")} />
@@ -390,7 +575,7 @@ export function ApplyInquiryForm() {
           {isPending ? "접수 중..." : "가입 신청하기"}
         </button>
         <a
-          href="tel:16601234"
+          href={SITE_PHONE}
           className="flex-1 rounded-2xl border border-brand-orange px-6 py-4 text-center text-base font-bold text-brand-orange hover:bg-orange-50"
         >
           전화 문의

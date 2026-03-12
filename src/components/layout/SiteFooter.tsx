@@ -11,7 +11,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
             <a href={settings.phoneLink} className="text-4xl font-black text-brand-orange">
               {settings.phoneLabel}
             </a>
-            <span className="ml-4 text-base text-white/80">평일 10:00~19:00</span>
+            <span className="ml-4 text-base text-white/80">평일 오전 10시 ~ 오후 7시 (토요일 및 공휴일 제외)</span>
           </div>
         </div>
 
@@ -25,8 +25,14 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
         <address className="space-y-1 text-sm not-italic leading-relaxed text-white/60">
           <p>상호명: {settings.siteName} | 대표자: {settings.businessInfo.owner} | 사업자등록번호: {settings.businessInfo.businessNumber}</p>
           <p>주소: {settings.businessInfo.address} | 이메일: {settings.businessInfo.email}</p>
+          <p>개인정보관리책임자: 대표자 (help@internetdinor.co.kr)</p>
           {settings.footerNotice && <p className="mt-3 text-xs text-white/40">{settings.footerNotice}</p>}
         </address>
+
+        {/* Copyright */}
+        <p className="border-t border-white/10 pt-4 text-xs text-white/40">
+          © {new Date().getFullYear()} {settings.siteName}. All rights reserved.
+        </p>
       </div>
     </footer>
   );

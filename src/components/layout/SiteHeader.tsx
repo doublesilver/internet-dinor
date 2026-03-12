@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { publicNavigation, carrierNavigation } from "@/lib/constants/navigation";
 import type { SiteSettings } from "@/types/domain";
@@ -15,10 +16,16 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         <div className="container-page flex h-20 items-center justify-between gap-4 py-0">
           <Link
             href="/"
-            className="text-xl font-black tracking-tight text-brand-graphite"
             aria-label="홈으로 이동"
           >
-            {settings.siteName}
+            <Image
+              src="/images/carriers/logo.png"
+              alt={settings.siteName}
+              height={32}
+              width={120}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">

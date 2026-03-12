@@ -19,7 +19,7 @@ export default async function HomePage() {
       <section className="relative bg-brand-orange overflow-hidden">
         <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between md:py-20">
           <div className="space-y-6 text-white md:w-[55%]">
-            <h1 className="text-4xl font-black leading-[1.3] md:text-[55px]">
+            <h1 className="text-4xl font-black font-surround leading-[1.3] md:text-[55px]">
               이번달 남김없이!<br />
               최대 <span className="relative inline-block text-brand-orange" style={{ textShadow: "3px 3px 0 #FFEF0A, -1px -1px 0 #FFEF0A, 1px -1px 0 #FFEF0A, -1px 1px 0 #FFEF0A, 1px 1px 0 #FFEF0A" }}>220만원</span>
               <br />당일설치! 당일입금!
@@ -47,7 +47,7 @@ export default async function HomePage() {
       <section className="bg-brand-peach py-16 md:py-24">
         <div className="container-page">
           <div className="mb-10">
-            <h2 className="text-3xl font-black text-brand-orange md:text-4xl">각 통신사 대표 상품</h2>
+            <h2 className="text-3xl font-black font-surround text-brand-orange md:text-4xl">각 통신사 대표 상품</h2>
             <p className="mt-2 text-sm text-gray-500">※3년약정, 휴대폰 1회선 결합 할인 기준, VAT포함가</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -117,9 +117,25 @@ export default async function HomePage() {
       <section className="bg-brand-sky py-16 md:py-24">
         <div className="container-page">
           <div className="mb-10">
-            <h2 className="text-3xl font-black text-white md:text-4xl">혜택 구성별 최대 사은품</h2>
+            <h2 className="text-3xl font-black font-surround text-white md:text-4xl">혜택 구성별 최대 사은품</h2>
           </div>
           <ServiceCategoryCards />
+        </div>
+      </section>
+
+      {/* Promotional Banner */}
+      <section className="bg-brand-orange py-12 md:py-16">
+        <div className="container-page text-center text-white space-y-4">
+          <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
+          <h2 className="text-3xl md:text-4xl font-black font-surround">
+            혜택이 이렇게나 많았다고?
+          </h2>
+          <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
+          <p className="text-sm opacity-70">현금 주는 건 비밀~!</p>
+          <div className="mt-6 flex justify-center gap-4">
+            <a href="/apply" className="rounded-full bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100">신청서 작성</a>
+            <a href="tel:16601234" className="rounded-full border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10">전화 상담</a>
+          </div>
         </div>
       </section>
 
@@ -127,7 +143,7 @@ export default async function HomePage() {
       <section className="py-16 md:py-24">
         <div className="container-page">
           <div className="mb-10 text-center">
-            <h2 className="text-3xl font-black text-brand-graphite md:text-4xl">실시간 신청 현황</h2>
+            <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">실시간 신청 현황</h2>
             <p className="mt-3 text-brand-slate">지금도 많은 분들이 인터넷공룡을 통해 신청하고 계십니다.</p>
           </div>
           <RecentApplications />
@@ -139,7 +155,7 @@ export default async function HomePage() {
         <section className="bg-brand-surface py-16 md:py-24">
           <div className="container-page">
             <div className="mb-10 flex items-end justify-between">
-              <h2 className="text-3xl font-black text-brand-graphite md:text-4xl">꿀TIP 모아보기</h2>
+              <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">꿀TIP 모아보기</h2>
               <Button href="/board/guide" variant="secondary">전체 보기</Button>
             </div>
             <TipGallery tips={guides} />

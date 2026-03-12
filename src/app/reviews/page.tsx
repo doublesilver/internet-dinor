@@ -2,15 +2,22 @@ import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ReviewCard } from "@/components/sections/ReviewCard";
 import { SectionHeading } from "@/components/sections/SectionHeading";
-import { getReviews, getSiteSettings } from "@/lib/repositories/content";
+import { getFeaturedReviews, getReviews, getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "고객 후기",
-  description: "인터넷공룡을 통해 상담받은 고객들의 실제 후기입니다."
+  description: "인터넷공룡을 통해 가입한 고객들의 실제 후기입니다."
 };
 
 export default async function ReviewsPage() {
-  const [settings, reviews] = await Promise.all([getSiteSettings(), getReviews()]);
+  const [settings, featured, all] = await Promise.all([
+    getSiteSettings(),
+    getFeaturedReviews(),
+    getReviews()
+  ]);
+
+  const featuredIds = new Set(featured.map((r) => r.id));
+  const regular = all.filter((r) => !featuredIds.has(r.id));
 
   return (
     <SiteShell settings={settings}>
@@ -18,14 +25,39 @@ export default async function ReviewsPage() {
         <div className="container-page">
           <SectionHeading
             eyebrow="Review"
-            title="상담 후 결정한 고객 후기"
-            description="후기 페이지는 텍스트 중심으로 신뢰를 만들고, 비슷한 상황의 고객을 다시 문의로 회수하는 역할을 합니다."
+            title="고객 후기"
+            description="인터넷공룡을 통해 가입한 고객들의 실제 후기입니다."
           />
-          <div className="grid gap-5 lg:grid-cols-2">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
+
+          {featured.length > 0 && (
+            <div className="mb-10">
+              <p className="mb-4 text-xs font-bold uppercase tracking-wider text-brand-orange">추천 후기</p>
+              <div className="grid gap-6 lg:grid-cols-2">
+                {featured.map((review) => (
+                  <div key={review.id} className="ring-2 ring-brand-orange ring-offset-2 rounded-2xl">
+                    <ReviewCard review={review} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {regular.length > 0 && (
+            <div>
+              {featured.length > 0 && (
+                <p className="mb-4 text-xs font-bold uppercase tracking-wider text-brand-slate">전체 후기</p>
+              )}
+              <div className="grid gap-5 lg:grid-cols-2">
+                {regular.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {featured.length === 0 && regular.length === 0 && (
+            <p className="py-16 text-center text-brand-slate">등록된 후기가 없습니다.</p>
+          )}
         </div>
       </section>
     </SiteShell>
