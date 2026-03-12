@@ -6,6 +6,7 @@ import { DisclaimerSection } from "@/components/sections/DisclaimerSection";
 import { Button } from "@/components/ui/Button";
 import { getCarrierBySlug, getCarriers, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
+import { PriceCalculator } from "@/components/sections/PriceCalculator";
 
 export async function generateStaticParams() {
   const carriers = await getCarriers();
@@ -28,6 +29,14 @@ const bundleLabel: Record<string, string> = {
   internet_tv: "인터넷 + TV",
   business: "사업장용",
   custom: "기타"
+};
+
+const carrierAccentColors: Record<string, string> = {
+  sk: "#FFA13E",
+  kt: "#FF5B62",
+  lg: "#FE82B0",
+  skylife: "#6DD5C0",
+  hellovision: "#FFA38B"
 };
 
 export default async function CarrierDetailPage({ params }: { params: Promise<{ carrierSlug: string }> }) {
@@ -65,6 +74,23 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
             <Button href="/apply">신청서 작성</Button>
             <Button href={settings.phoneLink} variant="secondary">전화 상담</Button>
           </div>
+        </div>
+      </section>
+
+      {/* Price Calculator */}
+      <section className="bg-brand-surface py-12 md:py-16">
+        <div className="container-page">
+          <h2 className="mb-2 text-center text-2xl font-black text-brand-graphite md:text-3xl">
+            <span style={{ color: carrierAccentColors[carrier.slug] ?? "#f15c2d" }}>{carrier.shortName}</span>의
+          </h2>
+          <p className="mb-8 text-center text-2xl font-black text-brand-graphite md:text-3xl">
+            <strong>상품, 혜택, 요금</strong>을 직접 확인하고 비교해보세요!
+          </p>
+          <PriceCalculator
+            carrierSlug={carrier.slug}
+            carrierName={carrier.shortName}
+            accentColor={carrierAccentColors[carrier.slug] ?? "#f15c2d"}
+          />
         </div>
       </section>
 

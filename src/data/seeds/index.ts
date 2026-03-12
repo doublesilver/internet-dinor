@@ -444,5 +444,65 @@ export const reviewsSeed: Review[] = [
     featured: false,
     publishedAt: "2026-03-05T09:00:00.000Z",
     status: "published"
+  },
+  {
+    id: "34343434-3434-3434-3434-343434343437",
+    slug: "kt-switch-satisfied",
+    title: "SK에서 KT로 갈아탔는데 사은품 차이가 엄청나네요",
+    summary: "기존 통신사 약정 끝나고 KT로 변경했는데 사은품이 두 배 이상 차이 났어요.",
+    body: "SK 3년 약정이 끝나서 KT로 갈아탔습니다. 상담사분이 두 통신사 혜택을 비교해주셔서 결정이 쉬웠어요. 사은품도 빠르게 입금해주셨습니다.",
+    reviewType: "renewal",
+    tags: ["통신사변경", "KT", "사은품"],
+    featured: true,
+    publishedAt: "2026-03-04T09:00:00.000Z",
+    status: "published"
+  },
+  {
+    id: "34343434-3434-3434-3434-343434343438",
+    slug: "newlywed-bundle-review",
+    title: "신혼집 인터넷+TV 한번에 해결했어요",
+    summary: "결혼 준비하면서 인터넷이랑 TV 같이 알아봤는데 결합이 훨씬 저렴하더라구요.",
+    body: "신혼집 이사하면서 인터넷이랑 TV를 따로 가입하려다가 결합 상품을 추천받았습니다. 월 1만원 이상 절약되고, 채널도 많아서 만족합니다. 설치도 이사 당일에 해주셨어요.",
+    reviewType: "bundle",
+    tags: ["신혼", "결합상품", "절약"],
+    featured: true,
+    publishedAt: "2026-03-03T09:00:00.000Z",
+    status: "published"
+  },
+  {
+    id: "34343434-3434-3434-3434-343434343439",
+    slug: "business-internet-review",
+    title: "사무실 인터넷 빠르게 설치해주셔서 감사합니다",
+    summary: "사업장 오픈 전날 급하게 연락했는데 당일 설치 해주셨어요.",
+    body: "가게 오픈 하루 전에 급하게 인터넷이 필요했습니다. 전화 상담 후 바로 기사님이 오셔서 설치해주셨고, 속도도 안정적입니다. 사업장 인터넷은 여기서 하세요.",
+    reviewType: "internet_only",
+    tags: ["사업장", "당일설치", "빠른상담"],
+    featured: false,
+    publishedAt: "2026-03-02T09:00:00.000Z",
+    status: "published"
+  },
+  {
+    id: "34343434-3434-3434-3434-34343434343a",
+    slug: "skylife-review",
+    title: "시골 부모님 댁에도 TV 설치가 되네요",
+    summary: "케이블이 안 들어오는 지역이라 포기했었는데 스카이라이프로 해결됐어요.",
+    body: "부모님 댁이 시골이라 케이블 TV가 안 됐는데, 스카이라이프 위성TV로 설치했습니다. 채널도 많고 화질도 좋아서 부모님이 좋아하세요. 인터넷도 같이 결합해서 할인받았습니다.",
+    reviewType: "bundle",
+    tags: ["스카이라이프", "시골", "위성TV"],
+    featured: false,
+    publishedAt: "2026-03-01T09:00:00.000Z",
+    status: "published"
+  },
+  {
+    id: "34343434-3434-3434-3434-34343434343b",
+    slug: "lg-uplus-iot-review",
+    title: "LG유플러스 IoT 결합이 생각보다 편하네요",
+    summary: "AI스피커로 TV도 켜고 조명도 제어하니까 정말 스마트홈이 됐어요.",
+    body: "인터넷 가입하면서 IoT 결합을 추천받았습니다. 처음엔 반신반의했는데 AI스피커로 TV 채널도 바꾸고, 조명도 제어하니까 너무 편합니다. 아이들도 좋아해요.",
+    reviewType: "bundle",
+    tags: ["LG유플러스", "IoT", "스마트홈"],
+    featured: false,
+    publishedAt: "2026-02-28T09:00:00.000Z",
+    status: "published"
   }
 ];

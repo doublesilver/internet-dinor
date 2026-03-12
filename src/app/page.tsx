@@ -111,21 +111,17 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Bottom CTA - reference: dark footer style */}
+      {/* Bottom CTA - phone only, no duplicate form */}
       <section className="bg-[#333] py-16 md:py-24">
-        <div className="container-page grid gap-8 text-white md:grid-cols-[1fr_420px]">
-          <div className="space-y-4">
-            <a href={settings.phoneLink} className="block text-5xl font-black text-brand-orange">
-              {settings.phoneLabel}
-            </a>
-            <p className="text-lg">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
-            <p className="leading-relaxed text-white/70">
-              이름과 연락처만 남겨주시면 전문 상담사가 맞춤 비교 견적을 안내해드립니다.
-            </p>
-          </div>
-          <div className="rounded-[25px] bg-white p-6">
-            <h3 className="mb-4 text-center text-xl font-bold text-brand-orange">빠른 견적 문의</h3>
-            <QuickInquiryForm sourcePage="/#bottom-cta" submitLabel="최대 지원금 확인" />
+        <div className="container-page text-center text-white">
+          <p className="text-lg font-medium">지금 바로 전문 상담사에게 문의하세요</p>
+          <a href={settings.phoneLink} className="mt-4 inline-block text-5xl font-black text-brand-orange md:text-6xl">
+            {settings.phoneLabel}
+          </a>
+          <p className="mt-4 text-base text-white/70">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
+          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:justify-center">
+            <Button href="/apply" fullWidth>신청서 작성</Button>
+            <Button href={settings.phoneLink} variant="secondary" fullWidth>전화 상담</Button>
           </div>
         </div>
       </section>
