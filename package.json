@@ -10,6 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
     "doctor": "tsx src/scripts/doctor.ts",
     "seed": "tsx src/scripts/seed.ts",
     "import:real-data": "tsx src/scripts/import-real-data.ts"
@@ -30,6 +32,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@playwright/test": "^1.58.2",
     "autoprefixer": "^10.0.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",

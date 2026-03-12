@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 export function QuickInquiryForm({ sourcePage, submitLabel = "30초 상담 받기" }: { sourcePage: string; submitLabel?: string }) {
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const formId = `quick-form-${sourcePage === "/" ? "home" : sourcePage.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}`;
   const {
     register,
     handleSubmit,
@@ -53,7 +54,7 @@ export function QuickInquiryForm({ sourcePage, submitLabel = "30초 상담 받�
   });
 
   return (
-    <form onSubmit={onSubmit} className="surface-card space-y-4">
+    <form id={formId} onSubmit={onSubmit} className="surface-card space-y-4">
       <div>
         <label htmlFor={`quick-name-${sourcePage}`} className="field-label">
           이름
