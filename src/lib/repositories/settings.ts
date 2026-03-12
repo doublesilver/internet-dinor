@@ -1,17 +1,34 @@
+import { revalidateTag, unstable_cache } from "next/cache";
 import { siteSettingsSeed } from "@/data/seeds";
 import { mapSiteSettingsRow } from "@/lib/repositories/mappers";
 import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/server";
 import type { SiteSettings } from "@/types/domain";
 import type { SettingsEditorValues } from "@/lib/validators/content";
 
-export async function getSiteSettings(): Promise<SiteSettings> {
-  if (hasSupabaseAdminEnv()) {
+const SITE_SETTINGS_TAG = "site-settings";
+
+const getCachedSiteSettings = unstable_cache(
+  async (): Promise<SiteSettings> => {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("site_settings").select("*").limit(1).maybeSingle();
 
-    if (!error && data) {
-      return mapSiteSettingsRow(data);
+    if (error) {
+      throw new Error(`[settings:getSiteSettings] ${error.message}`);
     }
+
+    if (!data) {
+      throw new Error("[settings:getSiteSettings] site_settings 데이터가 없습니다.");
+    }
+
+    return mapSiteSettingsRow(data);
+  },
+  ["site-settings"],
+  { tags: [SITE_SETTINGS_TAG] }
+);
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  if (hasSupabaseAdminEnv()) {
+    return getCachedSiteSettings();
   }
 
   return siteSettingsSeed;
@@ -51,6 +68,7 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
       return { success: false, statusCode: 404, message: "설정 정보를 찾을 수 없습니다." };
     }
 
+    revalidateTag(SITE_SETTINGS_TAG);
     return { success: true, data: mapSiteSettingsRow(data) };
   }
 

@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   });
 
   if (!result.success) {
-    return NextResponse.json({ success: false, message: result.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
 
   return NextResponse.json({

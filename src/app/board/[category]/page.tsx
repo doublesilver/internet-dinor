@@ -7,13 +7,11 @@ import { getBoardTypeFromCategory, getPostsByType, getSiteSettings } from "@/lib
 import { formatDate } from "@/lib/utils/date";
 
 const categoryMeta: Record<string, { title: string; description: string }> = {
-  event: { title: "이벤트", description: "인터넷공룡의 최신 이벤트와 혜택 정보를 확인하세요." },
-  guide: { title: "가이드", description: "인터넷/TV 가입 전 알아두면 좋은 가이드 모음입니다." },
   notice: { title: "공지사항", description: "인터넷공룡의 공지사항과 업데이트 소식입니다." }
 };
 
 export function generateStaticParams() {
-  return [{ category: "event" }, { category: "guide" }, { category: "notice" }];
+  return [{ category: "notice" }];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
@@ -25,6 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 
 export default async function BoardCategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
+  if (category !== "notice") notFound();
+
   const type = getBoardTypeFromCategory(category);
   if (!type) notFound();
 
@@ -34,7 +34,7 @@ export default async function BoardCategoryPage({ params }: { params: Promise<{ 
     <SiteShell settings={settings}>
       <section className="section-space">
         <div className="container-page">
-          <SectionHeading eyebrow="Board" title={`${type.toUpperCase()} 게시판`} description="이벤트/가이드/공지형 콘텐츠를 목록 템플릿으로 통합 관리하는 구조입니다." />
+          <SectionHeading eyebrow="Board" title={`${type.toUpperCase()} 게시판`} description="인터넷공룡 공지사항과 운영 업데이트를 확인하세요." />
           <div className="space-y-4">
             {posts.map((post) => (
               <article key={post.id} className="surface-card flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

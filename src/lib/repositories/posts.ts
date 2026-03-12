@@ -1,4 +1,5 @@
 import { postsSeed, reviewsSeed } from "@/data/seeds";
+import { throwIfSupabaseError } from "@/lib/repositories/errors";
 import { mapPostRow, mapReviewRow } from "@/lib/repositories/mappers";
 import { parseCommaSeparatedText } from "@/lib/repositories/parsers";
 import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/server";
@@ -23,9 +24,13 @@ export async function getPostsByType(type: PostType): Promise<Post[]> {
       .eq("status", "published")
       .order("published_at", { ascending: false });
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getPostsByType", error);
+
+    if (data) {
       return data.map(mapPostRow);
     }
+
+    return [];
   }
 
   return postsSeed
@@ -44,9 +49,13 @@ export async function getFeaturedPosts(type: PostType) {
       .eq("is_featured", true)
       .order("published_at", { ascending: false });
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getFeaturedPosts", error);
+
+    if (data) {
       return data.map(mapPostRow);
     }
+
+    return [];
   }
 
   return postsSeed.filter((post) => post.type === type && post.isFeatured && post.status === "published");
@@ -63,9 +72,13 @@ export async function getPostByTypeAndSlug(type: PostType, slug: string) {
       .eq("status", "published")
       .maybeSingle();
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getPostByTypeAndSlug", error);
+
+    if (data) {
       return mapPostRow(data);
     }
+
+    return null;
   }
 
   return postsSeed.find((post) => post.type === type && post.slug === slug && post.status === "published") ?? null;
@@ -76,9 +89,13 @@ export async function getPostById(id: string): Promise<Post | null> {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("posts").select("*").eq("id", id).maybeSingle();
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getPostById", error);
+
+    if (data) {
       return mapPostRow(data);
     }
+
+    return null;
   }
 
   return postsSeed.find((post) => post.id === id) ?? null;
@@ -89,9 +106,13 @@ export async function getAllPostsAdmin() {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("posts").select("*").order("published_at", { ascending: false });
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getAllPostsAdmin", error);
+
+    if (data) {
       return data.map(mapPostRow);
     }
+
+    return [];
   }
 
   return [...postsSeed].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
@@ -106,9 +127,13 @@ export async function getReviews(): Promise<Review[]> {
       .eq("status", "published")
       .order("published_at", { ascending: false });
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getReviews", error);
+
+    if (data) {
       return data.map(mapReviewRow);
     }
+
+    return [];
   }
 
   return reviewsSeed.filter((review) => review.status === "published").sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
@@ -119,9 +144,13 @@ export async function getAllReviewsAdmin(): Promise<Review[]> {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("reviews").select("*").order("published_at", { ascending: false });
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getAllReviewsAdmin", error);
+
+    if (data) {
       return data.map(mapReviewRow);
     }
+
+    return [];
   }
 
   return [...reviewsSeed].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
@@ -137,9 +166,13 @@ export async function getFeaturedReviews() {
       .eq("featured", true)
       .order("published_at", { ascending: false });
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getFeaturedReviews", error);
+
+    if (data) {
       return data.map(mapReviewRow);
     }
+
+    return [];
   }
 
   return reviewsSeed.filter((review) => review.status === "published" && review.featured);
@@ -150,9 +183,13 @@ export async function getReviewBySlug(slug: string) {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("reviews").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getReviewBySlug", error);
+
+    if (data) {
       return mapReviewRow(data);
     }
+
+    return null;
   }
 
   return reviewsSeed.find((review) => review.slug === slug && review.status === "published") ?? null;
@@ -163,9 +200,13 @@ export async function getReviewById(id: string): Promise<Review | null> {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("reviews").select("*").eq("id", id).maybeSingle();
 
-    if (!error && data) {
+    throwIfSupabaseError("posts:getReviewById", error);
+
+    if (data) {
       return mapReviewRow(data);
     }
+
+    return null;
   }
 
   return reviewsSeed.find((review) => review.id === id) ?? null;

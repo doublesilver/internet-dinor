@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productInquiryFieldConfig } from "@/data/form-configs/product-inquiry";
+import { buildProductInquiryPayload } from "@/lib/utils/inquiry-form";
 import { productInquirySchema } from "@/lib/validators/inquiries";
 import type { ProductInquiryValues } from "@/lib/validators/inquiries";
 import type { Product } from "@/types/domain";
@@ -33,11 +34,7 @@ export function ProductInquiryForm({ product }: { product: Product }) {
   const onSubmit = handleSubmit((values, event) => {
     if (!event?.target) return;
     const formData = new FormData(event.target as HTMLFormElement);
-    const payload = Object.fromEntries(
-      Array.from(formData.entries()).filter(([key]) =>
-        ["signup_type", "desired_bundle", "desired_speed", "tv_required", "mobile_bundle_interest", "memo"].includes(key)
-      )
-    );
+    const payload = buildProductInquiryPayload(formData.entries());
 
     startTransition(async () => {
       try {

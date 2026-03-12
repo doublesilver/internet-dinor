@@ -28,9 +28,11 @@ export default async function PrivacyPage() {
                 <h2 className="text-base font-bold text-brand-graphite">제1조 (수집하는 개인정보 항목)</h2>
                 <p>회사는 상담 접수를 위해 아래와 같은 개인정보를 수집합니다.</p>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>필수 항목: 이름, 휴대전화번호, 설치 지역(시/구)</li>
-                  <li>선택 항목: 상담 메모, 희망 통신사, 희망 상품</li>
+                  <li>필수 항목: 이름, 휴대전화번호</li>
+                  <li>문의 유형별 추가 항목: 설치 지역(시/구), 희망 통신사, 희망 상품, 고객 유형, 연락 희망 시간</li>
+                  <li>선택 항목: 휴대폰 통신사, 납부방법 선호, 희망 설치일, 유입 경로, 상담 메모</li>
                 </ul>
+                <p>회사는 웹 문의 단계에서 계좌번호, 카드번호, 상세 주소, 사은품 수령 계좌 등 금융 및 상세 주소 정보는 수집하지 않습니다.</p>
               </section>
 
               <section className="space-y-2">
@@ -65,7 +67,7 @@ export default async function PrivacyPage() {
                 <p>회사는 서비스 향상을 위해 아래와 같이 개인정보 처리 업무를 위탁할 수 있으며, 위탁 계약 시 개인정보가 안전하게 관리될 수 있도록 관련 규정을 준수합니다.</p>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>수탁자: 각 통신사(KT, SK브로드밴드, LG유플러스 등) 상담 연계 업무</li>
-                  <li>위탁 업무 내용: 가입 신청 처리 및 설치 안내</li>
+                  <li>위탁 업무 내용: 가입 신청 처리 및 설치 안내, 상담 확정 이후 필요한 추가 정보 확인</li>
                 </ul>
               </section>
 

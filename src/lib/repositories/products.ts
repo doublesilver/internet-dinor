@@ -1,4 +1,5 @@
 import { carriersSeed, productsSeed } from "@/data/seeds";
+import { throwIfSupabaseError } from "@/lib/repositories/errors";
 import { mapProductRow } from "@/lib/repositories/mappers";
 import { parseCommaSeparatedText, parseLineSeparatedText, parsePairLines } from "@/lib/repositories/parsers";
 import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/server";
@@ -11,9 +12,13 @@ export async function getProducts() {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("products").select("*").eq("status", "published").order("sort_order");
 
-    if (!error && data) {
+    throwIfSupabaseError("products:getProducts", error);
+
+    if (data) {
       return data.map(mapProductRow);
     }
+
+    return [];
   }
 
   return productsSeed.filter((product) => product.status === "published").sort((a, b) => a.sortOrder - b.sortOrder);
@@ -24,9 +29,13 @@ export async function getAllProductsAdmin() {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("products").select("*").order("sort_order");
 
-    if (!error && data) {
+    throwIfSupabaseError("products:getAllProductsAdmin", error);
+
+    if (data) {
       return data.map(mapProductRow);
     }
+
+    return [];
   }
 
   return [...productsSeed].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -42,9 +51,13 @@ export async function getFeaturedProducts() {
       .eq("is_featured", true)
       .order("sort_order");
 
-    if (!error && data) {
+    throwIfSupabaseError("products:getFeaturedProducts", error);
+
+    if (data) {
       return data.map(mapProductRow);
     }
+
+    return [];
   }
 
   return productsSeed
@@ -65,9 +78,13 @@ export async function getProductsByCarrierSlug(slug: string) {
       .eq("carrier_id", carrier.id)
       .order("sort_order");
 
-    if (!error && data) {
+    throwIfSupabaseError("products:getProductsByCarrierSlug", error);
+
+    if (data) {
       return data.map(mapProductRow);
     }
+
+    return [];
   }
 
   const carrier = carriersSeed.find((item) => item.slug === slug);
@@ -83,9 +100,13 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("products").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
 
-    if (!error && data) {
+    throwIfSupabaseError("products:getProductBySlug", error);
+
+    if (data) {
       return mapProductRow(data);
     }
+
+    return null;
   }
 
   return productsSeed.find((product) => product.slug === slug && product.status === "published") ?? null;
@@ -96,9 +117,13 @@ export async function getProductById(id: string): Promise<Product | null> {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("products").select("*").eq("id", id).maybeSingle();
 
-    if (!error && data) {
+    throwIfSupabaseError("products:getProductById", error);
+
+    if (data) {
       return mapProductRow(data);
     }
+
+    return null;
   }
 
   return productsSeed.find((product) => product.id === id) ?? null;

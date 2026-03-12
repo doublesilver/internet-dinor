@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
 }
 
 export async function generateStaticParams() {
-  const categories = ["event", "guide", "notice"] as const;
+  const categories = ["notice"] as const;
   const params: Array<{ category: string; slug: string }> = [];
 
   for (const category of categories) {
@@ -36,6 +36,8 @@ export async function generateStaticParams() {
 
 export default async function BoardDetailPage({ params }: { params: Promise<{ category: string; slug: string }> }) {
   const { category, slug } = await params;
+  if (category !== "notice") notFound();
+
   const type = getBoardTypeFromCategory(category);
   if (!type) notFound();
 

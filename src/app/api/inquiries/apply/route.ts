@@ -33,12 +33,15 @@ export async function POST(request: Request) {
     privacyAgreed: parsed.data.privacyAgreed,
     regionLabel: parsed.data.regionLabel,
     contactTimePreference: parsed.data.contactTimePreference,
-    payload: parsed.data.payload,
+    payload: {
+      ...(parsed.data.payload ?? {}),
+      terms_agreed: "true"
+    },
     utm: parsed.data.utm
   });
 
   if (!result.success) {
-    return NextResponse.json({ success: false, message: result.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
 
   return NextResponse.json({

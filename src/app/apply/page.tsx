@@ -20,7 +20,7 @@ export default async function ApplyPage() {
             <p className="mt-2 text-brand-slate">아래 정보를 입력하시면 전문 상담사가 빠르게 연락드립니다.</p>
           </div>
           <div className="mx-auto max-w-3xl">
-            <ApplyInquiryForm />
+            <ApplyInquiryForm phoneLink={settings.phoneLink} />
           </div>
         </div>
       </section>

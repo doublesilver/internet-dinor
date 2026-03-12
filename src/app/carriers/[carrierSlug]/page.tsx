@@ -82,12 +82,12 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
             <span style={{ color: accentColor }}>{carrier.shortName}</span>의
           </h2>
           <p className="mb-8 text-center text-2xl font-black text-brand-graphite md:text-3xl">
-            <strong>상품, 혜택, 요금</strong>을 직접 확인하고 비교해보세요!
+            <strong>등록된 공개 상품</strong> 기준으로 혜택과 요금을 비교해보세요!
           </p>
           <PriceCalculator
-            carrierSlug={carrier.slug}
             carrierName={carrier.shortName}
             accentColor={accentColor}
+            products={products}
           />
         </div>
       </section>

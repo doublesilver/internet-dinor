@@ -6,52 +6,55 @@ import { formatPhone } from "@/lib/utils/phone";
 import type { InquiryCreateInput, InquiryRecord, InquiryStatus } from "@/types/domain";
 import type { UpdateInquiryValues } from "@/lib/validators/admin";
 
+function createReadError(entity: string, message: string) {
+  return new Error(`[inquiries] ${entity} 조회에 실패했습니다. ${message}`);
+}
+
 export async function createInquiry(input: InquiryCreateInput) {
   const phone = formatPhone(input.phone);
-  const now = new Date().toISOString();
-
-  if (hasSupabaseAdminEnv()) {
-    const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase
-      .from("inquiries")
-      .insert({
-        inquiry_type: input.inquiryType,
-        name: input.name,
-        phone,
-        product_id: input.productId ?? null,
-        carrier_slug: input.carrierSlug ?? null,
-        source_page: input.sourcePage,
-        status: "new",
-        privacy_agreed: input.privacyAgreed,
-        region_label: input.regionLabel ?? null,
-        contact_time_preference: input.contactTimePreference ?? null,
-        payload_json: input.payload ?? {},
-        utm_json: input.utm ?? {}
-      })
-      .select("id, created_at")
-      .single();
-
-    if (error) {
-      return {
-        success: false,
-        mode: "database" as const,
-        message: "문의 저장 중 오류가 발생했습니다."
-      };
-    }
-
+  if (!hasSupabaseAdminEnv()) {
     return {
-      success: true,
+      success: false,
+      mode: "unavailable" as const,
+      statusCode: 503,
+      message: "문의 저장 환경이 설정되지 않았습니다."
+    };
+  }
+
+  const supabase = createSupabaseAdminClient();
+  const { data, error } = await supabase
+    .from("inquiries")
+    .insert({
+      inquiry_type: input.inquiryType,
+      name: input.name,
+      phone,
+      product_id: input.productId ?? null,
+      carrier_slug: input.carrierSlug ?? null,
+      source_page: input.sourcePage,
+      status: "new",
+      privacy_agreed: input.privacyAgreed,
+      region_label: input.regionLabel ?? null,
+      contact_time_preference: input.contactTimePreference ?? null,
+      payload_json: input.payload ?? {},
+      utm_json: input.utm ?? {}
+    })
+    .select("id, created_at")
+    .single();
+
+  if (error) {
+    return {
+      success: false,
       mode: "database" as const,
-      inquiryId: data.id,
-      createdAt: data.created_at
+      statusCode: 500,
+      message: "문의 저장 중 오류가 발생했습니다."
     };
   }
 
   return {
     success: true,
-    mode: "mock" as const,
-    inquiryId: crypto.randomUUID(),
-    createdAt: now
+    mode: "database" as const,
+    inquiryId: data.id,
+    createdAt: data.created_at
   };
 }
 
@@ -60,7 +63,11 @@ export async function getInquiryFixtures() {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("inquiries").select("*").order("created_at", { ascending: false });
 
-    if (!error && data) {
+    if (error) {
+      throw createReadError("문의 목록", error.message);
+    }
+
+    if (data) {
       return data.map(mapInquiryRow);
     }
   }
@@ -73,9 +80,15 @@ export async function getInquiryById(id: string) {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("inquiries").select("*").eq("id", id).maybeSingle();
 
-    if (!error && data) {
+    if (error) {
+      throw createReadError("문의 상세", error.message);
+    }
+
+    if (data) {
       return mapInquiryRow(data);
     }
+
+    return null;
   }
 
   return inquiryFixtures.find((item) => item.id === id) ?? null;
@@ -197,7 +210,14 @@ export async function findProductById(productId?: string | null) {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("products").select("*").eq("id", productId).maybeSingle();
-    if (!error && data) return mapProductRow(data);
+
+    if (error) {
+      throw createReadError("연결 상품", error.message);
+    }
+
+    if (data) return mapProductRow(data);
+
+    return null;
   }
 
   return productsSeed.find((product) => product.id === productId) ?? null;
@@ -207,7 +227,14 @@ export async function findProductBySlug(slug: string) {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
     const { data, error } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
-    if (!error && data) return mapProductRow(data);
+
+    if (error) {
+      throw createReadError("상품", error.message);
+    }
+
+    if (data) return mapProductRow(data);
+
+    return null;
   }
 
   return productsSeed.find((product) => product.slug === slug) ?? null;
@@ -222,9 +249,15 @@ export async function getRecentInquiries(limit = 20): Promise<InquiryRecord[]> {
       .order("created_at", { ascending: false })
       .limit(limit);
 
-    if (!error && data) {
+    if (error) {
+      throw createReadError("최근 문의", error.message);
+    }
+
+    if (data) {
       return data.map(mapInquiryRow);
     }
+
+    return [];
   }
 
   return inquiryFixtures
