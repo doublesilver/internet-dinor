@@ -37,7 +37,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
 
   if (!carrier) notFound();
 
-  const accentColor = getCarrierTheme(carrier.slug).accentColor;
+  const theme = getCarrierTheme(carrier.slug);
   const featuredProducts = products.slice(0, 3);
 
   return (
@@ -68,12 +68,12 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
       <section className="bg-brand-surface py-12 md:py-16">
         <div className="container-page">
           <h2 className="mb-2 text-center text-2xl font-black text-brand-graphite md:text-3xl">
-            <span style={{ color: accentColor }}>{carrier.shortName}</span>의
+            <span style={{ color: theme.accentColor }}>{carrier.shortName}</span>의
           </h2>
           <p className="mb-8 text-center text-2xl font-black text-brand-graphite md:text-3xl">
             <strong>등록된 공개 상품</strong> 기준으로 혜택과 요금을 비교해보세요!
           </p>
-          <PriceCalculator carrierName={carrier.shortName} accentColor={accentColor} products={products} />
+          <PriceCalculator carrierSlug={carrier.slug} carrierName={carrier.shortName} products={products} />
         </div>
       </section>
 
@@ -90,7 +90,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
                   <div className="px-6 pb-4 pt-6">
                     <div className="mb-3 flex flex-wrap gap-2">
                       {product.badgeTags.map((tag) => (
-                        <span key={tag} className="rounded-full px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: accentColor }}>
+                        <span key={tag} className="rounded-full px-3 py-1 text-xs font-bold text-white" style={{ backgroundColor: theme.accentColor }}>
                           {tag}
                         </span>
                       ))}
@@ -112,7 +112,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
                     )}
                     <p className="text-sm text-brand-slate">
                       월{" "}
-                      <strong className="text-2xl font-black" style={{ color: accentColor }}>
+                      <strong className="text-2xl font-black" style={{ color: theme.accentColor }}>
                         {product.monthlyPriceLabel}
                       </strong>
                     </p>
@@ -123,14 +123,14 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
                     <a
                       href="/apply"
                       className="flex-1 py-3.5 text-center text-sm font-bold text-white transition-opacity hover:opacity-90"
-                      style={{ backgroundColor: accentColor }}
+                      style={{ backgroundColor: theme.accentColor }}
                     >
                       빠른 견적
                     </a>
                     <a
                       href="/apply"
                       className="flex-1 border-l border-white/20 py-3.5 text-center text-sm font-bold text-white transition-opacity hover:opacity-90"
-                      style={{ backgroundColor: accentColor, opacity: 0.85 }}
+                      style={{ backgroundColor: theme.accentColor, opacity: 0.85 }}
                     >
                       신청서 작성
                     </a>
@@ -152,7 +152,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-black" style={{ color: accentColor }}>
+                        <p className="text-sm font-black" style={{ color: theme.accentColor }}>
                           월 {product.monthlyPriceLabel}
                         </p>
                         <Button href="/apply" variant="ghost" className="mt-2 !px-3 !py-1.5 !text-xs">
@@ -168,7 +168,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      <BundleDiscountTable carrierSlug={carrier.slug} accentColor={accentColor} />
+      <BundleDiscountTable carrierSlug={carrier.slug} />
 
       <section className="pb-8 pt-4">
         <div className="container-page">
