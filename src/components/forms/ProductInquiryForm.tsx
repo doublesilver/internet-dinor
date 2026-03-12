@@ -10,6 +10,15 @@ import type { ProductInquiryValues } from "@/lib/validators/inquiries";
 import type { Product } from "@/types/domain";
 import { Button } from "@/components/ui/Button";
 
+const defaultProductInquiryPayload = {
+  signup_type: "",
+  desired_bundle: "",
+  desired_speed: "",
+  tv_required: "",
+  mobile_bundle_interest: "",
+  memo: ""
+};
+
 export function ProductInquiryForm({ product }: { product: Product }) {
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -27,14 +36,12 @@ export function ProductInquiryForm({ product }: { product: Product }) {
       sourcePage: `/products/${product.slug}`,
       regionLabel: "",
       contactTimePreference: "",
-      payload: {}
+      payload: defaultProductInquiryPayload
     }
   });
 
-  const onSubmit = handleSubmit((values, event) => {
-    if (!event?.target) return;
-    const formData = new FormData(event.target as HTMLFormElement);
-    const payload = buildProductInquiryPayload(formData.entries());
+  const onSubmit = handleSubmit((values) => {
+    const payload = buildProductInquiryPayload(Object.entries(values.payload ?? {}));
 
     startTransition(async () => {
       try {
@@ -80,7 +87,7 @@ export function ProductInquiryForm({ product }: { product: Product }) {
         {productInquiryFieldConfig.map((field) => (
           <div key={field.key}>
             <label className="field-label">{field.label}</label>
-            <select className="field-base" name={field.key} defaultValue="">
+            <select className="field-base" {...register(`payload.${field.key}`)}>
               <option value="">선택해주세요</option>
               {field.options.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -110,11 +117,12 @@ export function ProductInquiryForm({ product }: { product: Product }) {
 
       <div>
         <label className="field-label">문의 메모</label>
-        <textarea name="memo" className="field-base min-h-28" placeholder="이사 예정일, 사업장 여부 등을 적어주세요." />
+        <textarea
+          className="field-base min-h-28"
+          placeholder="이사 예정일, 사업장 여부 등을 적어주세요."
+          {...register("payload.memo")}
+        />
       </div>
-
-      <input type="hidden" {...register("productSlug")} value={product.slug} />
-      <input type="hidden" {...register("sourcePage")} value={`/products/${product.slug}`} />
 
       <label className="flex items-start gap-3 rounded-2xl border border-brand-border px-4 py-3 text-sm text-brand-slate">
         <input type="checkbox" className="mt-1" {...register("privacyAgreed")} />
