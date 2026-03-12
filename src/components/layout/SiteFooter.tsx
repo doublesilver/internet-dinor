@@ -4,26 +4,6 @@ import type { SiteSettings } from "@/types/domain";
 export function SiteFooter({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="border-t border-brand-border bg-[#333] pb-20 text-white" role="contentinfo">
-      {/* CTA Banner - reference: footer top banner */}
-      <div className="bg-brand-orange">
-        <div className="container-page flex flex-col items-center justify-between gap-4 py-5 sm:flex-row">
-          <p className="text-lg font-black text-white md:text-xl">
-            가입 신청하기
-          </p>
-          <div className="flex items-center gap-4">
-            <a href={settings.phoneLink} className="text-2xl font-black text-white md:text-3xl">
-              {settings.phoneLabel}
-            </a>
-            <a
-              href="/apply"
-              className="rounded-full bg-white px-6 py-2 text-sm font-bold text-brand-orange hover:bg-gray-100"
-            >
-              신청서 작성
-            </a>
-          </div>
-        </div>
-      </div>
-
       <div className="container-page space-y-6 py-10">
         {/* Phone number - reference: 4rem bold orange */}
         <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
