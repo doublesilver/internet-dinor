@@ -1,10 +1,20 @@
-// 주의: 인메모리 Map은 단일 서버리스 인스턴스 내에서만 동작합니다.
-// Vercel 등 서버리스 환경에서는 인스턴스별로 독립된 메모리를 가지므로
-// 정확한 글로벌 rate limit이 필요하다면 Redis(Upstash 등) 사용을 권장합니다.
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+// Upstash가 설정되지 않았거나 일시 장애가 있을 때만 인메모리 폴백을 사용합니다.
 const store = new Map<string, { count: number; resetAt: number }>();
+const ephemeralCache = new Map<string, number>();
+const ratelimiterCache = new Map<string, Ratelimit>();
 
 const CLEANUP_INTERVAL = 5 * 60 * 1000;
 let lastCleanup = Date.now();
+let redisClient: Redis | null | undefined;
+let loggedRedisFallback = false;
+let distributedRateLimitDisabled = false;
+
+const RATE_LIMIT_PREFIX = "internet-dinor:ratelimit";
+const UPSTASH_URL_ENV_KEYS = ["UPSTASH_REDIS_REST_URL", "KV_REST_API_URL"] as const;
+const UPSTASH_TOKEN_ENV_KEYS = ["UPSTASH_REDIS_REST_TOKEN", "KV_REST_API_TOKEN"] as const;
 
 function cleanupExpired(now: number) {
   if (now - lastCleanup < CLEANUP_INTERVAL) return;
@@ -16,7 +26,7 @@ function cleanupExpired(now: number) {
   }
 }
 
-export function isRateLimited(key: string, limit: number, windowMs: number): boolean {
+function isMemoryRateLimited(key: string, limit: number, windowMs: number): boolean {
   const now = Date.now();
   cleanupExpired(now);
 
@@ -34,6 +44,90 @@ export function isRateLimited(key: string, limit: number, windowMs: number): boo
   }
 
   return false;
+}
+
+export function hasUpstashRateLimitEnv(): boolean {
+  return UPSTASH_URL_ENV_KEYS.some((envKey) => Boolean(process.env[envKey])) &&
+    UPSTASH_TOKEN_ENV_KEYS.some((envKey) => Boolean(process.env[envKey]));
+}
+
+function formatWindow(windowMs: number): `${number}ms` {
+  return `${windowMs}ms`;
+}
+
+function getRedisClient(): Redis | null {
+  if (distributedRateLimitDisabled) {
+    return null;
+  }
+
+  if (redisClient !== undefined) {
+    return redisClient;
+  }
+
+  if (!hasUpstashRateLimitEnv()) {
+    redisClient = null;
+    return redisClient;
+  }
+
+  try {
+    redisClient = Redis.fromEnv();
+  } catch {
+    distributedRateLimitDisabled = true;
+    redisClient = null;
+  }
+
+  return redisClient;
+}
+
+function getUpstashRatelimit(limit: number, windowMs: number): Ratelimit | null {
+  if (distributedRateLimitDisabled) {
+    return null;
+  }
+
+  const cacheKey = `${limit}:${windowMs}`;
+  const cached = ratelimiterCache.get(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
+  const redis = getRedisClient();
+  if (!redis) {
+    return null;
+  }
+
+  const ratelimit = new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(limit, formatWindow(windowMs)),
+    analytics: true,
+    prefix: RATE_LIMIT_PREFIX,
+    ephemeralCache
+  });
+
+  ratelimiterCache.set(cacheKey, ratelimit);
+  return ratelimit;
+}
+
+export async function isRateLimited(key: string, limit: number, windowMs: number): Promise<boolean> {
+  const ratelimit = getUpstashRatelimit(limit, windowMs);
+
+  if (!ratelimit) {
+    return isMemoryRateLimited(key, limit, windowMs);
+  }
+
+  try {
+    const result = await ratelimit.limit(key);
+    void result.pending.catch(() => undefined);
+    return !result.success;
+  } catch (error) {
+    distributedRateLimitDisabled = true;
+    ratelimiterCache.clear();
+    if (!loggedRedisFallback) {
+      loggedRedisFallback = true;
+      console.warn("Upstash rate limit check failed. Falling back to in-memory store.", error);
+    }
+
+    return isMemoryRateLimited(key, limit, windowMs);
+  }
 }
 
 export function getRateLimitKey(request: Request, prefix: string): string {

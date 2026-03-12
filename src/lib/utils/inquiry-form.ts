@@ -25,7 +25,7 @@ export const PRODUCT_INQUIRY_PAYLOAD_KEYS = [
 
 function filterTextEntries<T extends readonly string[]>(
   allowedKeys: T,
-  entries: Iterable<[string, FormDataEntryValue]>
+  entries: Iterable<[string, unknown]>
 ): Partial<Record<T[number], string>> {
   const allowedKeySet = new Set<string>(allowedKeys);
   const filtered = new Map<string, string>();

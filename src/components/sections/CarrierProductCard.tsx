@@ -1,36 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getCarrierTheme } from "@/lib/constants/carriers";
 
 interface CarrierProductCardProps {
-  carrierName: string;
   carrierSlug: string;
-  carrierLogo: string;
   productName: string;
   speed: string;
   channelCount?: string;
   originalPrice?: string;
   discountPrice: string;
   giftAmount?: string;
-  accentColor?: string;
 }
 
 export function CarrierProductCard({
-  carrierName,
   carrierSlug,
-  carrierLogo,
   productName,
   speed,
   channelCount,
   originalPrice,
   discountPrice,
-  giftAmount,
-  accentColor = "#f15c2d"
+  giftAmount
 }: CarrierProductCardProps) {
+  const theme = getCarrierTheme(carrierSlug);
+
   return (
     <article className="flex flex-col overflow-hidden rounded-[30px] bg-white shadow-[4px_4px_2px_rgba(0,0,0,0.1)]">
       {/* Carrier logo */}
       <div className="flex items-center justify-center border-b border-brand-border px-6 py-4">
-        <Image src={carrierLogo} alt={carrierName} width={120} height={40} className="h-8 w-auto object-contain" />
+        <Image src={theme.logoPath} alt={theme.logoAlt} width={120} height={40} className="h-8 w-auto object-contain" />
       </div>
 
       {/* Content */}
@@ -49,7 +46,7 @@ export function CarrierProductCard({
           {originalPrice && (
             <span className="mr-3 text-lg text-gray-300 line-through">{originalPrice}</span>
           )}
-          <span style={{ color: accentColor }} className="text-lg">
+          <span style={{ color: theme.accentColor }} className="text-lg">
             월 <strong className="text-2xl">{discountPrice}</strong>
           </span>
         </div>
@@ -59,14 +56,14 @@ export function CarrierProductCard({
       <div className="flex">
         <Link
           href={`/carriers/${carrierSlug}`}
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: theme.accentColor }}
           className="flex-1 py-3.5 text-center text-sm font-bold text-white hover:opacity-90"
         >
           추가 상품보기
         </Link>
         <Link
           href="/apply"
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: theme.accentColor }}
           className="flex-1 border-l border-white/20 py-3.5 text-center text-sm font-bold text-white hover:opacity-90"
         >
           신청서 작성

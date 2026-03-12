@@ -15,6 +15,21 @@ describe("createEnvSchema", () => {
     expect(result.success).toBe(true);
   });
 
+  it("accepts optional Upstash env keys", () => {
+    const env = {
+      NODE_ENV: "production",
+      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "anon-key",
+      SUPABASE_SERVICE_ROLE_KEY: "service-role-key",
+      UPSTASH_REDIS_REST_URL: "https://example.upstash.io",
+      UPSTASH_REDIS_REST_TOKEN: "token"
+    };
+
+    const result = createEnvSchema(env).safeParse(env);
+
+    expect(result.success).toBe(true);
+  });
+
   it("still requires ADMIN_SESSION_SECRET in production preview mode", () => {
     const env = {
       NODE_ENV: "production",

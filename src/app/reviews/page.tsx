@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ReviewCard } from "@/components/sections/ReviewCard";
 import { SectionHeading } from "@/components/sections/SectionHeading";
-import { getFeaturedReviews, getReviews, getSiteSettings } from "@/lib/repositories/content";
+import { getFeaturedReviews, getReviews } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "고객 후기",
@@ -10,17 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default async function ReviewsPage() {
-  const [settings, featured, all] = await Promise.all([
-    getSiteSettings(),
-    getFeaturedReviews(),
-    getReviews()
-  ]);
+  const [featured, all] = await Promise.all([getFeaturedReviews(), getReviews()]);
 
   const featuredIds = new Set(featured.map((r) => r.id));
   const regular = all.filter((r) => !featuredIds.has(r.id));
 
   return (
-    <SiteShell settings={settings}>
+    <SiteShell>
       <section className="section-space">
         <div className="container-page">
           <SectionHeading

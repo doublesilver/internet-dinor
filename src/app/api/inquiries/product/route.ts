@@ -6,7 +6,7 @@ import { productInquirySchema } from "@/lib/validators/inquiries";
 
 export async function POST(request: Request) {
   const rateLimitKey = getRateLimitKey(request, "inquiry-product");
-  if (isRateLimited(rateLimitKey, 10, 60 * 1000)) {
+  if (await isRateLimited(rateLimitKey, 10, 60 * 1000)) {
     return NextResponse.json({ success: false, message: "요청이 너무 많습니다. 잠시 후 다시 시도해주세요." }, { status: 429 });
   }
 

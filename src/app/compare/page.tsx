@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { ProductCard } from "@/components/sections/ProductCard";
 import { SectionHeading } from "@/components/sections/SectionHeading";
-import { getProducts, getSiteSettings } from "@/lib/repositories/content";
+import { getProducts } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "대표 상품 비교",
@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ComparePage() {
-  const [settings, products] = await Promise.all([getSiteSettings(), getProducts()]);
+  const products = await getProducts();
 
   return (
-    <SiteShell settings={settings}>
+    <SiteShell>
       <section className="section-space">
         <div className="container-page">
           <SectionHeading

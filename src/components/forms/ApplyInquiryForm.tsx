@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildApplyInquiryPayload, extractRegionLabel } from "@/lib/utils/inquiry-form";
 import { applyInquirySchema } from "@/lib/validators/inquiries";
@@ -98,7 +98,8 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
+    resetField,
     setValue,
     formState: { errors }
   } = useForm<ApplyInquiryValues>({
@@ -127,19 +128,17 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
     }
   });
 
-  const desiredCarrier = watch("payload.desired_carrier") ?? "";
-  const customerType = watch("payload.customer_type") ?? "individual";
-  const paymentMethod = watch("payload.payment_method") ?? "auto_transfer";
-  const installDateType = watch("payload.install_date_type") ?? "asap";
+  const desiredCarrier = useWatch({ control, name: "payload.desired_carrier" }) ?? "";
+  const customerType = useWatch({ control, name: "payload.customer_type" }) ?? "individual";
+  const paymentMethod = useWatch({ control, name: "payload.payment_method" }) ?? "auto_transfer";
+  const installDateType = useWatch({ control, name: "payload.install_date_type" }) ?? "asap";
 
   const desiredCarrierField = register("payload.desired_carrier");
   const installDateTypeField = register("payload.install_date_type");
 
   const onSubmit = handleSubmit((values) => {
     setMessage(null);
-    const payload = buildApplyInquiryPayload(
-      Object.entries(values.payload ?? {}).map(([key, value]) => [key, value ?? ""])
-    );
+    const payload = buildApplyInquiryPayload(Object.entries(values.payload ?? {}));
 
     startTransition(async () => {
       try {
@@ -148,6 +147,7 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...values,
+            sourcePage: "/apply",
             payload
           })
         });
@@ -194,8 +194,8 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
                 {...desiredCarrierField}
                 onChange={(event) => {
                   desiredCarrierField.onChange(event);
-                  setValue("payload.internet_plan", "");
-                  setValue("payload.tv_plan", "");
+                  resetField("payload.internet_plan", { defaultValue: "" });
+                  resetField("payload.tv_plan", { defaultValue: "" });
                 }}
               />
               {opt.label}
@@ -376,7 +376,7 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
               {...installDateTypeField}
               onChange={(event) => {
                 installDateTypeField.onChange(event);
-                setValue("payload.install_date", "");
+                resetField("payload.install_date", { defaultValue: "" });
               }}
             />
             빠른 시일 희망
@@ -434,9 +434,6 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
         </label>
         {errors.privacyAgreed ? <p className="field-error">{errors.privacyAgreed.message}</p> : null}
       </div>
-
-      <input type="hidden" {...register("sourcePage")} value="/apply" />
-
       {message ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">{message}</p> : null}
 
       <div className="flex flex-col gap-3 sm:flex-row">

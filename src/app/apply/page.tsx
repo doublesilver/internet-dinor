@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ApplyInquiryForm } from "@/components/forms/ApplyInquiryForm";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "가입 신청",
@@ -9,21 +8,21 @@ export const metadata: Metadata = {
 };
 
 export default async function ApplyPage() {
-  const settings = await getSiteSettings();
-
   return (
-    <SiteShell settings={settings}>
-      <section className="bg-brand-surface py-8">
-        <div className="container-page">
-          <div className="mb-8 text-center">
-            <h1 className="text-3xl font-black text-brand-graphite md:text-4xl">가입 신청서</h1>
-            <p className="mt-2 text-brand-slate">아래 정보를 입력하시면 전문 상담사가 빠르게 연락드립니다.</p>
+    <SiteShell>
+      {(settings) => (
+        <section className="bg-brand-surface py-8">
+          <div className="container-page">
+            <div className="mb-8 text-center">
+              <h1 className="text-3xl font-black text-brand-graphite md:text-4xl">가입 신청서</h1>
+              <p className="mt-2 text-brand-slate">아래 정보를 입력하시면 전문 상담사가 빠르게 연락드립니다.</p>
+            </div>
+            <div className="mx-auto max-w-3xl">
+              <ApplyInquiryForm phoneLink={settings.phoneLink} />
+            </div>
           </div>
-          <div className="mx-auto max-w-3xl">
-            <ApplyInquiryForm phoneLink={settings.phoneLink} />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </SiteShell>
   );
 }

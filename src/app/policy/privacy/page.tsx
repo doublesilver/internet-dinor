@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "개인정보처리방침",
@@ -8,32 +7,31 @@ export const metadata: Metadata = {
 };
 
 export default async function PrivacyPage() {
-  const settings = await getSiteSettings();
-
   return (
-    <SiteShell settings={settings}>
-      <section className="section-space">
-        <div className="container-page max-w-4xl">
-          <article className="surface-card space-y-8 prose prose-sm max-w-none">
-            <h1 className="text-4xl font-black tracking-tight text-brand-graphite">개인정보처리방침</h1>
-            <p className="text-sm text-brand-slate">시행일: 2025년 1월 1일</p>
+    <SiteShell>
+      {(settings) => (
+        <section className="section-space">
+          <div className="container-page max-w-4xl">
+            <article className="surface-card space-y-8 prose prose-sm max-w-none">
+              <h1 className="text-4xl font-black tracking-tight text-brand-graphite">개인정보처리방침</h1>
+              <p className="text-sm text-brand-slate">시행일: 2025년 1월 1일</p>
 
-            <div className="space-y-6 text-sm leading-7 text-brand-slate">
-              <p>
-                {settings.siteName}(이하 &ldquo;회사&rdquo;)은 이용자의 개인정보를 중요시하며, 「개인정보 보호법」 등 관련 법령을 준수합니다.
-                본 방침은 회사가 수집하는 개인정보의 항목, 수집 목적, 보유 기간 및 이용자 권리에 대해 안내합니다.
-              </p>
+              <div className="space-y-6 text-sm leading-7 text-brand-slate">
+                <p>
+                  {settings.siteName}(이하 &ldquo;회사&rdquo;)은 이용자의 개인정보를 중요시하며, 「개인정보 보호법」 등 관련 법령을 준수합니다.
+                  본 방침은 회사가 수집하는 개인정보의 항목, 수집 목적, 보유 기간 및 이용자 권리에 대해 안내합니다.
+                </p>
 
-              <section className="space-y-2">
-                <h2 className="text-base font-bold text-brand-graphite">제1조 (수집하는 개인정보 항목)</h2>
-                <p>회사는 상담 접수를 위해 아래와 같은 개인정보를 수집합니다.</p>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>필수 항목: 이름, 휴대전화번호</li>
-                  <li>문의 유형별 추가 항목: 설치 지역(시/구), 희망 통신사, 희망 상품, 고객 유형, 연락 희망 시간</li>
-                  <li>선택 항목: 휴대폰 통신사, 납부방법 선호, 희망 설치일, 유입 경로, 상담 메모</li>
-                </ul>
-                <p>회사는 웹 문의 단계에서 계좌번호, 카드번호, 상세 주소, 사은품 수령 계좌 등 금융 및 상세 주소 정보는 수집하지 않습니다.</p>
-              </section>
+                <section className="space-y-2">
+                  <h2 className="text-base font-bold text-brand-graphite">제1조 (수집하는 개인정보 항목)</h2>
+                  <p>회사는 상담 접수를 위해 아래와 같은 개인정보를 수집합니다.</p>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>필수 항목: 이름, 휴대전화번호</li>
+                    <li>문의 유형별 추가 항목: 설치 지역(시/구), 희망 통신사, 희망 상품, 고객 유형, 연락 희망 시간</li>
+                    <li>선택 항목: 휴대폰 통신사, 납부방법 선호, 희망 설치일, 유입 경로, 상담 메모</li>
+                  </ul>
+                  <p>회사는 웹 문의 단계에서 계좌번호, 카드번호, 상세 주소, 사은품 수령 계좌 등 금융 및 상세 주소 정보는 수집하지 않습니다.</p>
+                </section>
 
               <section className="space-y-2">
                 <h2 className="text-base font-bold text-brand-graphite">제2조 (개인정보 수집 목적)</h2>
@@ -108,10 +106,11 @@ export default async function PrivacyPage() {
                 <h2 className="text-base font-bold text-brand-graphite">제9조 (개인정보처리방침 변경)</h2>
                 <p>본 방침은 법령 및 내부 정책에 따라 변경될 수 있으며, 변경 시 홈페이지 공지사항을 통해 사전 공지합니다.</p>
               </section>
-            </div>
-          </article>
-        </div>
-      </section>
+              </div>
+            </article>
+          </div>
+        </section>
+      )}
     </SiteShell>
   );
 }

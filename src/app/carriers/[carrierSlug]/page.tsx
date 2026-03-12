@@ -5,10 +5,11 @@ import { SectionHeading } from "@/components/sections/SectionHeading";
 import { DisclaimerSection } from "@/components/sections/DisclaimerSection";
 import { BundleDiscountTable } from "@/components/sections/BundleDiscountTable";
 import { Button } from "@/components/ui/Button";
-import { getCarrierBySlug, getCarriers, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
+import { getCarrierBySlug, getCarriers, getProductsByCarrierSlug } from "@/lib/repositories/content";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { PriceCalculator } from "@/components/sections/PriceCalculator";
 import { getBundleTypeLabel } from "@/lib/utils/labels";
+import { getCarrierTheme } from "@/lib/constants/carriers";
 
 export async function generateStaticParams() {
   const carriers = await getCarriers();
@@ -26,29 +27,19 @@ export async function generateMetadata({ params }: { params: Promise<{ carrierSl
   };
 }
 
-const carrierAccentColors: Record<string, string> = {
-  sk: "#FFA13E",
-  kt: "#FF5B62",
-  lg: "#FE82B0",
-  skylife: "#6DD5C0",
-  hellovision: "#FFA38B"
-};
-
 export default async function CarrierDetailPage({ params }: { params: Promise<{ carrierSlug: string }> }) {
   const { carrierSlug } = await params;
-  const [settings, carrier, products] = await Promise.all([
-    getSiteSettings(),
-    getCarrierBySlug(carrierSlug),
-    getProductsByCarrierSlug(carrierSlug)
-  ]);
+  const [carrier, products] = await Promise.all([getCarrierBySlug(carrierSlug), getProductsByCarrierSlug(carrierSlug)]);
 
   if (!carrier) notFound();
 
-  const accentColor = carrierAccentColors[carrier.slug] ?? "#f15c2d";
+  const accentColor = getCarrierTheme(carrier.slug).accentColor;
   const featuredProducts = products.slice(0, 3);
 
   return (
-    <SiteShell settings={settings}>
+    <SiteShell>
+      {(settings) => (
+        <>
       {/* Hero */}
       <section className="bg-gradient-to-b from-brand-sky-soft to-white py-12 md:py-20">
         <div className="container-page space-y-6">
@@ -227,6 +218,8 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
           <QuickInquiryForm sourcePage={`/carriers/${carrier.slug}`} submitLabel="빠른 상담 요청" />
         </div>
       </section>
+        </>
+      )}
     </SiteShell>
   );
 }

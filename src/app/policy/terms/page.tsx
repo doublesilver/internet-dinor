@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "이용약관",
@@ -8,24 +7,23 @@ export const metadata: Metadata = {
 };
 
 export default async function TermsPage() {
-  const settings = await getSiteSettings();
-
   return (
-    <SiteShell settings={settings}>
-      <section className="section-space">
-        <div className="container-page max-w-4xl">
-          <article className="surface-card space-y-8 prose prose-sm max-w-none">
-            <h1 className="text-4xl font-black tracking-tight text-brand-graphite">이용약관</h1>
-            <p className="text-sm text-brand-slate">시행일: 2025년 1월 1일</p>
+    <SiteShell>
+      {(settings) => (
+        <section className="section-space">
+          <div className="container-page max-w-4xl">
+            <article className="surface-card space-y-8 prose prose-sm max-w-none">
+              <h1 className="text-4xl font-black tracking-tight text-brand-graphite">이용약관</h1>
+              <p className="text-sm text-brand-slate">시행일: 2025년 1월 1일</p>
 
-            <div className="space-y-6 text-sm leading-7 text-brand-slate">
-              <section className="space-y-2">
-                <h2 className="text-base font-bold text-brand-graphite">제1조 (목적)</h2>
-                <p>
-                  본 약관은 {settings.siteName}(이하 &ldquo;회사&rdquo;)이 운영하는 인터넷 홈페이지(이하 &ldquo;사이트&rdquo;)를 이용함에 있어
-                  회사와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
-                </p>
-              </section>
+              <div className="space-y-6 text-sm leading-7 text-brand-slate">
+                <section className="space-y-2">
+                  <h2 className="text-base font-bold text-brand-graphite">제1조 (목적)</h2>
+                  <p>
+                    본 약관은 {settings.siteName}(이하 &ldquo;회사&rdquo;)이 운영하는 인터넷 홈페이지(이하 &ldquo;사이트&rdquo;)를 이용함에 있어
+                    회사와 이용자 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
+                  </p>
+                </section>
 
               <section className="space-y-2">
                 <h2 className="text-base font-bold text-brand-graphite">제2조 (정의)</h2>
@@ -100,10 +98,11 @@ export default async function TermsPage() {
                   <li>이메일: {settings.businessInfo.email}</li>
                 </ul>
               </section>
-            </div>
-          </article>
-        </div>
-      </section>
+              </div>
+            </article>
+          </div>
+        </section>
+      )}
     </SiteShell>
   );
 }

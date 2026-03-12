@@ -1,4 +1,5 @@
 import { postsSeed, reviewsSeed } from "@/data/seeds";
+import { getBoardCategoryConfig } from "@/lib/constants/board";
 import { throwIfSupabaseError } from "@/lib/repositories/errors";
 import { mapPostRow, mapReviewRow } from "@/lib/repositories/mappers";
 import { parseCommaSeparatedText } from "@/lib/repositories/parsers";
@@ -7,11 +8,7 @@ import type { ContentStatus, Post, PostType, Review } from "@/types/domain";
 import type { PostEditorValues } from "@/lib/validators/content";
 
 export function getBoardTypeFromCategory(category: string): PostType | null {
-  if (category === "event") return "event";
-  if (category === "guide") return "guide";
-  if (category === "notice") return "notice";
-
-  return null;
+  return getBoardCategoryConfig(category)?.type ?? null;
 }
 
 export async function getPostsByType(type: PostType): Promise<Post[]> {

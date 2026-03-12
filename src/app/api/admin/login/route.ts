@@ -17,7 +17,7 @@ function safeCompare(a: string, b: string): boolean {
 
 export async function POST(request: Request) {
   const rateLimitKey = getRateLimitKey(request, "admin-login");
-  if (isRateLimited(rateLimitKey, 5, 60 * 1000)) {
+  if (await isRateLimited(rateLimitKey, 5, 60 * 1000)) {
     return NextResponse.json({ success: false, message: "로그인 시도가 너무 많습니다. 1분 후 다시 시도해주세요." }, { status: 429 });
   }
 

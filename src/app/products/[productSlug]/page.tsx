@@ -4,7 +4,7 @@ import { ProductInquiryForm } from "@/components/forms/ProductInquiryForm";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Button } from "@/components/ui/Button";
-import { getProductBySlug, getProducts, getSiteSettings } from "@/lib/repositories/content";
+import { getProductBySlug, getProducts } from "@/lib/repositories/content";
 import { getBundleTypeLabel } from "@/lib/utils/labels";
 
 export async function generateStaticParams() {
@@ -25,12 +25,14 @@ export async function generateMetadata({ params }: { params: Promise<{ productSl
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ productSlug: string }> }) {
   const { productSlug } = await params;
-  const [settings, product] = await Promise.all([getSiteSettings(), getProductBySlug(productSlug)]);
+  const product = await getProductBySlug(productSlug);
 
   if (!product) notFound();
 
   return (
-    <SiteShell settings={settings}>
+    <SiteShell>
+      {(settings) => (
+        <>
       <section className="section-space bg-brand-sky-soft">
         <div className="container-page grid gap-8 md:grid-cols-[1fr_420px]">
           <div className="surface-card bg-white">
@@ -114,6 +116,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <ProductInquiryForm product={product} />
         </div>
       </section>
+        </>
+      )}
     </SiteShell>
   );
 }

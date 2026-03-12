@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Button } from "@/components/ui/Button";
-import { getReviewBySlug, getReviews, getSiteSettings } from "@/lib/repositories/content";
+import { getReviewBySlug, getReviews } from "@/lib/repositories/content";
 import { formatDate } from "@/lib/utils/date";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -23,12 +23,12 @@ export async function generateStaticParams() {
 
 export default async function ReviewDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [settings, review] = await Promise.all([getSiteSettings(), getReviewBySlug(slug)]);
+  const review = await getReviewBySlug(slug);
 
   if (!review) notFound();
 
   return (
-    <SiteShell settings={settings}>
+    <SiteShell>
       <section className="section-space">
         <div className="container-page max-w-4xl">
           <article className="surface-card">

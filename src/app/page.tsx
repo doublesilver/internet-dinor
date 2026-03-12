@@ -7,21 +7,20 @@ import { RecentApplications } from "@/components/sections/RecentApplications";
 import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard";
 import { TipGallery } from "@/components/sections/TipGallery";
 import { Button } from "@/components/ui/Button";
-import { getFeaturedPosts, getSiteSettings } from "@/lib/repositories/content";
+import { getFeaturedPosts } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "인터넷공룡 - 인터넷/TV 가입 비교 최대 사은품",
-  description: "전국 최대 사은품! 인터넷/TV 가입 비교하고 당일설치, 당일입금 받으세요.",
+  description: "전국 최대 사은품! 인터넷/TV 가입 비교하고 당일설치, 당일입금 받으세요."
 };
 
 export default async function HomePage() {
-  const [settings, guides] = await Promise.all([
-    getSiteSettings(),
-    getFeaturedPosts("guide")
-  ]);
+  const guides = await getFeaturedPosts("guide");
 
   return (
-    <SiteShell settings={settings}>
+    <SiteShell>
+      {(settings) => (
+        <>
       {/* Hero - reference: #f15c2d bg, white text, 5.5rem heading */}
       <section className="relative bg-brand-orange overflow-hidden">
         <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between md:py-20">
@@ -59,62 +58,47 @@ export default async function HomePage() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             <CarrierProductCard
-              carrierName="SK"
               carrierSlug="sk"
-              carrierLogo="/images/carriers/sk_logo.png"
               productName="기가라이트인터넷 500M + B tv ALL"
               speed="500M"
               channelCount="tv 257개 채널"
               originalPrice="49,500원"
               discountPrice="39,400원"
               giftAmount="사은품 47만원"
-              accentColor="#FFA13E"
             />
             <CarrierProductCard
-              carrierName="KT"
               carrierSlug="kt"
-              carrierLogo="/images/carriers/kt_logo.png"
               productName="인터넷베이직 500M + TV베이직"
               speed="500M"
               channelCount="tv 233개 채널"
               originalPrice="45,100원"
               discountPrice="39,600원"
               giftAmount="사은품 45만원"
-              accentColor="#FF5B62"
             />
             <CarrierProductCard
-              carrierName="LG"
               carrierSlug="lg"
-              carrierLogo="/images/carriers/lg_logo.png"
               productName="와이파이기본 500M + TV베이직"
               speed="500M"
               channelCount="tv 211개 채널"
               originalPrice="44,000원"
               discountPrice="34,100원"
               giftAmount="사은품 47만원"
-              accentColor="#FE82B0"
             />
             <CarrierProductCard
-              carrierName="Skylife"
               carrierSlug="skylife"
-              carrierLogo="/images/carriers/kt_logo_sky.png"
               productName="와이파이 100M + TV SKY ALL"
               speed="100M"
               channelCount="tv 238개 채널"
               discountPrice="30,800원"
               giftAmount="사은품 35만원"
-              accentColor="#6DD5C0"
             />
             <CarrierProductCard
-              carrierName="Hellovision"
               carrierSlug="hellovision"
-              carrierLogo="/images/carriers/lg_vision.png"
               productName="광랜라이트 100M + TV 이코노미"
               speed="100M"
               channelCount="tv 109개 채널"
               discountPrice="29,530원"
               giftAmount="사은품 30만원"
-              accentColor="#FFA38B"
             />
           </div>
         </div>
@@ -184,6 +168,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+        </>
+      )}
     </SiteShell>
   );
 }
