@@ -6,21 +6,25 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          orange: "#FF7A1A",
-          "orange-dark": "#E66500",
+          orange: "#f15c2d",
+          "orange-dark": "#d94a1f",
           lavender: "#CDBDFF",
           "lavender-soft": "#F5F1FF",
-          sky: "#72C9F5",
+          sky: "#2DC2F1",
           "sky-soft": "#EEF9FF",
+          graphite: "#1F2937",
+          slate: "#5F6B7A",
+          border: "#eaeaea",
+          surface: "#F8FAFD",
+          peach: "#FFE9E2",
           green: "#22C55E",
           "green-soft": "#F0FDF4",
           red: "#EF4444",
-          yellow: "#F59E0B",
-          graphite: "#1F2937",
-          slate: "#5F6B7A",
-          border: "#E7ECF3",
-          surface: "#F8FAFD"
+          yellow: "#F59E0B"
         }
+      },
+      maxWidth: {
+        "7xl": "1400px"
       },
       boxShadow: {
         soft: "0 16px 50px rgba(31, 41, 55, 0.08)"
