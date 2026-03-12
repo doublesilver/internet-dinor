@@ -1,9 +1,16 @@
 export const publicNavigation = [
-  { href: "/", label: "홈" },
-  { href: "/compare", label: "상품비교" },
-  { href: "/board/guide", label: "가입가이드" },
-  { href: "/reviews", label: "후기" },
-  { href: "/apply", label: "신청" }
+  { href: "/apply", label: "신청서 작성" },
+  { href: "/board/event", label: "이벤트" },
+  { href: "/board/guide", label: "꿀TIP" },
+  { href: "/reviews", label: "후기" }
+];
+
+export const carrierNavigation = [
+  { href: "/carriers/sk", label: "SK브로드밴드" },
+  { href: "/carriers/kt", label: "KT" },
+  { href: "/carriers/lg", label: "LG유플러스" },
+  { href: "/carriers/skylife", label: "KT스카이라이프" },
+  { href: "/carriers/hellovision", label: "LG헬로비전" }
 ];
 
 export const adminNavigation = [

@@ -40,4 +40,24 @@
   .field-error {
     @apply mt-2 text-sm text-red-600;
   }
+
+  .price-original {
+    @apply text-sm text-gray-400 line-through;
+  }
+
+  .price-discount {
+    @apply text-xl font-bold text-brand-orange;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+
+  .status-badge-complete {
+    @apply status-badge bg-brand-green-soft text-brand-green;
+  }
+
+  .status-badge-progress {
+    @apply status-badge bg-orange-50 text-brand-orange;
+  }
 }

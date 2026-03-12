@@ -29,3 +29,4 @@ export {
   updatePostOrReviewStatus
 } from "@/lib/repositories/posts";
 export { getSiteSettings, updateSiteSettings } from "@/lib/repositories/settings";
+export { getRecentInquiries } from "@/lib/repositories/inquiries";

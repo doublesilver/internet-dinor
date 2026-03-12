@@ -32,8 +32,10 @@ export const productInquirySchema = z.object({
 export const applyInquirySchema = z.object({
   name: z.string().min(2, "이름을 2자 이상 입력해주세요."),
   phone: phoneRule,
+  email: z.string().email("올바른 이메일을 입력해주세요.").optional().or(z.literal("")),
   sourcePage: z.string().min(1),
   privacyAgreed: privacyRule,
+  termsAgreed: z.boolean().refine((v) => v === true, { message: "이용약관 동의가 필요합니다." }),
   regionLabel: z.string().optional(),
   contactTimePreference: z.string().optional(),
   payload: z.record(z.unknown()).optional(),

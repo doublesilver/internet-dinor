@@ -212,3 +212,22 @@ export async function findProductBySlug(slug: string) {
 
   return productsSeed.find((product) => product.slug === slug) ?? null;
 }
+
+export async function getRecentInquiries(limit = 20): Promise<InquiryRecord[]> {
+  if (hasSupabaseAdminEnv()) {
+    const supabase = createSupabaseAdminClient();
+    const { data, error } = await supabase
+      .from("inquiries")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (!error && data) {
+      return data.map(mapInquiryRow);
+    }
+  }
+
+  return inquiryFixtures
+    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+    .slice(0, limit);
+}
