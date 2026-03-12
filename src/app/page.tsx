@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { CarrierProductCard } from "@/components/sections/CarrierProductCard";
+import { DinoCharacter } from "@/components/sections/DinoCharacter";
 import { RecentApplications } from "@/components/sections/RecentApplications";
 import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard";
 import { TipGallery } from "@/components/sections/TipGallery";
@@ -35,6 +37,16 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="md:w-[40%]">
+            {/* Hero character image */}
+            <div className="mb-4 flex justify-center md:hidden">
+              <Image
+                src="/images/characters/hero-character.png"
+                alt="인터넷공룡 캐릭터"
+                width={200}
+                height={200}
+                className="drop-shadow-2xl"
+              />
+            </div>
             <div className="rounded-[25px] bg-white p-6 shadow-lg md:p-8">
               <h3 className="mb-5 text-center text-2xl font-bold text-brand-orange">빠른 견적 문의</h3>
               <QuickInquiryForm sourcePage="/" submitLabel={settings.heroCtaLabel} />
@@ -124,17 +136,31 @@ export default async function HomePage() {
       </section>
 
       {/* Promotional Banner */}
-      <section className="bg-brand-orange py-12 md:py-16">
-        <div className="container-page text-center text-white space-y-4">
-          <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
-          <h2 className="text-3xl md:text-4xl font-black font-surround">
-            혜택이 이렇게나 많았다고?
-          </h2>
-          <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
-          <p className="text-sm opacity-70">현금 주는 건 비밀~!</p>
-          <div className="mt-6 flex justify-center gap-4">
-            <a href="/apply" className="rounded-full bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100">신청서 작성</a>
-            <a href="tel:16601234" className="rounded-full border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10">전화 상담</a>
+      <section className="relative overflow-hidden bg-gradient-to-r from-brand-orange to-[#ff7f50] py-12 md:py-16">
+        <div className="container-page">
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            {/* Group character */}
+            <div className="flex justify-center">
+              <Image
+                src="/images/characters/group-characters.png"
+                alt="인터넷공룡 단체 캐릭터"
+                width={500}
+                height={300}
+                className="drop-shadow-xl"
+              />
+            </div>
+            <div className="space-y-4 text-center text-white md:text-left">
+              <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
+              <h2 className="text-3xl font-black font-surround md:text-4xl">
+                혜택이 이렇게나 많았다고?
+              </h2>
+              <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
+              <p className="text-sm opacity-70">현금 주는 건 비밀~!</p>
+              <div className="mt-6 flex justify-center gap-4 md:justify-start">
+                <a href="/apply" className="rounded-full bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100">신청서 작성</a>
+                <a href={settings.phoneLink} className="rounded-full border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10">전화 상담</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -163,18 +189,24 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Bottom CTA - phone only, no duplicate form */}
+      {/* Bottom CTA with duplicate quick quote form (matches reference) */}
       <section className="bg-[#333] py-16 md:py-24">
-        <div className="container-page text-center text-white">
-          <p className="text-lg font-medium">지금 바로 전문 상담사에게 문의하세요</p>
-          <a href={settings.phoneLink} className="mt-4 inline-block text-5xl font-black text-brand-orange md:text-6xl">
-            {settings.phoneLabel}
-          </a>
-          <p className="mt-4 text-base text-white/70">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
-          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button href="/apply" fullWidth>신청서 작성</Button>
-            <Button href={settings.phoneLink} variant="secondary" fullWidth>전화 상담</Button>
+        <div className="container-page grid gap-8 text-white md:grid-cols-[1fr_400px]">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <DinoCharacter variant="cta" className="hidden h-28 w-28 md:block" />
+              <p className="text-lg font-medium">지금 바로 전문 상담사에게 문의하세요</p>
+            </div>
+            <a href={settings.phoneLink} className="inline-block text-5xl font-black text-brand-orange md:text-6xl">
+              {settings.phoneLabel}
+            </a>
+            <p className="text-base text-white/70">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
+            <div className="flex max-w-md flex-col gap-3 sm:flex-row">
+              <Button href="/apply">신청서 작성</Button>
+              <Button href={settings.phoneLink} variant="secondary">전화 상담</Button>
+            </div>
           </div>
+          <QuickInquiryForm sourcePage="/" submitLabel="빠른 견적 문의" />
         </div>
       </section>
     </SiteShell>

@@ -7,7 +7,9 @@ import { BundleDiscountTable } from "@/components/sections/BundleDiscountTable";
 import { Button } from "@/components/ui/Button";
 import { getCarrierBySlug, getCarriers, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
+import { DinoCharacter } from "@/components/sections/DinoCharacter";
 import { PriceCalculator } from "@/components/sections/PriceCalculator";
+import { PromoBannerGrid } from "@/components/sections/PromoBannerGrid";
 
 export async function generateStaticParams() {
   const carriers = await getCarriers();
@@ -40,6 +42,14 @@ const carrierAccentColors: Record<string, string> = {
   hellovision: "#FFA38B"
 };
 
+const carrierDinoVariant: Record<string, "sk" | "kt" | "lg" | "sky" | "hello"> = {
+  sk: "sk",
+  kt: "kt",
+  lg: "lg",
+  skylife: "sky",
+  hellovision: "hello"
+};
+
 export default async function CarrierDetailPage({ params }: { params: Promise<{ carrierSlug: string }> }) {
   const { carrierSlug } = await params;
   const [settings, carrier, products] = await Promise.all([
@@ -57,26 +67,37 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
     <SiteShell settings={settings}>
       {/* Hero */}
       <section className="bg-gradient-to-b from-brand-sky-soft to-white py-12 md:py-20">
-        <div className="container-page space-y-6">
-          <p className="text-sm font-medium text-brand-slate">
-            홈 &gt; 통신사별 상품 &gt; <span className="text-brand-orange">{carrier.shortName}</span>
-          </p>
-          <h1 className="text-3xl font-black tracking-tight text-brand-graphite md:text-5xl">
-            {carrier.heroTitle}
-          </h1>
-          <p className="max-w-3xl text-base leading-7 text-brand-slate md:text-lg">
-            {carrier.heroDescription}
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {carrier.featurePoints.map((point) => (
-              <span key={point} className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-graphite shadow-sm">
-                {point}
-              </span>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button href="/apply">신청서 작성</Button>
-            <Button href={settings.phoneLink} variant="secondary">전화 상담</Button>
+        <div className="container-page">
+          <div className="flex items-start justify-between gap-6">
+            <div className="flex-1 space-y-6">
+              <p className="text-sm font-medium text-brand-slate">
+                홈 &gt; 통신사별 상품 &gt; <span className="text-brand-orange">{carrier.shortName}</span>
+              </p>
+              <h1 className="text-3xl font-black tracking-tight text-brand-graphite md:text-5xl">
+                {carrier.heroTitle}
+              </h1>
+              <p className="max-w-3xl text-base leading-7 text-brand-slate md:text-lg">
+                {carrier.heroDescription}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {carrier.featurePoints.map((point) => (
+                  <span key={point} className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand-graphite shadow-sm">
+                    {point}
+                  </span>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Button href="/apply">신청서 작성</Button>
+                <Button href={settings.phoneLink} variant="secondary">전화 상담</Button>
+              </div>
+            </div>
+            {/* Carrier character */}
+            <div className="hidden md:block">
+              <DinoCharacter
+                variant={carrierDinoVariant[carrier.slug] ?? "hero"}
+                className="h-48 w-48 drop-shadow-lg"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -231,6 +252,13 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
             </a>
           </div>
           <QuickInquiryForm sourcePage={`/carriers/${carrier.slug}`} submitLabel="빠른 상담 요청" />
+        </div>
+      </section>
+
+      {/* Promotional Banners */}
+      <section className="py-12 md:py-16">
+        <div className="container-page">
+          <PromoBannerGrid />
         </div>
       </section>
     </SiteShell>
