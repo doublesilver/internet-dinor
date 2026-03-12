@@ -1,0 +1,14 @@
+{
+  "siteName": "인터넷공룡",
+  "phoneLabel": "1660-1234",
+  "phoneLink": "tel:16601234",
+  "heroCtaLabel": "30초 상담 받기",
+  "secondaryCtaLabel": "전화 상담",
+  "footerNotice": "실제 운영용 푸터 문구",
+  "businessInfo": {
+    "owner": "실제 상호명",
+    "businessNumber": "123-45-67890",
+    "address": "실제 주소",
+    "email": "hello@example.com"
+  }
+}

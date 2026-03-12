@@ -1,0 +1,27 @@
+[
+  {
+    "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "carrierId": "11111111-1111-1111-1111-111111111111",
+    "slug": "safe-500-tv-basic",
+    "name": "실제 상품명",
+    "summary": "카드 요약 문구",
+    "description": "상세 설명 문구",
+    "bundleType": "internet_tv",
+    "internetSpeed": "500M",
+    "tvIncluded": true,
+    "monthlyPriceLabel": "월 39,000원대",
+    "benefitLabel": "실제 혜택 문구",
+    "badgeTags": ["인기", "추천"],
+    "targetTags": ["가족", "TV포함"],
+    "heroPoints": ["핵심 포인트 1", "핵심 포인트 2"],
+    "detailSections": [
+      { "title": "추천 대상", "body": "설명" }
+    ],
+    "faqItems": [
+      { "q": "질문", "a": "답변" }
+    ],
+    "isFeatured": true,
+    "status": "published",
+    "sortOrder": 10
+  }
+]

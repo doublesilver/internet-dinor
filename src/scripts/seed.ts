@@ -1,0 +1,115 @@
+import { carriersSeed, postsSeed, productsSeed, reviewsSeed, siteSettingsSeed } from "../data/seeds";
+import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "../lib/supabase/server";
+import { loadProjectEnv } from "../lib/system/env";
+
+const SITE_SETTINGS_ID = "00000000-0000-0000-0000-000000000001";
+
+async function run() {
+  loadProjectEnv();
+
+  if (!hasSupabaseAdminEnv()) {
+    throw new Error("Supabase environment variables are required to run the seed script.");
+  }
+
+  const supabase = createSupabaseAdminClient();
+
+  await supabase.from("carriers").upsert(
+    carriersSeed.map((item) => ({
+      id: item.id,
+      slug: item.slug,
+      name: item.name,
+      short_name: item.shortName,
+      summary: item.summary,
+      hero_title: item.heroTitle,
+      hero_description: item.heroDescription,
+      feature_points: item.featurePoints,
+      status: item.status,
+      sort_order: item.sortOrder
+    })),
+    { onConflict: "slug" }
+  );
+
+  await supabase.from("products").upsert(
+    productsSeed.map((item) => ({
+      id: item.id,
+      carrier_id: item.carrierId,
+      slug: item.slug,
+      name: item.name,
+      summary: item.summary,
+      description: item.description,
+      bundle_type: item.bundleType,
+      internet_speed: item.internetSpeed,
+      tv_included: item.tvIncluded,
+      monthly_price_label: item.monthlyPriceLabel,
+      benefit_label: item.benefitLabel,
+      badge_tags: item.badgeTags,
+      target_tags: item.targetTags,
+      hero_points: item.heroPoints,
+      detail_sections: item.detailSections,
+      faq_items: item.faqItems,
+      is_featured: item.isFeatured,
+      status: item.status,
+      sort_order: item.sortOrder
+    })),
+    { onConflict: "slug" }
+  );
+
+  await supabase.from("posts").upsert(
+    postsSeed.map((item) => ({
+      id: item.id,
+      type: item.type,
+      slug: item.slug,
+      title: item.title,
+      summary: item.summary,
+      body: item.body,
+      thumbnail_url: item.thumbnailUrl ?? null,
+      cta_label: item.ctaLabel ?? null,
+      related_product_slugs: item.relatedProductSlugs,
+      is_featured: item.isFeatured,
+      published_at: item.publishedAt,
+      status: item.status
+    })),
+    { onConflict: "slug" }
+  );
+
+  await supabase.from("reviews").upsert(
+    reviewsSeed.map((item) => ({
+      id: item.id,
+      slug: item.slug,
+      title: item.title,
+      summary: item.summary,
+      body: item.body,
+      review_type: item.reviewType,
+      tags: item.tags,
+      featured: item.featured,
+      published_at: item.publishedAt,
+      status: item.status
+    })),
+    { onConflict: "slug" }
+  );
+
+  await supabase.from("site_settings").upsert(
+    {
+      id: SITE_SETTINGS_ID,
+      site_name: siteSettingsSeed.siteName,
+      phone_label: siteSettingsSeed.phoneLabel,
+      phone_link: siteSettingsSeed.phoneLink,
+      hero_cta_label: siteSettingsSeed.heroCtaLabel,
+      secondary_cta_label: siteSettingsSeed.secondaryCtaLabel,
+      footer_notice: siteSettingsSeed.footerNotice,
+      business_info_json: siteSettingsSeed.businessInfo,
+      policy_links_json: {
+        privacy: "/policy/privacy",
+        terms: "/policy/terms"
+      }
+    },
+    { onConflict: "id" }
+  );
+
+  console.log("Seed completed");
+}
+
+run().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

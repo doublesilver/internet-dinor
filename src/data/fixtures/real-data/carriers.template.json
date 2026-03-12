@@ -1,0 +1,14 @@
+[
+  {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "slug": "sk",
+    "name": "SK형 인터넷",
+    "shortName": "SK형",
+    "summary": "통신사 실제 소개 문구",
+    "heroTitle": "통신사 상세 상단 제목",
+    "heroDescription": "실제 운영용 설명 문구",
+    "featurePoints": ["포인트 1", "포인트 2", "포인트 3"],
+    "status": "published",
+    "sortOrder": 10
+  }
+]

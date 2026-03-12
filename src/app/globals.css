@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-brand-graphite antialiased;
+  }
+
+  * {
+    @apply border-brand-border;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-space {
+    @apply py-16 md:py-24;
+  }
+
+  .surface-card {
+    @apply rounded-[24px] border border-brand-border bg-white p-6 shadow-soft;
+  }
+
+  .field-label {
+    @apply mb-2 block text-sm font-semibold text-brand-graphite;
+  }
+
+  .field-base {
+    @apply w-full rounded-2xl border border-brand-border bg-white px-4 py-3 text-sm text-brand-graphite outline-none transition focus:border-brand-orange;
+  }
+
+  .field-error {
+    @apply mt-2 text-sm text-red-600;
+  }
+}

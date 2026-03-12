@@ -1,0 +1,15 @@
+[
+  {
+    "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+    "type": "event",
+    "slug": "real-event-slug",
+    "title": "실제 이벤트 제목",
+    "summary": "요약",
+    "body": "본문",
+    "ctaLabel": "문의하기",
+    "relatedProductSlugs": ["safe-500-tv-basic"],
+    "isFeatured": true,
+    "publishedAt": "2026-03-11T09:00:00.000Z",
+    "status": "published"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "12121212-1212-1212-1212-121212121212",
+    "slug": "real-review-slug",
+    "title": "실제 후기 제목",
+    "summary": "요약",
+    "body": "본문",
+    "reviewType": "moving",
+    "tags": ["이사", "결합"],
+    "featured": true,
+    "publishedAt": "2026-03-11T09:00:00.000Z",
+    "status": "published"
+  }
+]
