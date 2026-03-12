@@ -72,6 +72,7 @@ export function mapProductRow(row: Record<string, unknown>): Product {
     internetSpeed: String(row.internet_speed ?? ""),
     tvIncluded: Boolean(row.tv_included),
     monthlyPriceLabel: String(row.monthly_price_label ?? ""),
+    originalPriceLabel: row.original_price_label ? String(row.original_price_label) : undefined,
     benefitLabel: String(row.benefit_label ?? ""),
     badgeTags: asStringArray(row.badge_tags),
     targetTags: asStringArray(row.target_tags),

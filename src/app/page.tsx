@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { CarrierProductCard } from "@/components/sections/CarrierProductCard";
@@ -6,20 +5,13 @@ import { RecentApplications } from "@/components/sections/RecentApplications";
 import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard";
 import { TipGallery } from "@/components/sections/TipGallery";
 import { Button } from "@/components/ui/Button";
-import { getCarriers, getFeaturedPosts, getFeaturedProducts, getSiteSettings } from "@/lib/repositories/content";
+import { getFeaturedPosts, getSiteSettings } from "@/lib/repositories/content";
 
 export default async function HomePage() {
-  const [settings, carriers, products, guides] = await Promise.all([
+  const [settings, guides] = await Promise.all([
     getSiteSettings(),
-    getCarriers(),
-    getFeaturedProducts(),
     getFeaturedPosts("guide")
   ]);
-
-  const carrierProducts = carriers.map((carrier) => {
-    const product = products.find((p) => p.carrierId === carrier.id);
-    return { carrier, product };
-  }).filter((item) => item.product);
 
   return (
     <SiteShell settings={settings}>
@@ -56,23 +48,67 @@ export default async function HomePage() {
         <div className="container-page">
           <div className="mb-10">
             <h2 className="text-3xl font-black text-brand-orange md:text-4xl">각 통신사 대표 상품</h2>
+            <p className="mt-2 text-sm text-gray-500">※3년약정, 휴대폰 1회선 결합 할인 기준, VAT포함가</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {carrierProducts.map(({ carrier, product }) => (
-              <CarrierProductCard
-                key={carrier.id}
-                carrierName={carrier.shortName}
-                carrierSlug={carrier.slug}
-                carrierLogo={`/images/carriers/${carrier.slug === "skylife" ? "kt_logo_sky" : carrier.slug === "hellovision" ? "lg_vision" : carrier.slug === "sk" ? "sk_logo" : carrier.slug === "kt" ? "kt_logo" : "lg_logo"}.png`}
-                productName={product!.name}
-                speed={product!.internetSpeed}
-                channelCount={product!.tvIncluded ? "TV 포함" : undefined}
-                originalPrice={product!.bundleType === "internet_tv" && parseInt(product!.monthlyPriceLabel.replace(/[^0-9]/g, "")) > 30000 ? `${parseInt(product!.monthlyPriceLabel.replace(/[^0-9]/g, "")) + 5000}원` : undefined}
-                discountPrice={product!.monthlyPriceLabel}
-                giftAmount={product!.benefitLabel}
-                accentColor={carrier.slug === "sk" ? "#FFA13E" : carrier.slug === "kt" ? "#FF5B62" : carrier.slug === "lg" ? "#FE82B0" : carrier.slug === "skylife" ? "#6DD5C0" : "#FFA38B"}
-              />
-            ))}
+            <CarrierProductCard
+              carrierName="SK"
+              carrierSlug="sk"
+              carrierLogo="/images/carriers/sk_logo.png"
+              productName="기가라이트인터넷 500M + B tv ALL"
+              speed="500M"
+              channelCount="tv 257개 채널"
+              originalPrice="49,500원"
+              discountPrice="39,400원"
+              giftAmount="사은품 47만원"
+              accentColor="#FFA13E"
+            />
+            <CarrierProductCard
+              carrierName="KT"
+              carrierSlug="kt"
+              carrierLogo="/images/carriers/kt_logo.png"
+              productName="인터넷베이직 500M + TV베이직"
+              speed="500M"
+              channelCount="tv 233개 채널"
+              originalPrice="45,100원"
+              discountPrice="39,600원"
+              giftAmount="사은품 45만원"
+              accentColor="#FF5B62"
+            />
+            <CarrierProductCard
+              carrierName="LG"
+              carrierSlug="lg"
+              carrierLogo="/images/carriers/lg_logo.png"
+              productName="와이파이기본 500M + TV베이직"
+              speed="500M"
+              channelCount="tv 211개 채널"
+              originalPrice="44,000원"
+              discountPrice="34,100원"
+              giftAmount="사은품 47만원"
+              accentColor="#FE82B0"
+            />
+            <CarrierProductCard
+              carrierName="Skylife"
+              carrierSlug="skylife"
+              carrierLogo="/images/carriers/kt_logo_sky.png"
+              productName="와이파이 100M + TV SKY ALL"
+              speed="100M"
+              channelCount="tv 238개 채널"
+              discountPrice="30,800원"
+              giftAmount="사은품 35만원"
+              accentColor="#6DD5C0"
+            />
+            <CarrierProductCard
+              carrierName="Hellovision"
+              carrierSlug="hellovision"
+              carrierLogo="/images/carriers/lg_vision.png"
+              productName="광랜라이트 100M + TV 이코노미"
+              speed="100M"
+              channelCount="tv 109개 채널"
+              discountPrice="29,530원"
+              giftAmount="사은품 30만원"
+              accentColor="#FFA38B"
+            />
           </div>
         </div>
       </section>
@@ -81,7 +117,7 @@ export default async function HomePage() {
       <section className="bg-brand-sky py-16 md:py-24">
         <div className="container-page">
           <div className="mb-10">
-            <h2 className="text-3xl font-black text-white md:text-4xl">어떤 구성을 원하시나요?</h2>
+            <h2 className="text-3xl font-black text-white md:text-4xl">혜택 구성별 최대 사은품</h2>
           </div>
           <ServiceCategoryCards />
         </div>

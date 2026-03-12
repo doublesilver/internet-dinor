@@ -29,6 +29,7 @@ export interface Product {
   internetSpeed: string;
   tvIncluded: boolean;
   monthlyPriceLabel: string;
+  originalPriceLabel?: string;
   benefitLabel: string;
   badgeTags: string[];
   targetTags: string[];
