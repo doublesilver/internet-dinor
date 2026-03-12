@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { createSupabasePublicClient, hasSupabasePublicEnv } from "@/lib/supabase/public";
 
@@ -138,6 +139,21 @@ async function refreshSupabaseAdminSession(accessToken?: string, refreshToken?: 
   };
 }
 
+function safeCompare(a: string, b: string): boolean {
+  try {
+    const bufA = Buffer.from(a);
+    const bufB = Buffer.from(b);
+    if (bufA.length !== bufB.length) {
+      // 길이가 다르면 timing leak 방지를 위해 동일 길이 버퍼로 비교 후 false 반환
+      timingSafeEqual(bufA, bufA);
+      return false;
+    }
+    return timingSafeEqual(bufA, bufB);
+  } catch {
+    return false;
+  }
+}
+
 function isAllowedAdminEmail(email?: string | null) {
   const normalizedEmail = email?.trim().toLowerCase();
   if (!normalizedEmail) {
@@ -155,7 +171,7 @@ export async function isAdminAuthenticatedWithCookieStore(cookieStore: CookieRea
   const sessionValue = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const { sessionSecret } = getAdminAuthConfig();
 
-  return Boolean(sessionValue && sessionSecret && sessionValue === sessionSecret);
+  return Boolean(sessionValue && sessionSecret && safeCompare(sessionValue, sessionSecret));
 }
 
 export async function isAdminAuthenticated() {
@@ -187,7 +203,7 @@ export async function resolveAdminAuthForMiddleware(cookieStore: CookieReader): 
   const { sessionSecret } = getAdminAuthConfig();
 
   return {
-    authenticated: Boolean(sessionValue && sessionSecret && sessionValue === sessionSecret)
+    authenticated: Boolean(sessionValue && sessionSecret && safeCompare(sessionValue, sessionSecret))
   };
 }
 

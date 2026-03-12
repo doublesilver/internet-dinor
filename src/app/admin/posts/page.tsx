@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { StatusQuickToggle } from "@/components/admin/StatusQuickToggle";
 import { getAllPostsAdmin, getAllReviewsAdmin } from "@/lib/repositories/content";
+
+export const metadata: Metadata = { title: "게시글 관리 - 관리자" };
 
 export default async function AdminPostsPage() {
   const [posts, reviews] = await Promise.all([getAllPostsAdmin(), getAllReviewsAdmin()]);

@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Button } from "@/components/ui/Button";
 import { getSiteSettings } from "@/lib/repositories/content";
+
+export const metadata: Metadata = {
+  title: "문의 접수 완료",
+  robots: { index: false, follow: false },
+};
 
 export default async function InquiryCompletePage() {
   const settings = await getSiteSettings();

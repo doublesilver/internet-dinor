@@ -30,21 +30,25 @@ export function QuickInquiryForm({ sourcePage, submitLabel = "30초 상담 받�
     setMessage(null);
 
     startTransition(async () => {
-      const response = await fetch("/api/inquiries/quick", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values)
-      });
+      try {
+        const response = await fetch("/api/inquiries/quick", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values)
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
+        const result = (await response.json()) as { success: boolean; message?: string };
 
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "문의 접수에 실패했습니다.");
-        return;
+        if (!response.ok || !result.success) {
+          setMessage(result.message ?? "문의 접수에 실패했습니다.");
+          return;
+        }
+
+        reset();
+        window.location.href = "/inquiry/complete";
+      } catch {
+        setMessage("문의 접수 중 오류가 발생했습니다.");
       }
-
-      reset();
-      window.location.href = "/inquiry/complete";
     });
   });
 

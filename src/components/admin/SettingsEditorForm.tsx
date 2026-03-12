@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import type { SiteSettings } from "@/types/domain";
 import { Button } from "@/components/ui/Button";
 
+type Message = { type: "success" | "error"; text: string } | null;
+
 export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
   const [form, setForm] = useState({
     siteName: settings.siteName,
@@ -17,10 +19,10 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
     address: settings.businessInfo.address,
     email: settings.businessInfo.email
   });
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<Message>(null);
   const [isPending, startTransition] = useTransition();
 
-  function updateField(key: string, value: string) {
+  function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
@@ -28,19 +30,23 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
     setMessage(null);
 
     startTransition(async () => {
-      const response = await fetch("/api/admin/settings", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
+      try {
+        const response = await fetch("/api/admin/settings", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form)
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "설정 저장에 실패했습니다.");
-        return;
+        const result = (await response.json()) as { success: boolean; message?: string };
+        if (!response.ok || !result.success) {
+          setMessage({ type: "error", text: result.message ?? "설정 저장에 실패했습니다." });
+          return;
+        }
+
+        setMessage({ type: "success", text: "저장되었습니다." });
+      } catch {
+        setMessage({ type: "error", text: "저장 중 오류가 발생했습니다." });
       }
-
-      setMessage("저장되었습니다.");
     });
   }
 
@@ -89,7 +95,7 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
         <textarea className="field-base min-h-24" value={form.footerNotice} onChange={(event) => updateField("footerNotice", event.target.value)} />
       </div>
 
-      {message ? <p className={`text-sm ${message === "저장되었습니다." ? "text-emerald-600" : "text-red-600"}`}>{message}</p> : null}
+      {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <Button type="button" onClick={handleSave} disabled={isPending}>
         {isPending ? "저장 중..." : "설정 저장"}
       </Button>

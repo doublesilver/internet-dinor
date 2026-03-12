@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { getInquiryFixtures, getInquiryStatusLabel } from "@/lib/repositories/inquiries";
 import { formatDate } from "@/lib/utils/date";
+
+export const metadata: Metadata = { title: "문의 관리 - 관리자" };
 
 export default async function AdminInquiriesPage() {
   const inquiries = await getInquiryFixtures();
@@ -29,9 +33,9 @@ export default async function AdminInquiriesPage() {
                 <td className="px-4 py-3 text-brand-slate">{getInquiryStatusLabel(inquiry.status)}</td>
                 <td className="px-4 py-3 text-brand-slate">{formatDate(inquiry.createdAt)}</td>
                 <td className="px-4 py-3">
-                  <a href={`/admin/inquiries/${inquiry.id}`} className="font-semibold text-brand-orange">
+                  <Link href={`/admin/inquiries/${inquiry.id}`} className="font-semibold text-brand-orange">
                     보기
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

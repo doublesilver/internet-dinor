@@ -1,14 +1,16 @@
 import { z } from "zod";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const envSchema = z.object({
   ADMIN_PREVIEW_EMAIL: z.string().optional(),
   ADMIN_PREVIEW_PASSWORD: z.string().optional(),
-  ADMIN_SESSION_SECRET: z.string().optional(),
+  ADMIN_SESSION_SECRET: isProduction ? z.string().min(32) : z.string().min(1).optional(),
   ADMIN_ALLOWED_EMAILS: z.string().optional(),
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
+  NEXT_PUBLIC_SUPABASE_URL: isProduction ? z.string().url() : z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: isProduction ? z.string().min(1) : z.string().min(1).optional(),
   SUPABASE_URL: z.string().url().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: isProduction ? z.string().min(1) : z.string().min(1).optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional()
 });
 

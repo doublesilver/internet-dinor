@@ -8,6 +8,8 @@ import type { ApplyInquiryValues } from "@/lib/validators/inquiries";
 import Link from "next/link";
 import DaumPostcodeEmbed from "react-daum-postcode";
 
+// TODO: SITE_PHONE should come from siteSettings.phoneLink passed as a prop
+// once settings are accessible in this client component context.
 const SITE_PHONE = "tel:16601234";
 
 const carrierOptions = [
@@ -141,7 +143,8 @@ export function ApplyInquiryForm() {
   });
 
   const onSubmit = handleSubmit((values, event) => {
-    const formData = new FormData(event?.target as HTMLFormElement);
+    if (!event?.target) return;
+    const formData = new FormData(event.target as HTMLFormElement);
     const payloadKeys = [
       "current_carrier", "desired_carrier", "internet_plan", "tv_plan",
       "customer_type", "mobile_carrier", "zipcode", "address", "address_detail",
@@ -156,20 +159,24 @@ export function ApplyInquiryForm() {
     );
 
     startTransition(async () => {
-      const response = await fetch("/api/inquiries/apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, payload })
-      });
+      try {
+        const response = await fetch("/api/inquiries/apply", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...values, payload })
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "신청 접수에 실패했습니다.");
-        return;
+        const result = (await response.json()) as { success: boolean; message?: string };
+        if (!response.ok || !result.success) {
+          setMessage(result.message ?? "신청 접수에 실패했습니다.");
+          return;
+        }
+
+        setMessage(null);
+        window.location.href = "/inquiry/complete";
+      } catch {
+        setMessage("신청 접수 중 오류가 발생했습니다.");
       }
-
-      setMessage(null);
-      window.location.href = "/inquiry/complete";
     });
   });
 

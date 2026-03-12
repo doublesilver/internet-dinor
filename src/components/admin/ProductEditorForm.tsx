@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import type { Carrier, Product } from "@/types/domain";
 import { Button } from "@/components/ui/Button";
 
+type Message = { type: "success" | "error"; text: string } | null;
+
 export function ProductEditorForm({
   product,
   carriers,
@@ -33,10 +35,10 @@ export function ProductEditorForm({
     status: product.status,
     sortOrder: String(product.sortOrder)
   });
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<Message>(null);
   const [isPending, startTransition] = useTransition();
 
-  function updateField(key: string, value: string | boolean) {
+  function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
@@ -44,27 +46,31 @@ export function ProductEditorForm({
     setMessage(null);
 
     startTransition(async () => {
-      const response = await fetch(mode === "create" ? "/api/admin/products" : `/api/admin/products/${product.id}`, {
-        method: mode === "create" ? "POST" : "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          sortOrder: Number(form.sortOrder)
-        })
-      });
+      try {
+        const response = await fetch(mode === "create" ? "/api/admin/products" : `/api/admin/products/${product.id}`, {
+          method: mode === "create" ? "POST" : "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...form,
+            sortOrder: Number(form.sortOrder)
+          })
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string; data?: { id?: string } };
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "상품 저장에 실패했습니다.");
-        return;
+        const result = (await response.json()) as { success: boolean; message?: string; data?: { id?: string } };
+        if (!response.ok || !result.success) {
+          setMessage({ type: "error", text: result.message ?? "상품 저장에 실패했습니다." });
+          return;
+        }
+
+        if (mode === "create" && result.data?.id) {
+          window.location.href = `/admin/products/${result.data.id}`;
+          return;
+        }
+
+        setMessage({ type: "success", text: "저장되었습니다." });
+      } catch {
+        setMessage({ type: "error", text: "저장 중 오류가 발생했습니다." });
       }
-
-      if (mode === "create" && result.data?.id) {
-        window.location.href = `/admin/products/${result.data.id}`;
-        return;
-      }
-
-      setMessage("저장되었습니다.");
     });
   }
 
@@ -91,7 +97,7 @@ export function ProductEditorForm({
         </div>
         <div>
           <label className="field-label">구성</label>
-          <select className="field-base" value={form.bundleType} onChange={(event) => updateField("bundleType", event.target.value)}>
+          <select className="field-base" value={form.bundleType} onChange={(event) => updateField("bundleType", event.target.value as typeof form.bundleType)}>
             <option value="internet_only">인터넷 단독</option>
             <option value="internet_tv">인터넷 + TV</option>
             <option value="business">사업장용</option>
@@ -163,14 +169,14 @@ export function ProductEditorForm({
         </label>
         <div>
           <label className="field-label">상태</label>
-          <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value)}>
+          <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value as typeof form.status)}>
             <option value="draft">draft</option>
             <option value="published">published</option>
           </select>
         </div>
       </div>
 
-      {message ? <p className={`text-sm ${message === "저장되었습니다." ? "text-emerald-600" : "text-red-600"}`}>{message}</p> : null}
+      {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <div className="flex flex-col gap-3 md:flex-row">
         <Button type="button" onClick={handleSave} disabled={isPending}>
           {isPending ? "저장 중..." : mode === "create" ? "상품 생성" : "상품 저장"}

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { getCarrierBySlug, getCarriers, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { PriceCalculator } from "@/components/sections/PriceCalculator";
+import { getBundleTypeLabel } from "@/lib/utils/labels";
 
 export async function generateStaticParams() {
   const carriers = await getCarriers();
@@ -24,13 +25,6 @@ export async function generateMetadata({ params }: { params: Promise<{ carrierSl
     openGraph: { title: `${carrier.shortName} 인터넷/TV 상품`, description: carrier.heroDescription }
   };
 }
-
-const bundleLabel: Record<string, string> = {
-  internet_only: "인터넷 단독",
-  internet_tv: "인터넷 + TV",
-  business: "사업장용",
-  custom: "기타"
-};
 
 const carrierAccentColors: Record<string, string> = {
   sk: "#FFA13E",
@@ -135,7 +129,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
                       {product.internetSpeed}
                     </span>
                     <span className="rounded-lg bg-brand-surface px-3 py-1.5 text-xs font-semibold text-brand-graphite">
-                      {bundleLabel[product.bundleType] ?? "인터넷"}
+                      {getBundleTypeLabel(product.bundleType)}
                     </span>
                   </div>
 
@@ -191,7 +185,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
                     >
                       <div>
                         <p className="text-sm font-bold text-brand-graphite">{product.name}</p>
-                        <p className="mt-0.5 text-xs text-brand-slate">{product.internetSpeed} · {bundleLabel[product.bundleType] ?? "인터넷"}</p>
+                        <p className="mt-0.5 text-xs text-brand-slate">{product.internetSpeed} · {getBundleTypeLabel(product.bundleType)}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-black" style={{ color: accentColor }}>

@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { publicNavigation, carrierNavigation } from "@/lib/constants/navigation";
 import type { SiteSettings } from "@/types/domain";
 
 export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   return (
     <header className="sticky top-0 z-30 bg-white shadow-sm" role="banner">
@@ -18,14 +22,12 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <Image
-              src="/images/carriers/logo.png"
-              alt={settings.siteName}
-              height={32}
-              width={120}
-              className="h-8 w-auto"
-              priority
-            />
+            <span
+              className="text-2xl font-bold"
+              style={{ fontFamily: "'Cafe24Ssurround', sans-serif", color: "#f15c2d" }}
+            >
+              인터넷공룡
+            </span>
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">

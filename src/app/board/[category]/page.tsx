@@ -12,6 +12,10 @@ const categoryMeta: Record<string, { title: string; description: string }> = {
   notice: { title: "공지사항", description: "인터넷공룡의 공지사항과 업데이트 소식입니다." }
 };
 
+export function generateStaticParams() {
+  return [{ category: "event" }, { category: "guide" }, { category: "notice" }];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
   const { category } = await params;
   const meta = categoryMeta[category];

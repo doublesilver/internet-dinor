@@ -399,6 +399,32 @@ export const productsSeed: Product[] = [
     status: "published",
     sortOrder: 44
   },
+  // Internet Only Products
+  {
+    id: "ffffffff-0001-0001-0001-000000000001",
+    carrierId: "11111111-1111-1111-1111-111111111111",
+    slug: "sk-500-internet-only",
+    name: "기가라이트인터넷 500M (단독)",
+    summary: "TV 없이 인터넷만! 합리적인 단독 인터넷 요금제",
+    description: "TV 결합 없이 인터넷만 단독으로 이용하는 SK브로드밴드 500M 상품입니다. 군더더기 없이 빠른 인터넷만 필요한 분께 최적입니다.",
+    bundleType: "internet_only",
+    internetSpeed: "500M",
+    tvIncluded: false,
+    monthlyPriceLabel: "29,700원",
+    benefitLabel: "사은품 최대 30만원",
+    badgeTags: ["인터넷단독", "실속"],
+    targetTags: ["1인가구", "인터넷단독", "실속"],
+    heroPoints: ["500M 인터넷 단독", "TV 없이 저렴하게", "빠른 설치"],
+    detailSections: [
+      { title: "추천 대상", body: "TV를 잘 보지 않는 1~2인 가구나 OTT 서비스만 이용하는 고객에게 적합합니다." }
+    ],
+    faqItems: [
+      { q: "나중에 TV를 추가할 수 있나요?", a: "약정 중에도 TV 결합 상담이 가능합니다. 고객센터로 문의해주세요." }
+    ],
+    isFeatured: false,
+    status: "published",
+    sortOrder: 16
+  },
   // Hellovision Products
   {
     id: "eeeeeeee-1111-1111-1111-111111111111",

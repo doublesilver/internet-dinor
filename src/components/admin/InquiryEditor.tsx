@@ -14,33 +14,39 @@ const statusOptions: Array<{ value: InquiryStatus; label: string }> = [
   { value: "closed", label: "종료/보류" }
 ];
 
+type Message = { type: "success" | "error"; text: string } | null;
+
 export function InquiryEditor({ inquiry }: { inquiry: InquiryRecord }) {
   const [status, setStatus] = useState<InquiryStatus>(inquiry.status);
   const [adminMemo, setAdminMemo] = useState(inquiry.adminMemo ?? "");
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<Message>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleSave = () => {
     setFeedback(null);
 
     startTransition(async () => {
-      const response = await fetch(`/api/admin/inquiries/${inquiry.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          status,
-          adminMemo
-        })
-      });
+      try {
+        const response = await fetch(`/api/admin/inquiries/${inquiry.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            status,
+            adminMemo
+          })
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
+        const result = (await response.json()) as { success: boolean; message?: string };
 
-      if (!response.ok || !result.success) {
-        setFeedback(result.message ?? "저장에 실패했습니다.");
-        return;
+        if (!response.ok || !result.success) {
+          setFeedback({ type: "error", text: result.message ?? "저장에 실패했습니다." });
+          return;
+        }
+
+        setFeedback({ type: "success", text: "저장되었습니다." });
+      } catch {
+        setFeedback({ type: "error", text: "저장 중 오류가 발생했습니다." });
       }
-
-      setFeedback("저장되었습니다.");
     });
   };
 
@@ -60,7 +66,7 @@ export function InquiryEditor({ inquiry }: { inquiry: InquiryRecord }) {
         <label className="field-label">관리자 메모</label>
         <textarea className="field-base min-h-40" value={adminMemo} onChange={(event) => setAdminMemo(event.target.value)} />
       </div>
-      {feedback ? <p className={`text-sm ${feedback === "저장되었습니다." ? "text-emerald-600" : "text-red-600"}`}>{feedback}</p> : null}
+      {feedback ? <p className={`text-sm ${feedback.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{feedback.text}</p> : null}
       <Button type="button" onClick={handleSave} disabled={isPending}>
         {isPending ? "저장 중..." : "저장"}
       </Button>

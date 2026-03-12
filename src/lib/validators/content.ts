@@ -2,6 +2,11 @@ import { z } from "zod";
 
 const statusSchema = z.enum(["draft", "published"]);
 
+const slugSchema = z
+  .string()
+  .min(1, "슬러그를 입력해주세요.")
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "슬러그는 소문자, 숫자, 하이픈만 사용할 수 있습니다.");
+
 export const contentStatusSchema = z.object({
   status: statusSchema
 });
@@ -12,9 +17,9 @@ export const postReviewStatusSchema = contentStatusSchema.extend({
 
 export const productEditorSchema = z.object({
   name: z.string().min(1, "상품명을 입력해주세요."),
-  slug: z.string().min(1, "슬러그를 입력해주세요."),
-  summary: z.string().min(1, "요약을 입력해주세요."),
-  description: z.string().min(1, "설명을 입력해주세요."),
+  slug: slugSchema,
+  summary: z.string().min(1, "요약을 입력해주세요.").max(5000, "요약은 5000자 이하로 입력해주세요."),
+  description: z.string().min(1, "설명을 입력해주세요.").max(10000, "설명은 10000자 이하로 입력해주세요."),
   carrierId: z.string().min(1, "통신사를 선택해주세요."),
   bundleType: z.enum(["internet_only", "internet_tv", "business", "custom"]),
   internetSpeed: z.string().min(1, "속도를 입력해주세요."),
@@ -36,9 +41,9 @@ export const postEditorSchema = z.object({
   type: z.enum(["event", "guide", "notice"]).optional(),
   reviewType: z.enum(["internet_only", "internet_tv", "moving", "bundle", "renewal"]).optional(),
   title: z.string().min(1, "제목을 입력해주세요."),
-  slug: z.string().min(1, "슬러그를 입력해주세요."),
-  summary: z.string().min(1, "요약을 입력해주세요."),
-  body: z.string().min(1, "본문을 입력해주세요."),
+  slug: slugSchema,
+  summary: z.string().min(1, "요약을 입력해주세요.").max(5000, "요약은 5000자 이하로 입력해주세요."),
+  body: z.string().min(1, "본문을 입력해주세요.").max(100000, "본문은 100000자 이하로 입력해주세요."),
   ctaLabel: z.string().optional().default(""),
   relatedProductSlugsText: z.string().optional().default(""),
   tagsText: z.string().optional().default(""),

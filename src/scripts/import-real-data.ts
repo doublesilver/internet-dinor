@@ -10,7 +10,11 @@ const baseDir = path.join(process.cwd(), "src/data/fixtures/real-data");
 async function readJsonFile<T>(filename: string): Promise<T> {
   const filePath = path.join(baseDir, filename);
   const raw = await readFile(filePath, "utf-8");
-  return JSON.parse(raw) as T;
+  const parsed: unknown = JSON.parse(raw);
+  if (parsed === null || parsed === undefined) {
+    throw new Error(`${filename}: parsed result is null or undefined`);
+  }
+  return parsed as T;
 }
 
 async function run() {
@@ -29,7 +33,7 @@ async function run() {
     readJsonFile<SiteSettings>("site-settings.json")
   ]);
 
-  await supabase.from("carriers").upsert(
+  const { error: carriersError } = await supabase.from("carriers").upsert(
     carriers.map((item) => ({
       id: item.id,
       slug: item.slug,
@@ -44,8 +48,9 @@ async function run() {
     })),
     { onConflict: "slug" }
   );
+  if (carriersError) throw new Error(`carriers upsert failed: ${carriersError.message}`);
 
-  await supabase.from("products").upsert(
+  const { error: productsError } = await supabase.from("products").upsert(
     products.map((item) => ({
       id: item.id,
       carrier_id: item.carrierId,
@@ -69,8 +74,9 @@ async function run() {
     })),
     { onConflict: "slug" }
   );
+  if (productsError) throw new Error(`products upsert failed: ${productsError.message}`);
 
-  await supabase.from("posts").upsert(
+  const { error: postsError } = await supabase.from("posts").upsert(
     posts.map((item) => ({
       id: item.id,
       type: item.type,
@@ -87,8 +93,9 @@ async function run() {
     })),
     { onConflict: "slug" }
   );
+  if (postsError) throw new Error(`posts upsert failed: ${postsError.message}`);
 
-  await supabase.from("reviews").upsert(
+  const { error: reviewsError } = await supabase.from("reviews").upsert(
     reviews.map((item) => ({
       id: item.id,
       slug: item.slug,
@@ -103,8 +110,9 @@ async function run() {
     })),
     { onConflict: "slug" }
   );
+  if (reviewsError) throw new Error(`reviews upsert failed: ${reviewsError.message}`);
 
-  await supabase.from("site_settings").upsert(
+  const { error: siteSettingsError } = await supabase.from("site_settings").upsert(
     {
       id: SITE_SETTINGS_ID,
       site_name: siteSettings.siteName,
@@ -121,6 +129,7 @@ async function run() {
     },
     { onConflict: "id" }
   );
+  if (siteSettingsError) throw new Error(`site_settings upsert failed: ${siteSettingsError.message}`);
 
   console.log("Real data import completed");
 }

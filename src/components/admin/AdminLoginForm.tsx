@@ -15,19 +15,23 @@ export function AdminLoginForm() {
     setMessage(null);
 
     startTransition(async () => {
-      const response = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
+      try {
+        const response = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "로그인에 실패했습니다.");
-        return;
+        const result = (await response.json()) as { success: boolean; message?: string };
+        if (!response.ok || !result.success) {
+          setMessage(result.message ?? "로그인에 실패했습니다.");
+          return;
+        }
+
+        window.location.href = "/admin";
+      } catch {
+        setMessage("로그인 중 오류가 발생했습니다.");
       }
-
-      window.location.href = "/admin";
     });
   };
 

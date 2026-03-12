@@ -5,6 +5,7 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getProductBySlug, getProducts, getSiteSettings } from "@/lib/repositories/content";
+import { getBundleTypeLabel } from "@/lib/utils/labels";
 
 export async function generateStaticParams() {
   const products = await getProducts();
@@ -51,7 +52,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <div className="rounded-2xl bg-brand-surface p-4">
                 <p className="text-sm text-brand-slate">구성</p>
                 <p className="mt-2 text-lg font-bold text-brand-graphite">
-                  {{ internet_only: "인터넷 단독", internet_tv: "인터넷 + TV", business: "사업장용", custom: "기타" }[product.bundleType] ?? "인터넷 단독"}
+                  {getBundleTypeLabel(product.bundleType)}
                 </p>
               </div>
               <div className="rounded-2xl bg-brand-surface p-4">

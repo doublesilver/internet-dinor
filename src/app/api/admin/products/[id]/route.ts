@@ -2,8 +2,14 @@ import { NextResponse } from "next/server";
 import { deleteProduct, updateProduct } from "@/lib/repositories/content";
 import { productEditorSchema } from "@/lib/validators/content";
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ success: false, message: "잘못된 ID 형식입니다." }, { status: 400 });
+  }
 
   let payload;
   try {
@@ -35,6 +41,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ success: false, message: "잘못된 ID 형식입니다." }, { status: 400 });
+  }
+
   const result = await deleteProduct(id);
 
   if (!result.success) {

@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { CarrierProductCard } from "@/components/sections/CarrierProductCard";
@@ -6,6 +8,11 @@ import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard"
 import { TipGallery } from "@/components/sections/TipGallery";
 import { Button } from "@/components/ui/Button";
 import { getFeaturedPosts, getSiteSettings } from "@/lib/repositories/content";
+
+export const metadata: Metadata = {
+  title: "인터넷공룡 - 인터넷/TV 가입 비교 최대 사은품",
+  description: "전국 최대 사은품! 인터넷/TV 가입 비교하고 당일설치, 당일입금 받으세요.",
+};
 
 export default async function HomePage() {
   const [settings, guides] = await Promise.all([
@@ -133,8 +140,8 @@ export default async function HomePage() {
           <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
           <p className="text-sm opacity-70">현금 주는 건 비밀~!</p>
           <div className="mt-6 flex justify-center gap-4">
-            <a href="/apply" className="rounded-full bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100">신청서 작성</a>
-            <a href="tel:16601234" className="rounded-full border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10">전화 상담</a>
+            <Link href="/apply" className="rounded-full bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100">신청서 작성</Link>
+            <a href={settings.phoneLink} className="rounded-full border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10">전화 상담</a>
           </div>
         </div>
       </section>

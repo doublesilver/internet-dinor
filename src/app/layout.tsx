@@ -6,6 +6,7 @@ const SITE_NAME = "인터넷공룡";
 const SITE_DESCRIPTION = "인터넷/TV/통신 비교 상담 서비스 인터넷공룡";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://internetdinor.vercel.app"),
   title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
   keywords: "인터넷가입, 인터넷비교사이트, 인터넷가입현금지원, 인터넷티비현금많이주는곳, KT인터넷가입, SK인터넷, LG인터넷, 인터넷설치, 당일설치, 사은품",

@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getInquiryDashboardSummary } from "@/lib/repositories/inquiries";
+
+export const metadata: Metadata = { title: "대시보드 - 관리자" };
 import { getAdminSystemDiagnostics } from "@/lib/system/admin-system";
 
 export default async function AdminDashboardPage() {

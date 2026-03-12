@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getAdminSupabaseCookieNames, resolveAdminAuthForMiddleware } from "@/lib/auth/admin";
 
+const PUBLIC_ADMIN_PATHS = ["/admin/login", "/api/admin/login", "/api/admin/logout"];
+
 function isProtectedAdminPath(pathname: string) {
-  if (pathname === "/admin/login" || pathname === "/api/admin/login" || pathname === "/api/admin/logout") return false;
+  if (PUBLIC_ADMIN_PATHS.includes(pathname)) return false;
   return pathname.startsWith("/admin") || pathname.startsWith("/api/admin");
 }
 

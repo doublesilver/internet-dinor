@@ -31,7 +31,8 @@ export function ProductInquiryForm({ product }: { product: Product }) {
   });
 
   const onSubmit = handleSubmit((values, event) => {
-    const formData = new FormData(event?.target as HTMLFormElement);
+    if (!event?.target) return;
+    const formData = new FormData(event.target as HTMLFormElement);
     const payload = Object.fromEntries(
       Array.from(formData.entries()).filter(([key]) =>
         ["signup_type", "desired_bundle", "desired_speed", "tv_required", "mobile_bundle_interest", "memo"].includes(key)
@@ -39,23 +40,27 @@ export function ProductInquiryForm({ product }: { product: Product }) {
     );
 
     startTransition(async () => {
-      const response = await fetch("/api/inquiries/product", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          payload
-        })
-      });
+      try {
+        const response = await fetch("/api/inquiries/product", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...values,
+            payload
+          })
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "문의 접수에 실패했습니다.");
-        return;
+        const result = (await response.json()) as { success: boolean; message?: string };
+        if (!response.ok || !result.success) {
+          setMessage(result.message ?? "문의 접수에 실패했습니다.");
+          return;
+        }
+
+        setMessage(null);
+        window.location.href = "/inquiry/complete";
+      } catch {
+        setMessage("문의 접수 중 오류가 발생했습니다.");
       }
-
-      setMessage(null);
-      window.location.href = "/inquiry/complete";
     });
   });
 

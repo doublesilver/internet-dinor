@@ -2,8 +2,14 @@ import { NextResponse } from "next/server";
 import { updateProductStatus } from "@/lib/repositories/content";
 import { contentStatusSchema } from "@/lib/validators/content";
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ success: false, message: "잘못된 ID 형식입니다." }, { status: 400 });
+  }
 
   let payload;
   try {

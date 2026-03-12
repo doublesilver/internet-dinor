@@ -9,39 +9,51 @@ interface ApplicationRow {
   giftStatus: string;
 }
 
-// Deterministic seed-based mock data (same on every render, looks like reference)
-const MOCK_DATA: ApplicationRow[] = [
-  { date: "03.12", name: "김 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.12", name: "이 * 연", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.12", name: "박 * 호", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.11", name: "최 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.11", name: "정 * 빈", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.11", name: "강 * *", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.10", name: "조 * 서", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.10", name: "윤 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.10", name: "장 * 은", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.09", name: "임 * *", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.09", name: "한 * 민", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.09", name: "오 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.08", name: "서 * 현", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.08", name: "신 * *", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.08", name: "권 * 우", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.07", name: "황 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.07", name: "안 * 진", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.07", name: "송 * *", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.06", name: "류 * 희", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.06", name: "홍 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.06", name: "김 * 수", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.05", name: "이 * *", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.05", name: "박 * 윤", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.05", name: "최 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.04", name: "정 * 은", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.04", name: "강 * *", installStatus: "접수진행", giftStatus: "입금대기" },
-  { date: "03.03", name: "조 * 현", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.03", name: "윤 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.02", name: "장 * 서", installStatus: "설치완료", giftStatus: "입금완료" },
-  { date: "03.02", name: "임 * *", installStatus: "설치완료", giftStatus: "입금완료" },
-];
+function buildMockData(): ApplicationRow[] {
+  const today = new Date();
+  const fmt = (d: Date) =>
+    `${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+  const dayOffset = (n: number) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - n);
+    return fmt(d);
+  };
+
+  return [
+    { date: dayOffset(0), name: "김 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(0), name: "이 * 연", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(0), name: "박 * 호", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(1), name: "최 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(1), name: "정 * 빈", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(1), name: "강 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(2), name: "조 * 서", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(2), name: "윤 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(2), name: "장 * 은", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(3), name: "임 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(3), name: "한 * 민", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(3), name: "오 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(4), name: "서 * 현", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(4), name: "신 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(4), name: "권 * 우", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(5), name: "황 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(5), name: "안 * 진", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(5), name: "송 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(6), name: "류 * 희", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(6), name: "홍 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(6), name: "김 * 수", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(7), name: "이 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(7), name: "박 * 윤", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(7), name: "최 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(8), name: "정 * 은", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(8), name: "강 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+    { date: dayOffset(9), name: "조 * 현", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(9), name: "윤 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(10), name: "장 * 서", installStatus: "설치완료", giftStatus: "입금완료" },
+    { date: dayOffset(10), name: "임 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  ];
+}
+
+const MOCK_DATA = buildMockData();
 
 export function RecentApplications() {
   const scrollRef = useRef<HTMLDivElement>(null);

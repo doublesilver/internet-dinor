@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { SettingsEditorForm } from "@/components/admin/SettingsEditorForm";
 import { getSiteSettings } from "@/lib/repositories/content";
+
+export const metadata: Metadata = { title: "설정 - 관리자" };
 
 export default async function AdminSettingsPage() {
   const settings = await getSiteSettings();

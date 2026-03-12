@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { StatusQuickToggle } from "@/components/admin/StatusQuickToggle";
 import { getAllProductsAdmin } from "@/lib/repositories/content";
+
+export const metadata: Metadata = { title: "상품 관리 - 관리자" };
 
 export default async function AdminProductsPage() {
   const products = await getAllProductsAdmin();

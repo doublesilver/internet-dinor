@@ -8,6 +8,8 @@ type ContentEntity =
   | { entityType: "post"; entity: Post }
   | { entityType: "review"; entity: Review };
 
+type Message = { type: "success" | "error"; text: string } | null;
+
 export function PostEditorForm({ content, mode = "edit" }: { content: ContentEntity; mode?: "create" | "edit" }) {
   const isReview = content.entityType === "review";
   const entity = content.entity;
@@ -29,10 +31,10 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
     status: entity.status,
     publishedAt: entity.publishedAt.slice(0, 16)
   });
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<Message>(null);
   const [isPending, startTransition] = useTransition();
 
-  function updateField(key: string, value: string | boolean) {
+  function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
@@ -40,27 +42,31 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
     setMessage(null);
 
     startTransition(async () => {
-      const response = await fetch(mode === "create" ? "/api/admin/posts" : `/api/admin/posts/${entity.id}`, {
-        method: mode === "create" ? "POST" : "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          publishedAt: new Date(form.publishedAt).toISOString()
-        })
-      });
+      try {
+        const response = await fetch(mode === "create" ? "/api/admin/posts" : `/api/admin/posts/${entity.id}`, {
+          method: mode === "create" ? "POST" : "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...form,
+            publishedAt: new Date(form.publishedAt).toISOString()
+          })
+        });
 
-      const result = (await response.json()) as { success: boolean; message?: string; data?: { id?: string } };
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "저장에 실패했습니다.");
-        return;
+        const result = (await response.json()) as { success: boolean; message?: string; data?: { id?: string } };
+        if (!response.ok || !result.success) {
+          setMessage({ type: "error", text: result.message ?? "저장에 실패했습니다." });
+          return;
+        }
+
+        if (mode === "create" && result.data?.id) {
+          window.location.href = `/admin/posts/${result.data.id}`;
+          return;
+        }
+
+        setMessage({ type: "success", text: "저장되었습니다." });
+      } catch {
+        setMessage({ type: "error", text: "저장 중 오류가 발생했습니다." });
       }
-
-      if (mode === "create" && result.data?.id) {
-        window.location.href = `/admin/posts/${result.data.id}`;
-        return;
-      }
-
-      setMessage("저장되었습니다.");
     });
   }
 
@@ -78,7 +84,7 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
         {!isReview ? (
           <div>
             <label className="field-label">게시물 유형</label>
-            <select className="field-base" value={form.type} onChange={(event) => updateField("type", event.target.value)}>
+            <select className="field-base" value={form.type} onChange={(event) => updateField("type", event.target.value as typeof form.type)}>
               <option value="event">event</option>
               <option value="guide">guide</option>
               <option value="notice">notice</option>
@@ -87,7 +93,7 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
         ) : (
           <div>
             <label className="field-label">후기 유형</label>
-            <select className="field-base" value={form.reviewType} onChange={(event) => updateField("reviewType", event.target.value)}>
+            <select className="field-base" value={form.reviewType} onChange={(event) => updateField("reviewType", event.target.value as typeof form.reviewType)}>
               <option value="internet_only">internet_only</option>
               <option value="internet_tv">internet_tv</option>
               <option value="moving">moving</option>
@@ -137,14 +143,14 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
         </label>
         <div>
           <label className="field-label">상태</label>
-          <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value)}>
+          <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value as typeof form.status)}>
             <option value="draft">draft</option>
             <option value="published">published</option>
           </select>
         </div>
       </div>
 
-      {message ? <p className={`text-sm ${message === "저장되었습니다." ? "text-emerald-600" : "text-red-600"}`}>{message}</p> : null}
+      {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <div className="flex flex-col gap-3 md:flex-row">
         <Button type="button" onClick={handleSave} disabled={isPending}>
           {isPending ? "저장 중..." : mode === "create" ? "생성" : "저장"}

@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { SystemRefreshButton } from "@/components/admin/SystemRefreshButton";
 import { getAdminSystemDiagnostics } from "@/lib/system/admin-system";
+
+export const metadata: Metadata = { title: "시스템 - 관리자" };
 
 function getStatusClassName(status: "ready" | "warning" | "missing") {
   if (status === "ready") {

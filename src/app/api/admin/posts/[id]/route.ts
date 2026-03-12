@@ -2,8 +2,14 @@ import { NextResponse } from "next/server";
 import { deletePostOrReview, updatePostOrReview } from "@/lib/repositories/content";
 import { postEditorSchema } from "@/lib/validators/content";
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ success: false, message: "잘못된 ID 형식입니다." }, { status: 400 });
+  }
 
   let payload;
   try {
@@ -35,6 +41,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ success: false, message: "잘못된 ID 형식입니다." }, { status: 400 });
+  }
+
   const { searchParams } = new URL(request.url);
   const entityType = searchParams.get("entityType");
 

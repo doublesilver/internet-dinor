@@ -33,30 +33,34 @@ export function StatusQuickToggle({ endpoint, initialStatus, entityLabel, entity
     setMessage(null);
     setIsSaving(true);
 
-    const response = await fetch(endpoint, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        status: nextStatus,
-        ...(entityType ? { entityType } : {})
-      })
-    });
+    try {
+      const response = await fetch(endpoint, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          status: nextStatus,
+          ...(entityType ? { entityType } : {})
+        })
+      });
 
-    const result = (await response.json()) as { success: boolean; message?: string };
+      const result = (await response.json()) as { success: boolean; message?: string };
 
-    setIsSaving(false);
+      if (!response.ok || !result.success) {
+        setMessage(result.message ?? `${entityLabel} 상태 변경에 실패했습니다.`);
+        return;
+      }
 
-    if (!response.ok || !result.success) {
-      setMessage(result.message ?? `${entityLabel} 상태 변경에 실패했습니다.`);
-      return;
+      setStatus(nextStatus);
+      startTransition(() => {
+        router.refresh();
+      });
+    } catch {
+      setMessage(`${entityLabel} 상태 변경 중 오류가 발생했습니다.`);
+    } finally {
+      setIsSaving(false);
     }
-
-    setStatus(nextStatus);
-    startTransition(() => {
-      router.refresh();
-    });
   }
 
   return (

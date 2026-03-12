@@ -13,15 +13,19 @@ export function DeleteEntityButton({ endpoint, redirectTo, label }: { endpoint: 
     setMessage(null);
 
     startTransition(async () => {
-      const response = await fetch(endpoint, { method: "DELETE" });
-      const result = (await response.json()) as { success: boolean; message?: string };
+      try {
+        const response = await fetch(endpoint, { method: "DELETE" });
+        const result = (await response.json()) as { success: boolean; message?: string };
 
-      if (!response.ok || !result.success) {
-        setMessage(result.message ?? "삭제에 실패했습니다.");
-        return;
+        if (!response.ok || !result.success) {
+          setMessage(result.message ?? "삭제에 실패했습니다.");
+          return;
+        }
+
+        window.location.href = redirectTo;
+      } catch {
+        setMessage("삭제 중 오류가 발생했습니다.");
       }
-
-      window.location.href = redirectTo;
     });
   }
 
