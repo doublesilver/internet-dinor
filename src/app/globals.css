@@ -63,4 +63,12 @@
   .status-badge-progress {
     @apply status-badge bg-orange-50 text-brand-orange;
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

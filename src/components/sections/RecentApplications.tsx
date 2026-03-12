@@ -1,103 +1,111 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ApplicationRow {
   date: string;
   name: string;
-  carrier: string;
-  product: string;
-  region: string;
   installStatus: string;
-  paymentStatus: string;
+  giftStatus: string;
 }
 
-function maskName(name: string): string {
-  if (name.length <= 1) return name;
-  if (name.length === 2) return name[0] + "*";
-  return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
-}
-
-// Generate mock data for display when no real data
-function generateMockData(): ApplicationRow[] {
-  const surnames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송", "류", "홍"];
-  const names = ["민수", "서연", "지훈", "수빈", "영호", "미영", "태윤", "하은", "준서", "예진", "성민", "소희", "재현", "유나", "동현", "지은", "현우", "다은", "시우", "채원"];
-  const carriers = ["SK브로드밴드", "KT", "LG유플러스", "KT스카이라이프", "LG헬로비전"];
-  const products = ["인터넷+TV", "인터넷단독", "인터넷+TV+전화", "인터넷+TV 결합"];
-  const regions = ["서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
-
-  const rows: ApplicationRow[] = [];
-  const now = new Date();
-
-  for (let i = 0; i < 30; i++) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - Math.floor(i / 3));
-    const fullName = surnames[Math.floor(Math.random() * surnames.length)] + names[Math.floor(Math.random() * names.length)];
-    const isComplete = Math.random() > 0.3;
-
-    rows.push({
-      date: `${String(date.getMonth() + 1).padStart(2, "0")}.${String(date.getDate()).padStart(2, "0")}`,
-      name: maskName(fullName),
-      carrier: carriers[Math.floor(Math.random() * carriers.length)],
-      product: products[Math.floor(Math.random() * products.length)],
-      region: regions[Math.floor(Math.random() * regions.length)],
-      installStatus: isComplete ? "개통완료" : "설치예정",
-      paymentStatus: isComplete ? "지급완료" : "지급예정"
-    });
-  }
-
-  return rows;
-}
+// Deterministic seed-based mock data (same on every render, looks like reference)
+const MOCK_DATA: ApplicationRow[] = [
+  { date: "03.12", name: "김 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.12", name: "이 * 연", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.12", name: "박 * 호", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.11", name: "최 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.11", name: "정 * 빈", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.11", name: "강 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.10", name: "조 * 서", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.10", name: "윤 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.10", name: "장 * 은", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.09", name: "임 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.09", name: "한 * 민", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.09", name: "오 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.08", name: "서 * 현", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.08", name: "신 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.08", name: "권 * 우", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.07", name: "황 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.07", name: "안 * 진", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.07", name: "송 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.06", name: "류 * 희", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.06", name: "홍 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.06", name: "김 * 수", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.05", name: "이 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.05", name: "박 * 윤", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.05", name: "최 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.04", name: "정 * 은", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.04", name: "강 * *", installStatus: "접수진행", giftStatus: "입금대기" },
+  { date: "03.03", name: "조 * 현", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.03", name: "윤 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.02", name: "장 * 서", installStatus: "설치완료", giftStatus: "입금완료" },
+  { date: "03.02", name: "임 * *", installStatus: "설치완료", giftStatus: "입금완료" },
+];
 
 export function RecentApplications() {
-  const [rows, setRows] = useState<ApplicationRow[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
+  // Auto-scroll effect like reference site
   useEffect(() => {
-    // Try to fetch real data, fall back to mock
-    fetch("/api/recent-applications")
-      .then((res) => {
-        if (!res.ok) throw new Error("fetch failed");
-        return res.json() as Promise<ApplicationRow[]>;
-      })
-      .then(setRows)
-      .catch(() => {
-        setRows(generateMockData());
-      });
-  }, []);
+    const container = scrollRef.current;
+    if (!container) return;
 
-  if (rows.length === 0) return null;
+    const interval = setInterval(() => {
+      if (isPaused) return;
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      if (scrollTop + clientHeight >= scrollHeight - 2) {
+        container.scrollTop = 0;
+      } else {
+        container.scrollTop += 1;
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-brand-border">
-      <div className="max-h-[400px] overflow-y-auto">
+    <div
+      className="overflow-hidden rounded-2xl border border-brand-border"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div ref={scrollRef} className="max-h-[360px] overflow-y-auto scrollbar-hide">
         <table className="w-full text-sm">
-          <thead className="sticky top-0 bg-brand-graphite text-white">
+          <thead className="sticky top-0 z-10 bg-brand-graphite text-white">
             <tr>
-              <th className="px-3 py-3 text-left font-semibold">날짜</th>
-              <th className="px-3 py-3 text-left font-semibold">신청자</th>
-              <th className="hidden px-3 py-3 text-left font-semibold sm:table-cell">지역</th>
-              <th className="px-3 py-3 text-left font-semibold">통신사</th>
-              <th className="hidden px-3 py-3 text-left font-semibold md:table-cell">상품</th>
-              <th className="px-3 py-3 text-center font-semibold">설치현황</th>
-              <th className="px-3 py-3 text-center font-semibold">입금현황</th>
+              <th className="px-4 py-3 text-left font-semibold">날짜</th>
+              <th className="px-4 py-3 text-left font-semibold">이름</th>
+              <th className="px-4 py-3 text-center font-semibold">접수현황</th>
+              <th className="px-4 py-3 text-center font-semibold">사은품</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-border">
-            {rows.map((row, i) => (
+            {MOCK_DATA.map((row, i) => (
               <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-brand-surface"}>
-                <td className="px-3 py-2.5 text-brand-slate">{row.date}</td>
-                <td className="px-3 py-2.5 font-medium text-brand-graphite">{row.name}</td>
-                <td className="hidden px-3 py-2.5 text-brand-slate sm:table-cell">{row.region}</td>
-                <td className="px-3 py-2.5 text-brand-slate">{row.carrier}</td>
-                <td className="hidden px-3 py-2.5 text-brand-slate md:table-cell">{row.product}</td>
-                <td className="px-3 py-2.5 text-center">
-                  <span className={row.installStatus === "개통완료" ? "status-badge-complete" : "status-badge-progress"}>
+                <td className="px-4 py-2.5 text-brand-slate">{row.date}</td>
+                <td className="px-4 py-2.5 font-medium text-brand-graphite">{row.name}</td>
+                <td className="px-4 py-2.5 text-center">
+                  <span
+                    className={
+                      row.installStatus === "설치완료"
+                        ? "inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                        : "inline-block rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                    }
+                  >
                     {row.installStatus}
                   </span>
                 </td>
-                <td className="px-3 py-2.5 text-center">
-                  <span className={row.paymentStatus === "지급완료" ? "status-badge-complete" : "status-badge-progress"}>
-                    {row.paymentStatus}
+                <td className="px-4 py-2.5 text-center">
+                  <span
+                    className={
+                      row.giftStatus === "입금완료"
+                        ? "inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
+                        : "inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-500"
+                    }
+                  >
+                    {row.giftStatus}
                   </span>
                 </td>
               </tr>
