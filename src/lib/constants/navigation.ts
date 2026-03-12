@@ -1,7 +1,8 @@
+import { getBoardNavigationItems } from "@/lib/constants/board";
+
 export const publicNavigation = [
   { href: "/apply", label: "신청서 작성" },
-  { href: "/board/event", label: "이벤트" },
-  { href: "/board/guide", label: "꿀TIP" },
+  ...getBoardNavigationItems(),
   { href: "/reviews", label: "후기" }
 ];
 

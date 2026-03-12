@@ -1,24 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Product } from "@/types/domain";
+import { getResolvedSelectedProductId, getSelectedProduct } from "@/components/sections/price-calculator/state";
+import type { PriceCalculatorProducts } from "@/components/sections/price-calculator/types";
 
-export function usePriceCalculator(products: Product[]) {
-  const [selectedProductId, setSelectedProductId] = useState(products[0]?.id ?? "");
+export function usePriceCalculator(products: PriceCalculatorProducts) {
+  const [selectedProductId, setSelectedProductId] = useState(() => getResolvedSelectedProductId(products, ""));
 
   useEffect(() => {
-    if (products.length === 0) {
-      setSelectedProductId("");
-      return;
-    }
-
-    const hasSelectedProduct = products.some((product) => product.id === selectedProductId);
-    if (!hasSelectedProduct) {
-      setSelectedProductId(products[0].id);
+    const resolvedSelectedProductId = getResolvedSelectedProductId(products, selectedProductId);
+    if (resolvedSelectedProductId !== selectedProductId) {
+      setSelectedProductId(resolvedSelectedProductId);
     }
   }, [products, selectedProductId]);
 
-  const selectedProduct = products.find((product) => product.id === selectedProductId) ?? products[0];
+  const selectedProduct = getSelectedProduct(products, selectedProductId);
 
   return {
     selectedProduct,

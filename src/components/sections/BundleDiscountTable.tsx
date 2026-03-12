@@ -1,5 +1,7 @@
 "use client";
 
+import { getCarrierAccentColor } from "@/lib/constants/carriers";
+
 interface TableRow {
   cells: string[];
 }
@@ -61,11 +63,11 @@ const bundleData: Record<string, DiscountTable[]> = {
 
 interface BundleDiscountTableProps {
   carrierSlug: string;
-  accentColor?: string;
 }
 
-export function BundleDiscountTable({ carrierSlug, accentColor = "#f15c2d" }: BundleDiscountTableProps) {
+export function BundleDiscountTable({ carrierSlug }: BundleDiscountTableProps) {
   const tables = bundleData[carrierSlug];
+  const accentColor = getCarrierAccentColor(carrierSlug);
 
   if (!tables || tables.length === 0) return null;
 

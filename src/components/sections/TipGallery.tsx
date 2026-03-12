@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getBoardPostHref } from "@/lib/constants/board";
 import type { Post } from "@/types/domain";
 
 export function TipGallery({ tips }: { tips: Post[] }) {
@@ -10,7 +11,7 @@ export function TipGallery({ tips }: { tips: Post[] }) {
       {tips.map((tip, index) => (
         <Link
           key={tip.id}
-          href={`/board/guide/${tip.slug}`}
+          href={getBoardPostHref("guide", tip.slug) ?? "/board/guide"}
           className="group flex-shrink-0 w-56"
         >
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-brand-surface">

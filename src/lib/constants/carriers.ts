@@ -4,7 +4,7 @@ export interface CarrierTheme {
   logoAlt: string;
 }
 
-const DEFAULT_CARRIER_THEME: CarrierTheme = {
+export const DEFAULT_CARRIER_THEME: CarrierTheme = {
   accentColor: "#f15c2d",
   logoPath: "/images/carriers/sk_logo.png",
   logoAlt: "인터넷공룡"
@@ -40,4 +40,8 @@ export const CARRIER_THEME_MAP: Record<string, CarrierTheme> = {
 
 export function getCarrierTheme(carrierSlug: string): CarrierTheme {
   return CARRIER_THEME_MAP[carrierSlug] ?? DEFAULT_CARRIER_THEME;
+}
+
+export function getCarrierAccentColor(carrierSlug: string): string {
+  return getCarrierTheme(carrierSlug).accentColor;
 }

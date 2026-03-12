@@ -6,6 +6,8 @@ export type BoardFeaturedVariant = "none" | "highlight" | "ranked";
 export interface BoardCategoryConfig {
   category: BoardCategory;
   type: PostType;
+  navigationLabel?: string;
+  sitemapPriority: number;
   metadataTitle: string;
   metadataDescription: string;
   eyebrow: string;
@@ -22,6 +24,8 @@ export const BOARD_CATEGORY_CONFIGS: Record<BoardCategory, BoardCategoryConfig> 
   event: {
     category: "event",
     type: "event",
+    navigationLabel: "이벤트",
+    sitemapPriority: 0.6,
     metadataTitle: "이벤트",
     metadataDescription: "인터넷공룡의 최신 이벤트와 프로모션 소식을 확인하세요.",
     eyebrow: "Event",
@@ -36,6 +40,8 @@ export const BOARD_CATEGORY_CONFIGS: Record<BoardCategory, BoardCategoryConfig> 
   guide: {
     category: "guide",
     type: "guide",
+    navigationLabel: "꿀TIP",
+    sitemapPriority: 0.6,
     metadataTitle: "가이드",
     metadataDescription: "인터넷/TV 가입 전 알아두면 좋은 꿀팁 가이드 모음입니다.",
     eyebrow: "Guide",
@@ -50,6 +56,7 @@ export const BOARD_CATEGORY_CONFIGS: Record<BoardCategory, BoardCategoryConfig> 
   notice: {
     category: "notice",
     type: "notice",
+    sitemapPriority: 0.5,
     metadataTitle: "공지사항",
     metadataDescription: "인터넷공룡의 공지사항과 업데이트 소식입니다.",
     eyebrow: "Notice",
@@ -69,4 +76,28 @@ export function getBoardCategoryConfig(category: string): BoardCategoryConfig | 
 
 export function getBoardCategories(): BoardCategory[] {
   return Object.keys(BOARD_CATEGORY_CONFIGS) as BoardCategory[];
+}
+
+export function getBoardCategoryHref(category: string): string | null {
+  const config = getBoardCategoryConfig(category);
+  if (!config) return null;
+
+  return `/board/${config.category}`;
+}
+
+export function getBoardPostHref(category: string, slug: string): string | null {
+  const categoryHref = getBoardCategoryHref(category);
+  if (!categoryHref) return null;
+
+  return `${categoryHref}/${slug}`;
+}
+
+export function getBoardNavigationItems() {
+  return getBoardCategories()
+    .map((category) => BOARD_CATEGORY_CONFIGS[category])
+    .filter((config): config is BoardCategoryConfig & { navigationLabel: string } => Boolean(config.navigationLabel))
+    .map((config) => ({
+      href: `/board/${config.category}`,
+      label: config.navigationLabel
+    }));
 }
