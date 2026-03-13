@@ -81,12 +81,12 @@ describe("isRateLimited", () => {
         limit: limitMock
       };
     });
-    const fromEnvMock = vi.fn().mockReturnValue({});
+    const redisConstructorMock = vi.fn(function MockRedis() {
+      return {};
+    });
 
     vi.doMock("@upstash/redis", () => ({
-      Redis: {
-        fromEnv: fromEnvMock
-      }
+      Redis: redisConstructorMock
     }));
     vi.doMock("@upstash/ratelimit", () => ({
       Ratelimit: Object.assign(constructorMock, {
@@ -99,7 +99,11 @@ describe("isRateLimited", () => {
     await expect(mod.isRateLimited("distributed-key", 5, 60_000)).resolves.toBe(true);
     await expect(mod.isRateLimited("distributed-key", 5, 60_000)).resolves.toBe(true);
 
-    expect(fromEnvMock).toHaveBeenCalledTimes(1);
+    expect(redisConstructorMock).toHaveBeenCalledTimes(1);
+    expect(redisConstructorMock).toHaveBeenCalledWith({
+      url: "https://example.upstash.io",
+      token: "token"
+    });
     expect(slidingWindowMock).toHaveBeenCalledWith(5, "60000ms");
     expect(constructorMock).toHaveBeenCalledTimes(1);
     expect(limitMock).toHaveBeenCalledTimes(2);
@@ -112,12 +116,12 @@ describe("isRateLimited", () => {
 
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const limitMock = vi.fn().mockRejectedValue(new Error("upstash unavailable"));
-    const fromEnvMock = vi.fn().mockReturnValue({});
+    const redisConstructorMock = vi.fn(function MockRedis() {
+      return {};
+    });
 
     vi.doMock("@upstash/redis", () => ({
-      Redis: {
-        fromEnv: fromEnvMock
-      }
+      Redis: redisConstructorMock
     }));
     vi.doMock("@upstash/ratelimit", () => ({
       Ratelimit: Object.assign(
@@ -138,8 +142,69 @@ describe("isRateLimited", () => {
     await expect(mod.isRateLimited("fallback-key", 2, 60_000)).resolves.toBe(false);
     await expect(mod.isRateLimited("fallback-key", 2, 60_000)).resolves.toBe(true);
 
-    expect(fromEnvMock).toHaveBeenCalledTimes(1);
+    expect(redisConstructorMock).toHaveBeenCalledTimes(1);
     expect(limitMock).toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("retries the Upstash limiter after the fallback cooldown expires", async () => {
+    vi.useFakeTimers();
+    vi.resetModules();
+    vi.stubEnv("UPSTASH_REDIS_REST_URL", "https://example.upstash.io");
+    vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "token");
+
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const firstLimitMock = vi.fn().mockRejectedValue(new Error("upstash unavailable"));
+    const secondLimitMock = vi.fn().mockResolvedValue({
+      success: true,
+      limit: 5,
+      remaining: 4,
+      reset: Date.now() + 60_000,
+      pending: Promise.resolve()
+    });
+    const constructorMock = vi
+      .fn(function FirstMockRatelimit() {
+        return { limit: firstLimitMock };
+      })
+      .mockImplementationOnce(function FirstMockRatelimit() {
+        return { limit: firstLimitMock };
+      })
+      .mockImplementationOnce(function SecondMockRatelimit() {
+        return { limit: secondLimitMock };
+      });
+
+    const redisConfigMock = vi.fn();
+    const redisConstructorMock = vi.fn(function MockRedis(config) {
+      redisConfigMock(config);
+      return {};
+    });
+
+    vi.doMock("@upstash/redis", () => ({
+      Redis: redisConstructorMock
+    }));
+    vi.doMock("@upstash/ratelimit", () => ({
+      Ratelimit: Object.assign(constructorMock, {
+        slidingWindow: vi.fn().mockReturnValue("window")
+      })
+    }));
+
+    const mod = await import("../rate-limit");
+
+    await expect(mod.isRateLimited("retry-key-1", 1, 60_000)).resolves.toBe(false);
+    await expect(mod.isRateLimited("retry-key-2", 1, 60_000)).resolves.toBe(false);
+    expect(redisConstructorMock).toHaveBeenCalledTimes(1);
+    expect(constructorMock).toHaveBeenCalledTimes(1);
+
+    vi.advanceTimersByTime(60_001);
+
+    await expect(mod.isRateLimited("retry-key-3", 1, 60_000)).resolves.toBe(false);
+    expect(redisConstructorMock).toHaveBeenCalledTimes(2);
+    expect(constructorMock).toHaveBeenCalledTimes(2);
+    expect(secondLimitMock).toHaveBeenCalledTimes(1);
+    expect(redisConfigMock).toHaveBeenNthCalledWith(1, {
+      url: "https://example.upstash.io",
+      token: "token"
+    });
     expect(warnSpy).toHaveBeenCalledTimes(1);
   });
 });
@@ -184,5 +249,16 @@ describe("hasUpstashRateLimitEnv", () => {
 
     const mod = await import("../rate-limit");
     expect(mod.hasUpstashRateLimitEnv()).toBe(true);
+  });
+
+  it("requires a complete env pair before enabling Upstash", async () => {
+    vi.resetModules();
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
+    process.env.UPSTASH_REDIS_REST_URL = "https://example.com";
+
+    const mod = await import("../rate-limit");
+    expect(mod.hasUpstashRateLimitEnv()).toBe(false);
   });
 });

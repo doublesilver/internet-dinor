@@ -1,5 +1,11 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import {
+  RATE_LIMIT_PREFIX,
+  RATE_LIMIT_RETRY_COOLDOWN_MS,
+  hasUpstashRateLimitEnv as hasConfiguredUpstashRateLimitEnv,
+  resolveUpstashRateLimitEnv
+} from "@/lib/utils/rate-limit-config";
 
 // Upstash가 설정되지 않았거나 일시 장애가 있을 때만 인메모리 폴백을 사용합니다.
 const store = new Map<string, { count: number; resetAt: number }>();
@@ -9,12 +15,8 @@ const ratelimiterCache = new Map<string, Ratelimit>();
 const CLEANUP_INTERVAL = 5 * 60 * 1000;
 let lastCleanup = Date.now();
 let redisClient: Redis | null | undefined;
-let loggedRedisFallback = false;
-let distributedRateLimitDisabled = false;
-
-const RATE_LIMIT_PREFIX = "internet-dinor:ratelimit";
-const UPSTASH_URL_ENV_KEYS = ["UPSTASH_REDIS_REST_URL", "KV_REST_API_URL"] as const;
-const UPSTASH_TOKEN_ENV_KEYS = ["UPSTASH_REDIS_REST_TOKEN", "KV_REST_API_TOKEN"] as const;
+let distributedRateLimitRetryAfter = 0;
+let lastRedisFallbackLogAt = 0;
 
 function cleanupExpired(now: number) {
   if (now - lastCleanup < CLEANUP_INTERVAL) return;
@@ -47,16 +49,33 @@ function isMemoryRateLimited(key: string, limit: number, windowMs: number): bool
 }
 
 export function hasUpstashRateLimitEnv(): boolean {
-  return UPSTASH_URL_ENV_KEYS.some((envKey) => Boolean(process.env[envKey])) &&
-    UPSTASH_TOKEN_ENV_KEYS.some((envKey) => Boolean(process.env[envKey]));
+  return hasConfiguredUpstashRateLimitEnv();
 }
 
 function formatWindow(windowMs: number): `${number}ms` {
   return `${windowMs}ms`;
 }
 
+function isDistributedRateLimitCoolingDown(now: number): boolean {
+  return now < distributedRateLimitRetryAfter;
+}
+
+function markDistributedRateLimitFailure(error: unknown) {
+  const now = Date.now();
+  distributedRateLimitRetryAfter = now + RATE_LIMIT_RETRY_COOLDOWN_MS;
+  redisClient = undefined;
+  ratelimiterCache.clear();
+
+  if (now - lastRedisFallbackLogAt >= RATE_LIMIT_RETRY_COOLDOWN_MS) {
+    lastRedisFallbackLogAt = now;
+    console.warn("Upstash rate limit check failed. Falling back to in-memory store.", error);
+  }
+}
+
 function getRedisClient(): Redis | null {
-  if (distributedRateLimitDisabled) {
+  const now = Date.now();
+
+  if (isDistributedRateLimitCoolingDown(now)) {
     return null;
   }
 
@@ -64,15 +83,16 @@ function getRedisClient(): Redis | null {
     return redisClient;
   }
 
-  if (!hasUpstashRateLimitEnv()) {
+  const upstashEnv = resolveUpstashRateLimitEnv();
+  if (!upstashEnv) {
     redisClient = null;
     return redisClient;
   }
 
   try {
-    redisClient = Redis.fromEnv();
-  } catch {
-    distributedRateLimitDisabled = true;
+    redisClient = new Redis(upstashEnv);
+  } catch (error) {
+    markDistributedRateLimitFailure(error);
     redisClient = null;
   }
 
@@ -80,7 +100,7 @@ function getRedisClient(): Redis | null {
 }
 
 function getUpstashRatelimit(limit: number, windowMs: number): Ratelimit | null {
-  if (distributedRateLimitDisabled) {
+  if (isDistributedRateLimitCoolingDown(Date.now())) {
     return null;
   }
 
@@ -116,16 +136,12 @@ export async function isRateLimited(key: string, limit: number, windowMs: number
 
   try {
     const result = await ratelimit.limit(key);
-    void result.pending.catch(() => undefined);
+    if (result.pending) {
+      void result.pending.catch(() => undefined);
+    }
     return !result.success;
   } catch (error) {
-    distributedRateLimitDisabled = true;
-    ratelimiterCache.clear();
-    if (!loggedRedisFallback) {
-      loggedRedisFallback = true;
-      console.warn("Upstash rate limit check failed. Falling back to in-memory store.", error);
-    }
-
+    markDistributedRateLimitFailure(error);
     return isMemoryRateLimited(key, limit, windowMs);
   }
 }

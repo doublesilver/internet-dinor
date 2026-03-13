@@ -1,6 +1,11 @@
 import { z } from "zod";
+import { getUpstashRateLimitEnvIssues } from "@/lib/utils/rate-limit-config";
 
 type EnvShape = Record<string, string | undefined>;
+
+function emptyStringToUndefined(value: unknown) {
+  return value === "" ? undefined : value;
+}
 
 function isProductionEnv(env: EnvShape) {
   return env.NODE_ENV === "production";
@@ -13,22 +18,34 @@ function hasSupabasePublicEnv(env: EnvShape) {
 export function createEnvSchema(env: EnvShape = process.env) {
   const isProduction = isProductionEnv(env);
   const requiresPreviewSessionSecret = isProduction && !hasSupabasePublicEnv(env);
+  const optionalUrl = z.preprocess(emptyStringToUndefined, z.string().url().optional());
+  const optionalText = z.preprocess(emptyStringToUndefined, z.string().min(1).optional());
 
-  return z.object({
-    ADMIN_PREVIEW_EMAIL: z.string().optional(),
-    ADMIN_PREVIEW_PASSWORD: z.string().optional(),
-    ADMIN_SESSION_SECRET: requiresPreviewSessionSecret ? z.string().min(32) : z.string().optional(),
-    ADMIN_ALLOWED_EMAILS: z.string().optional(),
-    NEXT_PUBLIC_SUPABASE_URL: isProduction ? z.string().url() : z.string().url().optional(),
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: isProduction ? z.string().min(1) : z.string().min(1).optional(),
-    SUPABASE_URL: z.string().url().optional(),
-    SUPABASE_SERVICE_ROLE_KEY: isProduction ? z.string().min(1) : z.string().min(1).optional(),
-    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-    UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
-    KV_REST_API_URL: z.string().url().optional(),
-    KV_REST_API_TOKEN: z.string().min(1).optional(),
-    NEXT_PUBLIC_SITE_URL: z.string().url().optional()
-  });
+  return z
+    .object({
+      ADMIN_PREVIEW_EMAIL: optionalText,
+      ADMIN_PREVIEW_PASSWORD: optionalText,
+      ADMIN_SESSION_SECRET: requiresPreviewSessionSecret ? z.string().min(32) : optionalText,
+      ADMIN_ALLOWED_EMAILS: optionalText,
+      NEXT_PUBLIC_SUPABASE_URL: isProduction ? z.string().url() : optionalUrl,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: isProduction ? z.string().min(1) : optionalText,
+      SUPABASE_URL: optionalUrl,
+      SUPABASE_SERVICE_ROLE_KEY: isProduction ? z.string().min(1) : optionalText,
+      UPSTASH_REDIS_REST_URL: optionalUrl,
+      UPSTASH_REDIS_REST_TOKEN: optionalText,
+      KV_REST_API_URL: optionalUrl,
+      KV_REST_API_TOKEN: optionalText,
+      NEXT_PUBLIC_SITE_URL: optionalUrl
+    })
+    .superRefine((parsedEnv, ctx) => {
+      for (const issue of getUpstashRateLimitEnvIssues(parsedEnv)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [issue.key],
+          message: issue.message
+        });
+      }
+    });
 }
 
 export function validateEnv(env: EnvShape = process.env) {
