@@ -9,7 +9,7 @@ import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard"
 import { TipGallery } from "@/components/sections/TipGallery";
 import { Button } from "@/components/ui/Button";
 import { getBoardCategoryHref } from "@/lib/constants/board";
-import { BUILDER_API_KEY, BUILDER_MODEL_SECTION, isBuilderEnabled } from "@/lib/builder";
+import { BUILDER_API_KEY, BUILDER_MODEL, isBuilderEnabled } from "@/lib/builder";
 import { getFeaturedPosts, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
@@ -30,8 +30,8 @@ export default async function HomePage() {
 
   const [builderTopContent, builderBottomContent] = builderEnabled
     ? await Promise.all([
-        fetchOneEntry({ model: BUILDER_MODEL_SECTION, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/" }, query: { "name": "home-top" } }),
-        fetchOneEntry({ model: BUILDER_MODEL_SECTION, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/" }, query: { "name": "home-bottom" } })
+        fetchOneEntry({ model: BUILDER_MODEL, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/home-top" } }),
+        fetchOneEntry({ model: BUILDER_MODEL, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/home-bottom" } })
       ])
     : [null, null];
 
