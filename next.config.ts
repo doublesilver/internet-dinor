@@ -19,7 +19,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co;"
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.builder.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.builder.io; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://cdn.builder.io; frame-src https://builder.io https://*.builder.io;"
   },
   {
     key: "Permissions-Policy",
@@ -29,6 +29,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   typedRoutes: false,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "cdn.builder.io" }
+    ]
+  },
   async headers() {
     return [
       {

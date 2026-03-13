@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { fetchOneEntry } from "@builder.io/sdk-react";
 import Link from "next/link";
+import { BuilderEditableSection } from "@/components/builder/BuilderEditableSection";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { CarrierProductCard } from "@/components/sections/CarrierProductCard";
 import { RecentApplications } from "@/components/sections/RecentApplications";
@@ -7,6 +9,7 @@ import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard"
 import { TipGallery } from "@/components/sections/TipGallery";
 import { Button } from "@/components/ui/Button";
 import { getBoardCategoryHref } from "@/lib/constants/board";
+import { BUILDER_API_KEY, BUILDER_MODEL_SECTION, isBuilderEnabled } from "@/lib/builder";
 import { getFeaturedPosts, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
@@ -17,14 +20,26 @@ export const metadata: Metadata = {
 const CARRIER_SLUGS = ["sk", "kt", "lg", "skylife", "hellovision"] as const;
 
 export default async function HomePage() {
+  const builderEnabled = isBuilderEnabled();
+
   const [guides, settings, ...carrierProducts] = await Promise.all([
     getFeaturedPosts("guide"),
     getSiteSettings(),
     ...CARRIER_SLUGS.map((slug) => getProductsByCarrierSlug(slug))
   ]);
 
+  const [builderTopContent, builderBottomContent] = builderEnabled
+    ? await Promise.all([
+        fetchOneEntry({ model: BUILDER_MODEL_SECTION, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/" }, query: { "name": "home-top" } }),
+        fetchOneEntry({ model: BUILDER_MODEL_SECTION, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/" }, query: { "name": "home-bottom" } })
+      ])
+    : [null, null];
+
   return (
     <>
+      {/* Builder.io: 홈 상단 편집 가능 영역 (이미지/배너 배치 가능) */}
+      <BuilderEditableSection content={builderTopContent} />
+
       <section className="relative overflow-hidden bg-brand-orange">
         <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between md:py-20">
           <div className="space-y-6 text-white md:w-[55%]">
@@ -152,6 +167,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Builder.io: 홈 하단 편집 가능 영역 (이미지/배너 배치 가능) */}
+      <BuilderEditableSection content={builderBottomContent} />
     </>
   );
 }
