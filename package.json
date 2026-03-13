@@ -10,6 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typegen": "next typegen",
+    "typecheck": "next typegen && tsc --noEmit",
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
     "doctor": "tsx src/scripts/doctor.ts",
