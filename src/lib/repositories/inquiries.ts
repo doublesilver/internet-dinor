@@ -96,7 +96,8 @@ export async function getInquiryById(id: string) {
 
 export async function getInquiryDashboardSummary() {
   const items = await getInquiryFixtures();
-  const todayDate = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date());
+  const formatter = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" });
+  const todayDate = formatter.format(new Date());
   const statusCount = items.reduce<Record<InquiryStatus, number>>(
     (acc, item) => {
       acc[item.status] += 1;
@@ -117,7 +118,7 @@ export async function getInquiryDashboardSummary() {
     total: items.length,
     today: items.filter((item) => {
       const d = new Date(item.createdAt);
-      return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(d) === todayDate;
+      return formatter.format(d) === todayDate;
     }).length,
     statusCount
   };

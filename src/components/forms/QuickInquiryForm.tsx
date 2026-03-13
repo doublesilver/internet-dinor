@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quickInquirySchema } from "@/lib/validators/inquiries";
@@ -10,12 +11,12 @@ import { Button } from "@/components/ui/Button";
 export function QuickInquiryForm({ sourcePage, submitLabel = "30초 상담 받기" }: { sourcePage: string; submitLabel?: string }) {
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const formId = `quick-form-${sourcePage === "/" ? "home" : sourcePage.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}`;
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm<QuickInquiryValues>({
     resolver: zodResolver(quickInquirySchema),
     defaultValues: {
@@ -45,8 +46,7 @@ export function QuickInquiryForm({ sourcePage, submitLabel = "30초 상담 받�
           return;
         }
 
-        reset();
-        window.location.href = "/inquiry/complete";
+        router.push("/inquiry/complete");
       } catch {
         setMessage("문의 접수 중 오류가 발생했습니다.");
       }

@@ -1,4 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import {
   authenticateSupabaseAdmin,
@@ -6,14 +5,10 @@ import {
   getAdminAuthMode,
   getAdminSessionCookieName,
   getAdminSupabaseCookieNames,
-  isAdminAuthConfigured
+  isAdminAuthConfigured,
+  safeCompare
 } from "@/lib/auth/admin";
 import { getRateLimitKey, isRateLimited } from "@/lib/utils/rate-limit";
-
-function safeCompare(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
-}
 
 export async function POST(request: Request) {
   const rateLimitKey = getRateLimitKey(request, "admin-login");

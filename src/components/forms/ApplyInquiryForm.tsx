@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useEffect, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { useController, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -91,6 +92,7 @@ type ApplyInquiryFormProps = {
 };
 
 export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
+  const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [showPostcode, setShowPostcode] = useState(false);
   const [addressPreview, setAddressPreview] = useState("");
@@ -135,6 +137,15 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
   const desiredCarrier = desiredCarrierField.value ?? "";
   const installDateType = installDateTypeField.value ?? "asap";
 
+  useEffect(() => {
+    if (!showPostcode) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowPostcode(false);
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [showPostcode]);
+
   const onSubmit = handleSubmit((values) => {
     setMessage(null);
     const payload = buildApplyInquiryPayload(Object.entries(values.payload ?? {}));
@@ -157,7 +168,7 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
           return;
         }
 
-        window.location.href = "/inquiry/complete";
+        router.push("/inquiry/complete");
       } catch {
         setMessage("신청 접수 중 오류가 발생했습니다.");
       }
@@ -255,18 +266,18 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
         <legend className="text-base font-bold text-brand-graphite">개인 정보</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="field-label">이름 *</label>
-            <input className="field-base" placeholder="홍길동" {...register("name")} />
+            <label htmlFor="apply-name" className="field-label">이름 *</label>
+            <input id="apply-name" className="field-base" placeholder="홍길동" {...register("name")} />
             {errors.name ? <p className="field-error">{errors.name.message}</p> : null}
           </div>
           <div>
-            <label className="field-label">휴대폰 *</label>
-            <input className="field-base" placeholder="010-1234-5678" {...register("phone")} />
+            <label htmlFor="apply-phone" className="field-label">휴대폰 *</label>
+            <input id="apply-phone" className="field-base" placeholder="010-1234-5678" {...register("phone")} />
             {errors.phone ? <p className="field-error">{errors.phone.message}</p> : null}
           </div>
           <div>
-            <label className="field-label">휴대폰 통신사</label>
-            <select className="field-base" {...register("payload.mobile_carrier")}>
+            <label htmlFor="apply-mobile-carrier" className="field-label">휴대폰 통신사</label>
+            <select id="apply-mobile-carrier" className="field-base" {...register("payload.mobile_carrier")}>
               <option value="">선택해주세요</option>
               {mobileCarriers.map((mobileCarrier) => (
                 <option key={mobileCarrier} value={mobileCarrier}>
@@ -276,8 +287,8 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
             </select>
           </div>
           <div>
-            <label className="field-label">연락 희망 시간</label>
-            <select className="field-base" {...register("contactTimePreference")}>
+            <label htmlFor="apply-contact-time" className="field-label">연락 희망 시간</label>
+            <select id="apply-contact-time" className="field-base" {...register("contactTimePreference")}>
               <option value="">선택해주세요</option>
               <option value="morning">오전 (10시~12시)</option>
               <option value="afternoon">오후 (12시~17시)</option>

@@ -139,7 +139,7 @@ async function refreshSupabaseAdminSession(accessToken?: string, refreshToken?: 
   };
 }
 
-function safeCompare(a: string, b: string): boolean {
+export function safeCompare(a: string, b: string): boolean {
   try {
     const bufA = Buffer.from(a);
     const bufB = Buffer.from(b);

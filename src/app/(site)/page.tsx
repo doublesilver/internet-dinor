@@ -7,15 +7,21 @@ import { ServiceCategoryCards } from "@/components/sections/ServiceCategoryCard"
 import { TipGallery } from "@/components/sections/TipGallery";
 import { Button } from "@/components/ui/Button";
 import { getBoardCategoryHref } from "@/lib/constants/board";
-import { getFeaturedPosts, getSiteSettings } from "@/lib/repositories/content";
+import { getFeaturedPosts, getProductsByCarrierSlug, getSiteSettings } from "@/lib/repositories/content";
 
 export const metadata: Metadata = {
   title: "인터넷공룡 - 인터넷/TV 가입 비교 최대 사은품",
   description: "전국 최대 사은품! 인터넷/TV 가입 비교하고 당일설치, 당일입금 받으세요."
 };
 
+const CARRIER_SLUGS = ["sk", "kt", "lg", "skylife", "hellovision"] as const;
+
 export default async function HomePage() {
-  const [guides, settings] = await Promise.all([getFeaturedPosts("guide"), getSiteSettings()]);
+  const [guides, settings, ...carrierProducts] = await Promise.all([
+    getFeaturedPosts("guide"),
+    getSiteSettings(),
+    ...CARRIER_SLUGS.map((slug) => getProductsByCarrierSlug(slug))
+  ]);
 
   return (
     <>
@@ -60,49 +66,21 @@ export default async function HomePage() {
             <p className="mt-2 text-sm text-gray-500">※3년약정, 휴대폰 1회선 결합 할인 기준, VAT포함가</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            <CarrierProductCard
-              carrierSlug="sk"
-              productName="기가라이트인터넷 500M + B tv ALL"
-              speed="500M"
-              channelCount="tv 257개 채널"
-              originalPrice="49,500원"
-              discountPrice="39,400원"
-              giftAmount="사은품 47만원"
-            />
-            <CarrierProductCard
-              carrierSlug="kt"
-              productName="인터넷베이직 500M + TV베이직"
-              speed="500M"
-              channelCount="tv 233개 채널"
-              originalPrice="45,100원"
-              discountPrice="39,600원"
-              giftAmount="사은품 45만원"
-            />
-            <CarrierProductCard
-              carrierSlug="lg"
-              productName="와이파이기본 500M + TV베이직"
-              speed="500M"
-              channelCount="tv 211개 채널"
-              originalPrice="44,000원"
-              discountPrice="34,100원"
-              giftAmount="사은품 47만원"
-            />
-            <CarrierProductCard
-              carrierSlug="skylife"
-              productName="와이파이 100M + TV SKY ALL"
-              speed="100M"
-              channelCount="tv 238개 채널"
-              discountPrice="30,800원"
-              giftAmount="사은품 35만원"
-            />
-            <CarrierProductCard
-              carrierSlug="hellovision"
-              productName="광랜라이트 100M + TV 이코노미"
-              speed="100M"
-              channelCount="tv 109개 채널"
-              discountPrice="29,530원"
-              giftAmount="사은품 30만원"
-            />
+            {CARRIER_SLUGS.map((slug, index) => {
+              const product = carrierProducts[index]?.[0];
+              if (!product) return null;
+              return (
+                <CarrierProductCard
+                  key={slug}
+                  carrierSlug={slug}
+                  productName={product.name}
+                  speed={product.internetSpeed}
+                  originalPrice={product.originalPriceLabel}
+                  discountPrice={product.monthlyPriceLabel}
+                  giftAmount={product.benefitLabel || undefined}
+                />
+              );
+            })}
           </div>
         </div>
       </section>

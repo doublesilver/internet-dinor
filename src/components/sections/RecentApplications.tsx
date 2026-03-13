@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { buildPublicRecentApplications } from "@/data/fixtures/recent-applications";
 
-const PUBLIC_ROWS = buildPublicRecentApplications();
-
 export function RecentApplications() {
+  const rows = useMemo(() => buildPublicRecentApplications(), []);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -45,7 +44,7 @@ export function RecentApplications() {
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-border">
-            {PUBLIC_ROWS.map((row, index) => (
+            {rows.map((row, index) => (
               <tr key={`${row.date}-${row.name}-${index}`} className={index % 2 === 0 ? "bg-white" : "bg-brand-surface"}>
                 <td className="px-4 py-2.5 text-brand-slate">{row.date}</td>
                 <td className="px-4 py-2.5 font-medium text-brand-graphite">{row.name}</td>

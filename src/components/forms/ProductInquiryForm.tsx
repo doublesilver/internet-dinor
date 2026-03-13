@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productInquiryFieldConfig } from "@/data/form-configs/product-inquiry";
@@ -20,6 +21,7 @@ const defaultProductInquiryPayload = {
 };
 
 export function ProductInquiryForm({ product }: { product: Product }) {
+  const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const {
@@ -61,7 +63,7 @@ export function ProductInquiryForm({ product }: { product: Product }) {
         }
 
         setMessage(null);
-        window.location.href = "/inquiry/complete";
+        router.push("/inquiry/complete");
       } catch {
         setMessage("문의 접수 중 오류가 발생했습니다.");
       }
@@ -72,13 +74,13 @@ export function ProductInquiryForm({ product }: { product: Product }) {
     <form id={`product-form-${product.slug}`} onSubmit={onSubmit} className="surface-card space-y-5">
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="field-label">이름</label>
-          <input className="field-base" placeholder="홍길동" {...register("name")} />
+          <label htmlFor="product-name" className="field-label">이름</label>
+          <input id="product-name" className="field-base" placeholder="홍길동" {...register("name")} />
           {errors.name ? <p className="field-error">{errors.name.message}</p> : null}
         </div>
         <div>
-          <label className="field-label">연락처</label>
-          <input className="field-base" placeholder="010-1234-5678" {...register("phone")} />
+          <label htmlFor="product-phone" className="field-label">연락처</label>
+          <input id="product-phone" className="field-base" placeholder="010-1234-5678" {...register("phone")} />
           {errors.phone ? <p className="field-error">{errors.phone.message}</p> : null}
         </div>
       </div>
@@ -101,12 +103,12 @@ export function ProductInquiryForm({ product }: { product: Product }) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="field-label">설치 지역</label>
-          <input className="field-base" placeholder="예: 서울 강동구" {...register("regionLabel")} />
+          <label htmlFor="product-region" className="field-label">설치 지역</label>
+          <input id="product-region" className="field-base" placeholder="예: 서울 강동구" {...register("regionLabel")} />
         </div>
         <div>
-          <label className="field-label">연락 희망 시간</label>
-          <select className="field-base" {...register("contactTimePreference")}>
+          <label htmlFor="product-contact-time" className="field-label">연락 희망 시간</label>
+          <select id="product-contact-time" className="field-base" {...register("contactTimePreference")}>
             <option value="">선택해주세요</option>
             <option value="morning">오전</option>
             <option value="afternoon">오후</option>
@@ -116,8 +118,9 @@ export function ProductInquiryForm({ product }: { product: Product }) {
       </div>
 
       <div>
-        <label className="field-label">문의 메모</label>
+        <label htmlFor="product-memo" className="field-label">문의 메모</label>
         <textarea
+          id="product-memo"
           className="field-base min-h-28"
           placeholder="이사 예정일, 사업장 여부 등을 적어주세요."
           {...register("payload.memo")}

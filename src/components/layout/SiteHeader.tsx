@@ -23,8 +23,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             aria-label="홈으로 이동"
           >
             <span
-              className="text-2xl font-bold"
-              style={{ fontFamily: "'Cafe24Ssurround', sans-serif", color: "#f15c2d" }}
+              className="font-surround text-2xl font-bold text-brand-orange"
             >
               인터넷공룡
             </span>
