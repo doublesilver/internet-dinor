@@ -7,6 +7,10 @@ import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/s
 import type { ContentStatus, Post, PostType, Review } from "@/types/domain";
 import type { PostEditorValues } from "@/lib/validators/content";
 
+function sortByPublishedAtDesc<T extends { publishedAt: string }>(a: T, b: T) {
+  return a.publishedAt < b.publishedAt ? 1 : -1;
+}
+
 export function getBoardTypeFromCategory(category: string): PostType | null {
   return getBoardCategoryConfig(category)?.type ?? null;
 }
@@ -32,7 +36,7 @@ export async function getPostsByType(type: PostType): Promise<Post[]> {
 
   return postsSeed
     .filter((post) => post.type === type && post.status === "published")
-    .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+    .sort(sortByPublishedAtDesc);
 }
 
 export async function getFeaturedPosts(type: PostType) {
@@ -55,7 +59,7 @@ export async function getFeaturedPosts(type: PostType) {
     return [];
   }
 
-  return postsSeed.filter((post) => post.type === type && post.isFeatured && post.status === "published");
+  return postsSeed.filter((post) => post.type === type && post.isFeatured && post.status === "published").sort(sortByPublishedAtDesc);
 }
 
 export async function getPostByTypeAndSlug(type: PostType, slug: string) {
@@ -112,7 +116,7 @@ export async function getAllPostsAdmin() {
     return [];
   }
 
-  return [...postsSeed].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+  return [...postsSeed].sort(sortByPublishedAtDesc);
 }
 
 export async function getReviews(): Promise<Review[]> {
@@ -133,7 +137,7 @@ export async function getReviews(): Promise<Review[]> {
     return [];
   }
 
-  return reviewsSeed.filter((review) => review.status === "published").sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+  return reviewsSeed.filter((review) => review.status === "published").sort(sortByPublishedAtDesc);
 }
 
 export async function getAllReviewsAdmin(): Promise<Review[]> {
@@ -150,7 +154,7 @@ export async function getAllReviewsAdmin(): Promise<Review[]> {
     return [];
   }
 
-  return [...reviewsSeed].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+  return [...reviewsSeed].sort(sortByPublishedAtDesc);
 }
 
 export async function getFeaturedReviews() {
@@ -172,7 +176,7 @@ export async function getFeaturedReviews() {
     return [];
   }
 
-  return reviewsSeed.filter((review) => review.status === "published" && review.featured);
+  return reviewsSeed.filter((review) => review.status === "published" && review.featured).sort(sortByPublishedAtDesc);
 }
 
 export async function getReviewBySlug(slug: string) {

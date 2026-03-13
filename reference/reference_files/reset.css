@@ -1,0 +1,301 @@
+@charset "utf-8";
+
+/* // include normalize */
+
+/* // HTML Elements Reset */
+html, body, h1, h2, h3, h4, h5, h6, p, form, legend, fieldset, img, ul, ol, li, dl, dt, dd, figure, figcaption,
+table, tr, th, td, caption, img, input, select, textarea, button, pre, blockquote, q, option, small, sub, sup, var, kbd, samp, dfn, cite, code, abbr,
+iframe, samp
+{ 
+    margin:0; padding:0; font-size:inherit; 
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+ul,ol,li {
+  list-style:none;
+}
+
+em, b, i , strong, address , ins, del {
+    font-style:inherit;
+    font-weight:inherit;
+}
+
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+input, select, img, label, button, textarea {
+    vertical-align:middle;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+th, td {
+    font-weight:inherit;
+    word-wrap:break-word;
+    word-break:break-all;
+}
+
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    background-color:transparent;
+    width:1px;
+    position:absolute;
+    border:none;
+}
+
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+a:hover,
+label:hover {
+    opacity: 0.7;
+}
+
+a, label {
+    cursor:pointer;
+    transition: all 0.3s;
+}
+
+img, fieldset {
+    border:none;
+}
+
+img, table, textarea {
+  width:100%;
+  box-sizing:border-box;
+}
+
+select, option, textarea, optgroup {
+    font-family:inherit;
+    font-size:inherit;
+    line-height:1.15;
+    width:100%;
+}
+
+select {
+    /* background:#fff url('/resources/images/common/select_arrow.png') no-repeat right center/20px auto;  */
+    -webkit-appearance: none; padding:5px 25px 5px 5px;
+
+    &::-ms-expand {
+        display:none;
+    }
+}
+
+input[type="text"], 
+input[type="number"], 
+input[type="password"] {
+    display: block;
+    width: 100%;
+    height: 50px;
+    border: 0;
+    background-size:contain;
+    vertical-align: middle;
+    outline:0;
+    cursor:pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    padding: 0 17px;
+}
+
+input[type="radio"], 
+input[type="checkbox"] {
+    border:none;
+    width:20px; height:20px;
+    /* background:transparent url('/resources/images/common/ico_check_off.png') no-repeat; */
+    background-size:contain;
+    vertical-align: middle;
+    outline:0;
+    cursor:pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    margin-right:8px;
+    margin-left:0;
+}
+
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+    /* background-image: url('/resources/images/common/ico_check_on.png') */
+}
+
+input[type="file"] {
+    font-size:11px;
+    border-radius:3px;
+    border:1px solid #d8d8d8;
+    background-color:#f2f2f2;
+}
+
+textarea::placeholder, 
+input::placeholder {
+    font-size:inherit; 
+    color: #161616;
+}
+
+
+
+/* // Correct the inability to style clickable types in iOS and Safari. */
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  border:none;
+  transition: all 0.3s;
+}
+
+/* // Remove the inner border and padding in Firefox. */
+ 
+
+ button::-moz-focus-inner,
+ [type="button"]::-moz-focus-inner,
+ [type="reset"]::-moz-focus-inner,
+ [type="submit"]::-moz-focus-inner {
+   border-style: none;
+   padding: 0;
+ }
+
+ 
+/* // Restore the focus styles unset by the previous rule. */
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted transparent;
+}
+
+/* // Add the correct vertical alignment in Chrome, Firefox, and Opera. */
+progress {
+   vertical-align: baseline;
+}
+
+/* // Remove the default vertical scrollbar in IE 10+. */
+
+textarea {
+   overflow: auto;
+}
+
+
+
+
+/* // 1. Add the correct box sizing in IE 10. */
+/* // 2. Remove the padding in IE 10. */
+
+ [type="checkbox"],
+ [type="radio"] {
+   box-sizing: border-box; /* 1 */
+   padding: 0; /* 2 */
+ }
+
+
+
+/* // Correct the cursor style of increment and decrement buttons in Chrome. */
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+
+
+/* // 1. Correct the odd appearance in Chrome and Safari. */
+/* // 2. Correct the outline style in Safari.  */
+
+ [type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    outline-offset: -2px; /* 2 */
+  }
+
+
+
+/* // Remove the inner padding in Chrome and Safari on macOS. */
+ 
+[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+
+/* // 1. Correct the inability to style clickable types in iOS and Safari. */
+/* // 2. Change font properties to `inherit` in Safari. */
+
+ ::-webkit-file-upload-button {
+    -webkit-appearance: button; /* 1 */
+    font: inherit; /* 2 */
+  }
+
+
+/* Interactive
+   ========================================================================== */
+
+/* // Add the correct display in Edge, IE 10+, and Firefox. */
+ 
+ details {
+    display: block;
+  }
+  
+  
+/* // Add the correct display in all browsers. */
+  summary {
+    display: list-item;
+  }
+  
+
+/* Misc
+     ========================================================================== */
+  
+  
+  
+/* // Add the correct display in IE 10+. */
+   
+  template {
+    display: none;
+  }
+  
+/* // Add the correct display in IE 10. */
+  
+  [hidden] {
+    display: none;
+  }
+  
+
+  /* // hiding  */
+  hr, legend {
+    position:absolute;
+    width:1px; height:1px;
+    padding:0; margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    border:0;
+    display:block;
+  }
+
+  .blind {
+    display: none;
+    text-indent: -9999999;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: polygon(0 0, 0 0, 0 0);
+  }
