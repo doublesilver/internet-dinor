@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import { useForm, useWatch } from "react-hook-form";
+import { useController, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildApplyInquiryPayload, extractRegionLabel } from "@/lib/utils/inquiry-form";
 import { applyInquirySchema } from "@/lib/validators/inquiries";
@@ -99,7 +99,6 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
     register,
     handleSubmit,
     control,
-    resetField,
     setValue,
     formState: { errors }
   } = useForm<ApplyInquiryValues>({
@@ -128,13 +127,13 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
     }
   });
 
-  const desiredCarrier = useWatch({ control, name: "payload.desired_carrier" }) ?? "";
   const customerType = useWatch({ control, name: "payload.customer_type" }) ?? "individual";
   const paymentMethod = useWatch({ control, name: "payload.payment_method" }) ?? "auto_transfer";
-  const installDateType = useWatch({ control, name: "payload.install_date_type" }) ?? "asap";
-
-  const desiredCarrierField = register("payload.desired_carrier");
-  const installDateTypeField = register("payload.install_date_type");
+  const { field: desiredCarrierField } = useController({ control, name: "payload.desired_carrier" });
+  const { field: installDateTypeField } = useController({ control, name: "payload.install_date_type" });
+  const { field: regionLabelField } = useController({ control, name: "regionLabel" });
+  const desiredCarrier = desiredCarrierField.value ?? "";
+  const installDateType = installDateTypeField.value ?? "asap";
 
   const onSubmit = handleSubmit((values) => {
     setMessage(null);
@@ -191,11 +190,14 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
                 type="radio"
                 value={opt.value}
                 className="accent-brand-orange"
-                {...desiredCarrierField}
-                onChange={(event) => {
-                  desiredCarrierField.onChange(event);
-                  resetField("payload.internet_plan", { defaultValue: "" });
-                  resetField("payload.tv_plan", { defaultValue: "" });
+                name={desiredCarrierField.name}
+                ref={desiredCarrierField.ref}
+                checked={desiredCarrierField.value === opt.value}
+                onBlur={desiredCarrierField.onBlur}
+                onChange={() => {
+                  desiredCarrierField.onChange(opt.value);
+                  setValue("payload.internet_plan", "", { shouldDirty: true, shouldValidate: true });
+                  setValue("payload.tv_plan", "", { shouldDirty: true, shouldValidate: true });
                 }}
               />
               {opt.label}
@@ -292,7 +294,16 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
             <input
               className="field-base flex-1"
               placeholder="예: 서울 강동구"
-              {...register("regionLabel")}
+              name={regionLabelField.name}
+              ref={regionLabelField.ref}
+              value={regionLabelField.value ?? ""}
+              onBlur={regionLabelField.onBlur}
+              onChange={(event) => {
+                regionLabelField.onChange(event.target.value);
+                if (addressPreview) {
+                  setAddressPreview("");
+                }
+              }}
             />
             <button
               type="button"
@@ -336,7 +347,7 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
                   const nextAddress = data.roadAddress || data.jibunAddress;
                   const nextRegionLabel = extractRegionLabel(nextAddress);
                   setAddressPreview(nextAddress);
-                  setValue("regionLabel", nextRegionLabel || nextAddress, { shouldDirty: true, shouldValidate: true });
+                  regionLabelField.onChange(nextRegionLabel || nextAddress);
                   setShowPostcode(false);
                 }}
                 style={{ height: 400 }}
@@ -373,16 +384,28 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
               type="radio"
               value="asap"
               className="accent-brand-orange"
-              {...installDateTypeField}
-              onChange={(event) => {
-                installDateTypeField.onChange(event);
-                resetField("payload.install_date", { defaultValue: "" });
+              name={installDateTypeField.name}
+              ref={installDateTypeField.ref}
+              checked={installDateTypeField.value === "asap"}
+              onBlur={installDateTypeField.onBlur}
+              onChange={() => {
+                installDateTypeField.onChange("asap");
+                setValue("payload.install_date", "", { shouldDirty: true, shouldValidate: true });
               }}
             />
             빠른 시일 희망
           </label>
           <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-brand-border px-4 py-2.5 text-sm hover:border-brand-orange has-[:checked]:border-brand-orange has-[:checked]:bg-brand-orange/5">
-            <input type="radio" value="custom" className="accent-brand-orange" {...installDateTypeField} />
+            <input
+              type="radio"
+              value="custom"
+              className="accent-brand-orange"
+              name={installDateTypeField.name}
+              ref={installDateTypeField.ref}
+              checked={installDateTypeField.value === "custom"}
+              onBlur={installDateTypeField.onBlur}
+              onChange={() => installDateTypeField.onChange("custom")}
+            />
             직접 선택
           </label>
         </div>
