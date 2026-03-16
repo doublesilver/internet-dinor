@@ -131,7 +131,7 @@ export function CharacterOverlay() {
   return (
     <>
       {/* Toolbar */}
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 99999, background: "rgba(20,20,40,0.95)", padding: "8px 12px", display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", borderBottom: "2px solid #4A86CF", backdropFilter: "blur(10px)" }}>
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 99999, background: "rgba(20,20,40,0.95)", padding: "8px 12px", display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", borderTop: "2px solid #4A86CF", backdropFilter: "blur(10px)" }}>
         <span style={{ fontSize: "13px", fontWeight: 700, color: "#4A86CF" }}>🦕 배치 편집</span>
         {CHAR_OPTIONS.map(opt => (
           <button key={opt.type} onClick={() => addChar(opt)} style={{ padding: "4px 10px", borderRadius: "6px", border: "1px solid #555", background: "#2a2a4a", color: "#fff", fontSize: "11px", cursor: "pointer" }}>{opt.label}</button>
