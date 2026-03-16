@@ -91,6 +91,20 @@ export const CARRIER_PRICE_DATA: Record<string, CarrierPriceData> = {
       { label: "미결합", discount: 0 },
       { label: "1회선", discount: -3300 }
     ]
+  },
+  hellovision: {
+    internetOptions: [
+      { label: "100M", speed: "100M", price: 22000 }
+    ],
+    tvOptions: [
+      { label: "미결합", price: 0 },
+      { label: "이코노미", price: 9900 },
+      { label: "스탠다드", price: 13200 }
+    ],
+    mobileOptions: [
+      { label: "미결합", discount: 0 },
+      { label: "1회선", discount: -3300 }
+    ]
   }
 };
 
