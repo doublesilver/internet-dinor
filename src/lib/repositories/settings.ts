@@ -23,7 +23,7 @@ const getCachedSiteSettings = unstable_cache(
     return mapSiteSettingsRow(data);
   },
   ["site-settings"],
-  { tags: [SITE_SETTINGS_TAG] }
+  { tags: [SITE_SETTINGS_TAG], revalidate: 60 }
 );
 
 export async function getSiteSettings(): Promise<SiteSettings> {
