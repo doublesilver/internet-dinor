@@ -9,6 +9,7 @@ export interface PriceCalculatorProps {
 }
 
 export interface PriceCalculatorClientProps {
+  carrierSlug: string;
   carrierName: string;
   accentColor: string;
   products: PriceCalculatorProducts;

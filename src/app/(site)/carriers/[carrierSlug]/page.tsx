@@ -40,12 +40,16 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
   const theme = getCarrierTheme(carrier.slug);
   const featuredProducts = products.slice(0, 3);
 
+  const heroGradientStyle = {
+    background: `linear-gradient(to bottom, ${theme.accentColor}18, #ffffff)`
+  };
+
   return (
     <>
-      <section className="bg-gradient-to-b from-brand-sky-soft to-white py-12 md:py-20">
+      <section className="py-12 md:py-20" style={heroGradientStyle}>
         <div className="container-page space-y-6">
           <p className="text-sm font-medium text-brand-slate">
-            홈 &gt; 통신사별 상품 &gt; <span className="text-brand-orange">{carrier.shortName}</span>
+            홈 &gt; 통신사별 상품 &gt; <span style={{ color: theme.accentColor }}>{carrier.shortName}</span>
           </p>
           <h1 className="text-3xl font-black tracking-tight text-brand-graphite md:text-5xl">{carrier.heroTitle}</h1>
           <p className="max-w-3xl text-base leading-7 text-brand-slate md:text-lg">{carrier.heroDescription}</p>
@@ -57,10 +61,20 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
             ))}
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button href="/apply">신청서 작성</Button>
-            <Button href={settings.phoneLink} variant="secondary">
+            <a
+              href="/apply"
+              className="inline-flex items-center justify-center rounded-2xl px-6 py-3.5 text-sm font-bold text-white transition-colors hover:opacity-90"
+              style={{ backgroundColor: theme.accentColor }}
+            >
+              신청서 작성
+            </a>
+            <a
+              href={settings.phoneLink}
+              className="inline-flex items-center justify-center rounded-2xl border px-6 py-3.5 text-sm font-bold bg-white transition-colors hover:bg-blue-50"
+              style={{ borderColor: theme.accentColor, color: theme.accentColor }}
+            >
               전화 상담
-            </Button>
+            </a>
           </div>
         </div>
       </section>
@@ -181,7 +195,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
           <div className="space-y-4">
             <h2 className="text-3xl font-black tracking-tight">{carrier.shortName} 상담 받기</h2>
             <p className="text-white/80">연락처만 남겨주시면 {carrier.shortName} 전문 상담사가 맞춤 견적을 안내해드립니다.</p>
-            <a href={settings.phoneLink} className="inline-flex text-2xl font-black text-brand-orange">
+            <a href={settings.phoneLink} className="inline-flex text-2xl font-black" style={{ color: theme.accentColor }}>
               {settings.phoneLabel}
             </a>
           </div>

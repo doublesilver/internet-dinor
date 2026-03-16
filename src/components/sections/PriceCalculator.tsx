@@ -10,5 +10,5 @@ export function PriceCalculator({ carrierSlug, carrierName, products }: PriceCal
 
   const accentColor = getCarrierAccentColor(carrierSlug);
 
-  return <PriceCalculatorClient carrierName={carrierName} accentColor={accentColor} products={products} />;
+  return <PriceCalculatorClient carrierSlug={carrierSlug} carrierName={carrierName} accentColor={accentColor} products={products} />;
 }
