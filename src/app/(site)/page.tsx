@@ -115,7 +115,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-brand-orange py-12 md:py-16">
+      <section className="bg-[#333] py-12 md:py-16">
         <div className="container-page space-y-4 text-center text-white">
           <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
           <h2 className="text-3xl font-black font-surround md:text-4xl">혜택이 이렇게나 많았다고?</h2>

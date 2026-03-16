@@ -28,7 +28,7 @@ describe("board category config", () => {
 describe("carrier theme config", () => {
   it("returns a carrier specific theme when the slug is known", () => {
     expect(getCarrierTheme("kt")).toEqual({
-      accentColor: "#3E78C0",
+      accentColor: "#FF5B62",
       logoPath: "/images/carriers/kt_logo.png",
       logoAlt: "KT"
     });
@@ -40,6 +40,6 @@ describe("carrier theme config", () => {
   });
 
   it("exposes the accent color from the shared carrier theme map", () => {
-    expect(getCarrierAccentColor("lg")).toBe("#6BA0E0");
+    expect(getCarrierAccentColor("lg")).toBe("#FE82B0");
   });
 });

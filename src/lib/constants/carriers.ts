@@ -12,27 +12,27 @@ export const DEFAULT_CARRIER_THEME: CarrierTheme = {
 
 export const CARRIER_THEME_MAP: Record<string, CarrierTheme> = {
   sk: {
-    accentColor: "#5A94D8",
+    accentColor: "#FFA13E",
     logoPath: "/images/carriers/sk_logo.png",
     logoAlt: "SK"
   },
   kt: {
-    accentColor: "#3E78C0",
+    accentColor: "#FF5B62",
     logoPath: "/images/carriers/kt_logo.png",
     logoAlt: "KT"
   },
   lg: {
-    accentColor: "#6BA0E0",
+    accentColor: "#FE82B0",
     logoPath: "/images/carriers/lg_logo.png",
     logoAlt: "LG"
   },
   skylife: {
-    accentColor: "#7AADE4",
+    accentColor: "#6DD5C0",
     logoPath: "/images/carriers/kt_logo_sky.png",
     logoAlt: "Skylife"
   },
   hellovision: {
-    accentColor: "#8AB8E8",
+    accentColor: "#FFA38B",
     logoPath: "/images/carriers/lg_vision.png",
     logoAlt: "Hellovision"
   }

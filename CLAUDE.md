@@ -30,7 +30,7 @@
 - 라벤더: `#B8C8E8` (블루 라벤더)
 - 스카이: `#6EA8E0` (밝은 블루)
 - 다크: `#2C3E50`
-- 통신사별: SK `#5A94D8`, KT `#3E78C0`, LG `#6BA0E0`, Sky `#7AADE4`, Hello `#8AB8E8`
+- 통신사별: SK `#FFA13E`, KT `#FF5B62`, LG `#FE82B0`, Sky `#6DD5C0`, Hello `#FFA38B`
 
 ## 주요 경로
 
