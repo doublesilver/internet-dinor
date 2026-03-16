@@ -132,8 +132,12 @@ export function CharacterOverlay() {
 
   return (
     <>
-      {/* 확정 배치 — 메인 페이지에서만 표시 */}
-      {isHomePage && SAVED_PLACEMENTS.map((p, i) => (
+      {/* 로고 — 모든 페이지에서 표시 */}
+      {SAVED_PLACEMENTS.filter(p => p.type === "etc-dino" && p.y < 100).map((p, i) => (
+        <CharImage key={`logo${i}`} {...p} />
+      ))}
+      {/* 나머지 캐릭터 — 메인 페이지에서만 표시 */}
+      {isHomePage && SAVED_PLACEMENTS.filter(p => !(p.type === "etc-dino" && p.y < 100)).map((p, i) => (
         <CharImage key={`s${i}`} {...p} />
       ))}
 
