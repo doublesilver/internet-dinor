@@ -156,24 +156,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="bg-[#333] py-16 md:py-24">
-        <div className="container-page text-center text-white">
-          <p className="text-lg font-medium">지금 바로 전문 상담사에게 문의하세요</p>
-          <a href={settings.phoneLink} className="mt-4 inline-block text-5xl font-black text-brand-orange md:text-6xl">
-            {settings.phoneLabel}
-          </a>
-          <p className="mt-4 text-base text-white/70">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
-          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button href="/apply" fullWidth>
-              신청서 작성
-            </Button>
-            <Button href={settings.phoneLink} variant="secondary" fullWidth>
-              전화 상담
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Builder.io: 홈 하단 편집 가능 영역 (이미지/배너 배치 가능) */}
       <BuilderEditableSection content={builderBottomContent} />
     </>

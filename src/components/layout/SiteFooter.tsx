@@ -4,6 +4,23 @@ import type { SiteSettings } from "@/types/domain";
 export function SiteFooter({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="border-t border-brand-border bg-[#333] pb-20 text-white" role="contentinfo">
+      {/* Contact CTA */}
+      <div className="container-page space-y-4 py-16 text-center md:py-24">
+        <p className="text-lg font-medium">지금 바로 전문 상담사에게 문의하세요</p>
+        <a href={settings.phoneLink} className="mt-4 inline-block text-5xl font-black text-brand-orange md:text-6xl">
+          {settings.phoneLabel}
+        </a>
+        <p className="mt-4 text-base text-white/70">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
+        <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link href="/apply" className="inline-flex w-full items-center justify-center rounded-2xl bg-brand-orange px-6 py-3.5 text-sm font-bold text-white transition-colors hover:bg-brand-orange-dark">
+            신청서 작성
+          </Link>
+          <a href={settings.phoneLink} className="inline-flex w-full items-center justify-center rounded-2xl border border-brand-orange bg-white px-6 py-3.5 text-sm font-bold text-brand-orange transition-colors hover:bg-blue-50">
+            전화 상담
+          </a>
+        </div>
+      </div>
+
       <div className="container-page space-y-6 py-10">
         {/* Title */}
         <p className="text-lg font-bold text-white">인터넷 가격비교</p>
