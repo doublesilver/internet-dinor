@@ -38,7 +38,7 @@ const CHAR_OPTIONS = [
 
 // 확정된 배치 설정 — 편집 후 여기에 붙여넣기
 const SAVED_PLACEMENTS: Placement[] = [
-  // { type: "etc-dino", src: "/images/characters/etc-dino.png", x: 250, y: 15, w: 300, h: 100, z: 50, opacity: 100 },
+  { type: "etc-dino", src: "/images/characters/etc-dino.png", x: 197, y: -30, w: 538, h: 180, z: 50, opacity: 100 },
 ];
 
 function CharImage({ src, x, y, w, h, z, opacity }: { src: string; x: number; y: number; w: number; h: number; z: number; opacity: number }) {
