@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useState, useCallback, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 
 interface CharItem {
   id: number;
@@ -58,7 +58,9 @@ function CharImage({ src, x, y, w, h, z, opacity }: { src: string; x: number; y:
 
 export function CharacterOverlay() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const editMode = searchParams.get("edit") === "true";
+  const isHomePage = pathname === "/";
   const [chars, setChars] = useState<CharItem[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [nextId, setNextId] = useState(1);
@@ -130,8 +132,8 @@ export function CharacterOverlay() {
 
   return (
     <>
-      {/* 확정 배치 — 항상 표시 */}
-      {SAVED_PLACEMENTS.map((p, i) => (
+      {/* 확정 배치 — 메인 페이지에서만 표시 */}
+      {isHomePage && SAVED_PLACEMENTS.map((p, i) => (
         <CharImage key={`s${i}`} {...p} />
       ))}
 
