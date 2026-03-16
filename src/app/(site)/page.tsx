@@ -28,12 +28,18 @@ export default async function HomePage() {
     ...CARRIER_SLUGS.map((slug) => getProductsByCarrierSlug(slug))
   ]);
 
-  const [builderTopContent, builderBottomContent] = builderEnabled
-    ? await Promise.all([
+  let builderTopContent = null;
+  let builderBottomContent = null;
+  if (builderEnabled) {
+    try {
+      [builderTopContent, builderBottomContent] = await Promise.all([
         fetchOneEntry({ model: BUILDER_MODEL, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/home-top" } }),
         fetchOneEntry({ model: BUILDER_MODEL, apiKey: BUILDER_API_KEY, userAttributes: { urlPath: "/home-bottom" } })
-      ])
-    : [null, null];
+      ]);
+    } catch {
+      // Builder.io unavailable — continue without editable sections
+    }
+  }
 
   return (
     <>

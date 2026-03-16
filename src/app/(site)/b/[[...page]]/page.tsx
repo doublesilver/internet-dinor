@@ -13,11 +13,16 @@ export default async function BuilderPage({ params }: BuilderPageProps) {
   const { page } = await params;
   const urlPath = "/b/" + (page?.join("/") ?? "");
 
-  const content = await fetchOneEntry({
-    model: BUILDER_MODEL,
-    apiKey: BUILDER_API_KEY,
-    userAttributes: { urlPath }
-  });
+  let content = null;
+  try {
+    content = await fetchOneEntry({
+      model: BUILDER_MODEL,
+      apiKey: BUILDER_API_KEY,
+      userAttributes: { urlPath }
+    });
+  } catch {
+    notFound();
+  }
 
   if (!content) notFound();
 
