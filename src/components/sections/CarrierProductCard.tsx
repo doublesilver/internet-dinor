@@ -26,12 +26,12 @@ export function CarrierProductCard({
   return (
     <article className="flex flex-col overflow-hidden rounded-[30px] bg-white shadow-[4px_4px_2px_rgba(0,0,0,0.1)]">
       {/* Carrier logo */}
-      <div className="flex items-center justify-center border-b border-brand-border px-6 py-4">
+      <div className="flex items-center justify-center border-b border-brand-border px-4 py-3">
         <Image src={theme.logoPath} alt={theme.logoAlt} width={120} height={40} className="h-8 w-auto object-contain" />
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col px-6 py-5 text-center">
+      <div className="flex flex-1 flex-col px-4 py-4 text-center">
         <h3 className="text-base font-bold leading-snug text-gray-900">{productName}</h3>
 
         <div className="mt-3 space-y-1 text-sm text-gray-500">

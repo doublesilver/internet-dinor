@@ -55,7 +55,7 @@ export function ServiceCategoryCards() {
           className="flex flex-col rounded-[20px] bg-white shadow-[4px_4px_2px_rgba(0,0,0,0.1)]"
         >
           {/* Card body */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-8 text-center">
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 px-4 py-5 text-center">
             <h3 className="text-base font-black leading-tight text-gray-900">{item.title}</h3>
             <p className="text-xs text-gray-500 leading-snug">{item.subTitle}</p>
             <p className="mt-2 text-xl font-black text-brand-orange">{item.maxAmount}</p>

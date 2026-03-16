@@ -57,7 +57,7 @@ export default async function BoardDetailPage({ params }: { params: Promise<{ ca
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-orange">{config.badgeLabel}</p>
           <h1 className="mt-3 text-4xl font-black tracking-tight text-brand-graphite">{post.title}</h1>
           <p className="mt-3 text-sm text-brand-slate">{formatDate(post.publishedAt)}</p>
-          <div className="mt-8 rounded-2xl bg-brand-surface p-6 text-base leading-8 text-brand-slate">{post.body}</div>
+          <div className="mt-5 rounded-2xl bg-brand-surface p-4 text-base leading-8 text-brand-slate">{post.body}</div>
 
           {config.showRelatedProducts && validRelatedProducts.length > 0 ? (
             <div className="mt-8">
@@ -76,7 +76,7 @@ export default async function BoardDetailPage({ params }: { params: Promise<{ ca
             </div>
           ) : null}
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-3">
             <Button href="/apply">{post.ctaLabel ?? config.detailCtaLabel}</Button>
             <Button href={getBoardCategoryHref(category) ?? `/board/${category}`} variant="secondary">
               목록으로

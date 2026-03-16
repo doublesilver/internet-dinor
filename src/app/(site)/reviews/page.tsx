@@ -24,9 +24,9 @@ export default async function ReviewsPage() {
         />
 
         {featured.length > 0 && (
-          <div className="mb-10">
-            <p className="mb-4 text-xs font-bold uppercase tracking-wider text-brand-orange">추천 후기</p>
-            <div className="grid gap-6 lg:grid-cols-2">
+          <div className="mb-6">
+            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-brand-orange">추천 후기</p>
+            <div className="grid gap-4 lg:grid-cols-2">
               {featured.map((review) => (
                 <div key={review.id} className="rounded-2xl ring-2 ring-brand-orange ring-offset-2">
                   <ReviewCard review={review} />

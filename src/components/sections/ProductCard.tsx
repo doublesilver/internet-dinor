@@ -20,7 +20,7 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <h3 className="text-xl font-bold text-brand-graphite">{product.name}</h3>
       <p className="mt-2 text-sm leading-6 text-brand-slate">{product.summary}</p>
-      <dl className="mt-6 space-y-3 text-sm text-brand-slate">
+      <dl className="mt-4 space-y-2 text-sm text-brand-slate">
         <div className="flex items-center justify-between gap-4">
           <dt>구성</dt>
           <dd className="font-semibold text-brand-graphite">{bundleLabel[product.bundleType] ?? "인터넷 단독"}</dd>
@@ -35,7 +35,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </dl>
       <p className="mt-4 rounded-2xl bg-brand-sky-soft px-4 py-3 text-sm text-brand-graphite">{product.benefitLabel}</p>
-      <div className="mt-auto pt-6">
+      <div className="mt-auto pt-4">
         <Button href={`/products/${product.slug}`} fullWidth>
           이 상품 문의하기
         </Button>

@@ -17,7 +17,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
     <header className="sticky top-0 z-30 bg-white shadow-sm" role="banner">
       {/* Main nav bar */}
       <div className="border-b border-brand-border">
-        <div className="container-page flex h-20 items-center justify-between gap-4 py-0">
+        <div className="container-page flex h-16 items-center justify-between gap-4 py-0">
           <Link
             href="/"
             aria-label="홈으로 이동"
@@ -84,7 +84,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
       {/* Carrier sub-nav (desktop only) */}
       <div className="hidden border-b border-brand-border bg-brand-surface lg:block">
         <div className="container-page">
-          <nav aria-label="통신사 네비게이션" className="flex h-14 items-center justify-center gap-6 text-base font-bold text-brand-slate">
+          <nav aria-label="통신사 네비게이션" className="flex h-11 items-center justify-center gap-6 text-base font-bold text-brand-slate">
             {carrierNavigation.map((item) => (
               <Link
                 key={item.href}

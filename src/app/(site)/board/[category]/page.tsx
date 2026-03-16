@@ -41,7 +41,7 @@ export default async function BoardCategoryPage({ params }: { params: Promise<{ 
         <SectionHeading eyebrow={config.eyebrow} title={config.title} description={config.description} />
 
         {config.featuredVariant === "ranked" && featured.length > 0 ? (
-          <div className="mb-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((post, index) => (
               <article key={post.id} className="surface-card relative flex flex-col gap-4">
                 <span className="absolute left-4 top-4 rounded-full bg-brand-orange px-2.5 py-0.5 text-xs font-bold text-white">
@@ -63,7 +63,7 @@ export default async function BoardCategoryPage({ params }: { params: Promise<{ 
         ) : null}
 
         {config.featuredVariant === "highlight" && featured.length > 0 ? (
-          <div className="mb-10 grid gap-6 sm:grid-cols-2">
+          <div className="mb-6 grid gap-4 sm:grid-cols-2">
             {featured.map((post) => (
               <article key={post.id} className="surface-card flex flex-col gap-4">
                 <p className="text-xs font-bold uppercase tracking-wider text-brand-orange">{config.badgeLabel}</p>

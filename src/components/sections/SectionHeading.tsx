@@ -12,7 +12,7 @@ export function SectionHeading({
   action?: ReactNode;
 }) {
   return (
-    <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div className="space-y-2">
         {eyebrow ? <p className="text-sm font-semibold text-brand-orange">{eyebrow}</p> : null}
         <h2 className="text-2xl font-bold tracking-tight text-brand-graphite md:text-4xl">{title}</h2>

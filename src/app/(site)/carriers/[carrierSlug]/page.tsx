@@ -46,8 +46,8 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
 
   return (
     <>
-      <section className="py-12 md:py-20" style={heroGradientStyle}>
-        <div className="container-page space-y-6">
+      <section className="py-8 md:py-12" style={heroGradientStyle}>
+        <div className="container-page space-y-4">
           <p className="text-sm font-medium text-brand-slate">
             홈 &gt; 통신사별 상품 &gt; <span style={{ color: theme.accentColor }}>{carrier.shortName}</span>
           </p>
@@ -79,12 +79,12 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <section className="bg-brand-surface py-12 md:py-16">
+      <section className="bg-brand-surface py-8 md:py-12">
         <div className="container-page">
           <h2 className="mb-2 text-center text-2xl font-black text-brand-graphite md:text-3xl">
             <span style={{ color: theme.accentColor }}>{carrier.shortName}</span>의
           </h2>
-          <p className="mb-8 text-center text-2xl font-black text-brand-graphite md:text-3xl">
+          <p className="mb-5 text-center text-2xl font-black text-brand-graphite md:text-3xl">
             <strong>등록된 공개 상품</strong> 기준으로 혜택과 요금을 비교해보세요!
           </p>
           <PriceCalculator carrierSlug={carrier.slug} carrierName={carrier.shortName} products={products} />
@@ -190,9 +190,9 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <section className="section-space bg-brand-graphite">
-        <div className="container-page grid gap-8 text-white md:grid-cols-[1fr_400px]">
-          <div className="space-y-4">
+      <section className="py-8 md:py-12 bg-brand-graphite">
+        <div className="container-page grid gap-6 text-white md:grid-cols-[1fr_400px]">
+          <div className="space-y-3">
             <h2 className="text-3xl font-black tracking-tight">{carrier.shortName} 상담 받기</h2>
             <p className="text-white/80">연락처만 남겨주시면 {carrier.shortName} 전문 상담사가 맞춤 견적을 안내해드립니다.</p>
             <a href={settings.phoneLink} className="inline-flex text-2xl font-black" style={{ color: theme.accentColor }}>

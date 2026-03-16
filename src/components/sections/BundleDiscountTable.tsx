@@ -73,7 +73,7 @@ export function BundleDiscountTable({ carrierSlug }: BundleDiscountTableProps) {
 
   return (
     <section className="section-space bg-brand-surface">
-      <div className="container-page space-y-8">
+      <div className="container-page space-y-5">
         <div className="text-center">
           <h2 className="text-2xl font-black text-brand-graphite md:text-3xl">
             결합할인 안내

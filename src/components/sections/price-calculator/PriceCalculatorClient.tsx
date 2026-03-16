@@ -35,7 +35,7 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
 
   return (
     <div className="overflow-hidden rounded-[20px] bg-white shadow-lg">
-      <div className="grid gap-6 p-6 lg:grid-cols-[minmax(0,320px)_1fr]">
+      <div className="grid gap-4 p-4 lg:grid-cols-[minmax(0,320px)_1fr]">
         <PriceCalculatorSelector
           accentColor={accentColor}
           priceData={priceData}
@@ -43,8 +43,8 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
           onChange={setSelection}
         />
 
-        <div className="space-y-4">
-          <div className="rounded-2xl border border-brand-border p-5">
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-brand-border p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold" style={{ color: accentColor }}>
@@ -64,7 +64,7 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
             </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-2 md:grid-cols-3">
             <div className="rounded-2xl bg-brand-surface p-4">
               <p className="text-sm text-brand-slate">인터넷 속도</p>
               <p className="mt-2 text-lg font-bold text-brand-graphite">{selectedInternet?.speed ?? "-"}</p>

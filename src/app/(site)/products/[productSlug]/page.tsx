@@ -31,8 +31,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
   return (
     <>
-      <section className="section-space bg-brand-sky-soft">
-        <div className="container-page grid gap-8 md:grid-cols-[1fr_420px]">
+      <section className="py-8 md:py-12 bg-brand-sky-soft">
+        <div className="container-page grid gap-5 md:grid-cols-[1fr_420px]">
           <div className="surface-card bg-white">
             <p className="text-sm font-semibold text-brand-orange">홈 &gt; 상품 상세 &gt; {product.name}</p>
             <div className="mt-5 flex flex-wrap gap-2">
@@ -44,7 +44,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             </div>
             <h1 className="mt-5 text-4xl font-black tracking-tight text-brand-graphite">{product.name}</h1>
             <p className="mt-4 text-base leading-7 text-brand-slate">{product.description}</p>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <div className="mt-5 grid gap-3 md:grid-cols-3">
               <div className="rounded-2xl bg-brand-surface p-4">
                 <p className="text-sm text-brand-slate">속도</p>
                 <p className="mt-2 text-lg font-bold text-brand-graphite">{product.internetSpeed}</p>
@@ -58,7 +58,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <p className="mt-2 text-lg font-bold text-brand-orange">{product.monthlyPriceLabel}</p>
               </div>
             </div>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               <Button href="#inquiry">이 상품 문의하기</Button>
               <Button href={settings.phoneLink} variant="secondary">
                 전화 상담
@@ -79,7 +79,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <section className="section-space">
+      <section className="py-8 md:py-12">
         <div className="container-page">
           <SectionHeading title="상품 안내" description="기획안 기준으로 추천 대상, 비교 포인트, 유의사항을 블록형 섹션으로 확장 가능하게 설계했습니다." />
           <div className="grid gap-5 md:grid-cols-2">
@@ -93,8 +93,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <section id="inquiry" className="section-space bg-brand-lavender-soft/40">
-        <div className="container-page grid gap-8 md:grid-cols-[0.9fr_1.1fr]">
+      <section id="inquiry" className="py-8 md:py-12 bg-brand-lavender-soft/40">
+        <div className="container-page grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-4">
             <SectionHeading title="이 상품 기준으로 상담받기" description="상품 상세 폼은 공통 필드 + payload 확장 구조로 설계해 후속 운영 시 필드 추가가 쉽습니다." />
             <div className="surface-card">

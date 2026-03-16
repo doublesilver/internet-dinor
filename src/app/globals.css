@@ -32,11 +32,11 @@
   }
 
   .section-space {
-    @apply py-16 md:py-24;
+    @apply py-8 md:py-12;
   }
 
   .surface-card {
-    @apply rounded-[24px] border border-brand-border bg-white p-6 shadow-soft;
+    @apply rounded-[24px] border border-brand-border bg-white p-4 md:p-5 shadow-soft;
   }
 
   .field-label {

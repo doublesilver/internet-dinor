@@ -4,9 +4,9 @@ import type { SiteSettings } from "@/types/domain";
 export function SiteFooter({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="border-t border-brand-border bg-[#333] pb-20 text-white" role="contentinfo">
-      <div className="container-page py-10">
+      <div className="container-page py-8">
         {/* Two-column: left=info, right=CTA (mobile: stacked) */}
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           {/* Left: Business info */}
           <div className="space-y-5">
             <p className="text-lg font-bold text-white">인터넷 가격비교</p>
