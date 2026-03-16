@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchOneEntry } from "@builder.io/sdk-react";
+import Image from "next/image";
 import Link from "next/link";
 import { BuilderEditableSection } from "@/components/builder/BuilderEditableSection";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
@@ -47,7 +48,8 @@ export default async function HomePage() {
       <BuilderEditableSection content={builderTopContent} />
 
       <section className="relative overflow-hidden bg-brand-orange">
-        <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
+        <Image src="/images/characters/group-dino.png" alt="" width={988} height={637} style={{ left: '236px', top: '180px', width: '988px', height: '637px' }} className="pointer-events-none absolute hidden lg:block" />
+        <div className="container-page relative z-10 flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
           <div className="space-y-4 text-white md:w-[55%]">
             <h1 className="text-4xl font-black font-surround leading-[1.3] md:text-[55px]">
               이번달 남김없이!
@@ -115,8 +117,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#333] py-8 md:py-12">
-        <div className="container-page space-y-4 text-center text-white">
+      <section className="relative overflow-hidden bg-[#333] py-8 md:py-12">
+        <Image src="/images/characters/group-dino.png" alt="" width={612} height={392} style={{ left: '46px', top: '11px', width: '612px', height: '392px' }} className="pointer-events-none absolute hidden lg:block" />
+        <div className="container-page relative z-10 space-y-4 text-center text-white">
           <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
           <h2 className="text-3xl font-black font-surround md:text-4xl">혜택이 이렇게나 많았다고?</h2>
           <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
@@ -132,8 +135,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
-        <div className="container-page">
+      <section className="relative overflow-hidden py-10 md:py-14">
+        <Image src="/images/characters/hero-dino.png" alt="" width={314} height={373} style={{ right: '-60px', top: '140px', width: '314px', height: '373px' }} className="pointer-events-none absolute hidden lg:block" />
+        <div className="container-page relative z-10">
           <div className="mb-6 text-center">
             <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">실시간 신청 현황</h2>
             <p className="mt-3 text-brand-slate">지금도 많은 분들이 인터넷공룡을 통해 신청하고 계십니다.</p>
@@ -143,8 +147,9 @@ export default async function HomePage() {
       </section>
 
       {guides.length > 0 && (
-        <section className="bg-brand-surface py-10 md:py-14">
-          <div className="container-page">
+        <section className="relative overflow-hidden bg-brand-surface py-10 md:py-14">
+          <Image src="/images/characters/etc-dino.png" alt="" width={914} height={305} style={{ left: '543px', bottom: '0', width: '914px', height: '305px' }} className="pointer-events-none absolute hidden lg:block" />
+          <div className="container-page relative z-10">
             <div className="mb-6 flex items-end justify-between">
               <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">꿀TIP 모아보기</h2>
               <Button href={getBoardCategoryHref("guide") ?? "/board/guide"} variant="secondary">
