@@ -14,7 +14,7 @@ export function TipGallery({ tips }: { tips: Post[] }) {
           href={getBoardPostHref("guide", tip.slug) ?? "/board/guide"}
           className="group flex-shrink-0 w-56"
         >
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-brand-surface">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-white shadow-sm">
             {tip.thumbnailUrl ? (
               <Image
                 src={tip.thumbnailUrl}
