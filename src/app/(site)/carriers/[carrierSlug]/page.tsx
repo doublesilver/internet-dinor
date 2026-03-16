@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
 import { BundleDiscountTable } from "@/components/sections/BundleDiscountTable";
 import { DisclaimerSection } from "@/components/sections/DisclaimerSection";
 import { PriceCalculator } from "@/components/sections/PriceCalculator";
@@ -190,18 +189,6 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <section className="py-8 md:py-12 bg-brand-graphite">
-        <div className="container-page grid gap-6 text-white md:grid-cols-[1fr_400px]">
-          <div className="space-y-3">
-            <h2 className="text-3xl font-black tracking-tight">{carrier.shortName} 상담 받기</h2>
-            <p className="text-white/80">연락처만 남겨주시면 {carrier.shortName} 전문 상담사가 맞춤 견적을 안내해드립니다.</p>
-            <a href={settings.phoneLink} className="inline-flex text-2xl font-black" style={{ color: theme.accentColor }}>
-              {settings.phoneLabel}
-            </a>
-          </div>
-          <QuickInquiryForm sourcePage={`/carriers/${carrier.slug}`} submitLabel="빠른 상담 요청" />
-        </div>
-      </section>
     </>
   );
 }
