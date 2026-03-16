@@ -101,6 +101,7 @@ function createSettingsInput(overrides: Partial<SettingsEditorValues> = {}): Set
     footerNotice: "변경된 안내 문구입니다.",
     owner: "공룡미디어",
     businessNumber: "123-45-67890",
+    ecommerceNumber: "",
     address: "서울특별시 송파구",
     email: "hello@internetdinor.co.kr",
     ...overrides
