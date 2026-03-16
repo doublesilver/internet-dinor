@@ -22,7 +22,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <span className="block h-12 w-[192px]" />
+            <span className="block h-14 w-[512px]" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
