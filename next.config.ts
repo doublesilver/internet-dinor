@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const securityHeaders = [
   {
     key: "X-Frame-Options",
-    value: "DENY"
+    value: "ALLOW-FROM https://builder.io"
   },
   {
     key: "X-Content-Type-Options",
@@ -19,7 +19,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.builder.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.builder.io; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://cdn.builder.io; frame-src https://builder.io https://*.builder.io;"
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.builder.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.builder.io; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://cdn.builder.io; frame-src https://builder.io https://*.builder.io; frame-ancestors 'self' https://builder.io https://*.builder.io;"
   },
   {
     key: "Permissions-Policy",
