@@ -10,7 +10,7 @@ const getRateLimitKeyMock = vi.fn();
 const isRateLimitedMock = vi.fn();
 
 vi.mock("@/lib/auth/admin", async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = await importOriginal<typeof import("@/lib/auth/admin")>();
   return {
     ...actual,
     authenticateSupabaseAdmin: authenticateSupabaseAdminMock,
