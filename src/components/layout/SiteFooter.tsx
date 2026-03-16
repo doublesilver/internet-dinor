@@ -23,9 +23,16 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
 
         {/* Business info */}
         <address className="space-y-1 text-sm not-italic leading-relaxed text-white/60">
-          <p>상호명: {settings.siteName} | 대표자: {settings.businessInfo.owner} | 사업자등록번호: {settings.businessInfo.businessNumber}</p>
+          <p>
+            상호명: {settings.siteName} | 대표자: {settings.businessInfo.owner} | 사업자등록번호: {settings.businessInfo.businessNumber}{" "}
+            <a href="/images/business-license.jpg" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">[사업자등록증 확인]</a>
+          </p>
+          <p>
+            통신판매업 신고번호: {settings.businessInfo.ecommerceNumber}{" "}
+            <a href="/docs/ecommerce-license.pdf" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">[신고증 확인]</a>
+          </p>
           <p>주소: {settings.businessInfo.address} | 이메일: {settings.businessInfo.email}</p>
-          <p>개인정보관리책임자: 대표자 (help@internetdinor.co.kr)</p>
+          <p>개인정보관리책임자: {settings.businessInfo.owner} ({settings.businessInfo.email})</p>
           {settings.footerNotice && <p className="mt-3 text-xs text-white/40">{settings.footerNotice}</p>}
         </address>
 

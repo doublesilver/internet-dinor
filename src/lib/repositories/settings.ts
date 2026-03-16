@@ -45,6 +45,7 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
     business_info_json: {
       owner: input.owner,
       businessNumber: input.businessNumber,
+      ecommerceNumber: input.ecommerceNumber,
       address: input.address,
       email: input.email
     }
@@ -80,6 +81,7 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
   siteSettingsSeed.footerNotice = input.footerNotice;
   siteSettingsSeed.businessInfo.owner = input.owner;
   siteSettingsSeed.businessInfo.businessNumber = input.businessNumber;
+  siteSettingsSeed.businessInfo.ecommerceNumber = input.ecommerceNumber;
   siteSettingsSeed.businessInfo.address = input.address;
   siteSettingsSeed.businessInfo.email = input.email;
 

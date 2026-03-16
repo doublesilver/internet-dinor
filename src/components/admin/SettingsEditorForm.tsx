@@ -16,6 +16,7 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
     footerNotice: settings.footerNotice,
     owner: settings.businessInfo.owner,
     businessNumber: settings.businessInfo.businessNumber,
+    ecommerceNumber: settings.businessInfo.ecommerceNumber,
     address: settings.businessInfo.address,
     email: settings.businessInfo.email
   });
@@ -80,6 +81,10 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
         <div>
           <label className="field-label">사업자등록번호</label>
           <input className="field-base" value={form.businessNumber} onChange={(event) => updateField("businessNumber", event.target.value)} />
+        </div>
+        <div>
+          <label className="field-label">통신판매업 신고번호</label>
+          <input className="field-base" value={form.ecommerceNumber} onChange={(event) => updateField("ecommerceNumber", event.target.value)} />
         </div>
         <div>
           <label className="field-label">이메일</label>

@@ -61,6 +61,7 @@ export const settingsEditorSchema = z.object({
   footerNotice: z.string().min(1, "푸터 문구를 입력해주세요."),
   owner: z.string().min(1, "대표자 또는 상호명을 입력해주세요."),
   businessNumber: z.string().min(1, "사업자등록번호를 입력해주세요."),
+  ecommerceNumber: z.string().optional().default(""),
   address: z.string().min(1, "주소를 입력해주세요."),
   email: z.string().email("올바른 이메일 형식을 입력해주세요.")
 });

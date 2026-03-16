@@ -136,6 +136,7 @@ export function mapSiteSettingsRow(row: Record<string, unknown>): SiteSettings {
     businessInfo: {
       owner: businessInfo.owner ?? "인터넷공룡",
       businessNumber: businessInfo.businessNumber ?? businessInfo.business_number ?? "",
+      ecommerceNumber: businessInfo.ecommerceNumber ?? businessInfo.ecommerce_number ?? "",
       address: businessInfo.address ?? "",
       email: businessInfo.email ?? ""
     }

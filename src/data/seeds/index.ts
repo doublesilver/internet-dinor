@@ -8,10 +8,11 @@ export const siteSettingsSeed: SiteSettings = {
   secondaryCtaLabel: "전화 상담",
   footerNotice: "인터넷공룡은 통신사 공식 판매점으로 안전하고 빠른 상담을 제공합니다.",
   businessInfo: {
-    owner: "인터넷공룡",
-    businessNumber: "000-00-00000",
-    address: "서울특별시 강동구",
-    email: "help@internetdinor.co.kr"
+    owner: "장윤성",
+    businessNumber: "427-31-02018",
+    ecommerceNumber: "제 2026-3820239-30-2-00209 호",
+    address: "경기도 의정부시 호국로1346번길 125, 2층 207호 (의정부동)",
+    email: "ititdragon@gmail.com"
   }
 };
 

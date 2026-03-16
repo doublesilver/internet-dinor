@@ -79,6 +79,7 @@ export interface SiteSettings {
   businessInfo: {
     owner: string;
     businessNumber: string;
+    ecommerceNumber: string;
     address: string;
     email: string;
   };
