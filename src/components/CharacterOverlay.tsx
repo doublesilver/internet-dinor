@@ -104,20 +104,8 @@ export function CharacterOverlay() {
   const selectedChar = chars.find(c => c.id === selectedId);
 
   const exportConfig = () => {
-    const sections = document.querySelectorAll("section");
     const output = chars.map(c => {
-      let sectionName = "페이지 전체";
-      let relY = c.y;
-      sections.forEach((sec) => {
-        const rect = sec.getBoundingClientRect();
-        const secTop = rect.top + window.scrollY;
-        const secBottom = secTop + rect.height;
-        if (c.y >= secTop && c.y < secBottom) {
-          sectionName = sec.className.slice(0, 60);
-          relY = c.y - secTop;
-        }
-      });
-      return `{ image: "${c.type}.png", x: ${Math.round(c.x)}, y: ${Math.round(relY)}, w: ${c.w}, h: ${c.h}, z: ${c.z}, opacity: ${c.opacity / 100}, section: "${sectionName}" }`;
+      return `{ src: "/images/characters/${c.type}.png", x: ${Math.round(c.x)}, y: ${Math.round(c.y)}, w: ${c.w}, h: ${c.h} }`;
     });
     const text = `[\n${output.join(",\n")}\n]`;
     navigator.clipboard.writeText(text).catch(() => {});
