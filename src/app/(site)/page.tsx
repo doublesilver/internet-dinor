@@ -47,8 +47,14 @@ export default async function HomePage() {
       <BuilderEditableSection content={builderTopContent} />
 
       <section className="relative overflow-hidden bg-brand-orange">
+        {/* Hero character - desktop only */}
+        <img
+          src="/images/characters/hero-dino.png"
+          alt=""
+          className="pointer-events-none absolute bottom-0 left-[2%] z-10 hidden h-[280px] w-auto opacity-90 lg:block"
+        />
         <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
-          <div className="space-y-4 text-white md:w-[55%]">
+          <div className="space-y-4 text-white md:w-[55%] lg:pl-[180px]">
             <h1 className="text-4xl font-black font-surround leading-[1.3] md:text-[55px]">
               이번달 남김없이!
               <br />
@@ -115,7 +121,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#333] py-8 md:py-12">
+      <section className="relative overflow-hidden bg-[#333] py-8 md:py-12">
+        {/* Group character - desktop only */}
+        <img
+          src="/images/characters/group-dino.png"
+          alt=""
+          className="pointer-events-none absolute bottom-0 right-[3%] hidden h-[160px] w-auto opacity-70 lg:block"
+        />
         <div className="container-page space-y-4 text-center text-white">
           <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
           <h2 className="text-3xl font-black font-surround md:text-4xl">혜택이 이렇게나 많았다고?</h2>

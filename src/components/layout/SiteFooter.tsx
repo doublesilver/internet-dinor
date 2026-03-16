@@ -34,6 +34,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
 
           {/* Right: Contact CTA */}
           <div className="shrink-0 space-y-3 text-center md:text-right">
+            <img src="/images/characters/hero-dino.png" alt="" className="mx-auto h-[80px] w-auto md:ml-auto md:mr-0" />
             <p className="text-sm font-medium text-white/70">지금 바로 전문 상담사에게 문의하세요</p>
             <a href={settings.phoneLink} className="block text-4xl font-black text-brand-orange md:text-5xl">
               {settings.phoneLabel}

@@ -22,11 +22,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <span
-              className="font-surround text-3xl font-black text-brand-orange"
-            >
-              인터넷공룡
-            </span>
+            <img src="/images/characters/logo-dino.png" alt="인터넷공룡" className="h-12 w-auto" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
