@@ -22,7 +22,8 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <span className="block h-14 w-[512px]" />
+            <span className="font-surround text-2xl font-black text-brand-orange lg:hidden">인터넷공룡</span>
+            <span className="hidden h-14 w-[512px] lg:block" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
