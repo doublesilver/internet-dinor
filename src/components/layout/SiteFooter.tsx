@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { SiteSettings } from "@/types/domain";
 
@@ -34,6 +35,9 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
 
           {/* Right: Contact CTA */}
           <div className="shrink-0 space-y-3 text-center md:text-right">
+            <div className="flex justify-center md:justify-end">
+              <Image src="/images/characters/hero-dino.png" alt="" width={80} height={80} className="h-16 w-auto md:h-20" />
+            </div>
             <p className="text-sm font-medium text-white/70">지금 바로 전문 상담사에게 문의하세요</p>
             <a href={settings.phoneLink} className="block text-4xl font-black text-brand-orange md:text-5xl">
               {settings.phoneLabel}

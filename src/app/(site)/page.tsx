@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchOneEntry } from "@builder.io/sdk-react";
+import Image from "next/image";
 import Link from "next/link";
 import { BuilderEditableSection } from "@/components/builder/BuilderEditableSection";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
@@ -70,6 +71,7 @@ export default async function HomePage() {
               </p>
               <p className="text-xs opacity-70">※ 지원금은 통신사 및 상품에 따라 상이합니다 ※</p>
             </div>
+            <Image src="/images/characters/hero-dino.png" alt="" width={120} height={120} className="mt-2 hidden h-[100px] w-auto drop-shadow-xl md:block" />
           </div>
           <div className="md:w-[40%]">
             <div className="rounded-[25px] bg-white p-6 shadow-lg md:p-8">
@@ -115,8 +117,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#333] py-8 md:py-12">
-        <div className="container-page space-y-4 text-center text-white">
+      <section className="relative overflow-hidden bg-[#333] py-8 md:py-12">
+        <Image src="/images/characters/group-dino.png" alt="" width={300} height={200} className="pointer-events-none absolute -bottom-2 right-4 hidden h-auto w-48 opacity-70 lg:block lg:w-56" />
+        <div className="container-page relative z-10 space-y-4 text-center text-white">
           <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
           <h2 className="text-3xl font-black font-surround md:text-4xl">혜택이 이렇게나 많았다고?</h2>
           <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
