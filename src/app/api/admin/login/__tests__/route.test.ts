@@ -9,14 +9,18 @@ const isAdminAuthConfiguredMock = vi.fn();
 const getRateLimitKeyMock = vi.fn();
 const isRateLimitedMock = vi.fn();
 
-vi.mock("@/lib/auth/admin", () => ({
-  authenticateSupabaseAdmin: authenticateSupabaseAdminMock,
-  getAdminAuthConfig: getAdminAuthConfigMock,
-  getAdminAuthMode: getAdminAuthModeMock,
-  getAdminSessionCookieName: getAdminSessionCookieNameMock,
-  getAdminSupabaseCookieNames: getAdminSupabaseCookieNamesMock,
-  isAdminAuthConfigured: isAdminAuthConfiguredMock
-}));
+vi.mock("@/lib/auth/admin", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    authenticateSupabaseAdmin: authenticateSupabaseAdminMock,
+    getAdminAuthConfig: getAdminAuthConfigMock,
+    getAdminAuthMode: getAdminAuthModeMock,
+    getAdminSessionCookieName: getAdminSessionCookieNameMock,
+    getAdminSupabaseCookieNames: getAdminSupabaseCookieNamesMock,
+    isAdminAuthConfigured: isAdminAuthConfiguredMock
+  };
+});
 
 vi.mock("@/lib/utils/rate-limit", () => ({
   getRateLimitKey: getRateLimitKeyMock,
