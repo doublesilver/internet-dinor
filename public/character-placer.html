@@ -119,6 +119,8 @@
     <button class="char-btn" onclick="addCharacter('hero-dino')">대표 공룡</button>
     <button class="char-btn" onclick="addCharacter('group-dino')">단체 공룡</button>
     <button class="char-btn" onclick="addCharacter('logo-dino')">로고</button>
+    <button class="char-btn" onclick="addCharacter('logo-light')">밝은로고</button>
+    <button class="char-btn" onclick="addCharacter('logo-dark')">어두운로고</button>
   </div>
   <div class="tool-group">
     <label>레이어:</label>
@@ -282,6 +284,7 @@ function addCharacter(type) {
   let w, h;
   if (type === 'hero-dino') { w = 150; h = 180; }
   else if (type === 'group-dino') { w = 280; h = 180; }
+  else if (type === 'logo-light' || type === 'logo-dark') { w = 400; h = 120; }
   else { w = 220; h = 70; }
 
   const canvas = document.getElementById('canvas');
