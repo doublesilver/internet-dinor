@@ -78,10 +78,10 @@ export const portfolioProjects: PortfolioProject[] = [
       "SEO 메타데이터와 noindex 정책을 페이지 단위로 정리"
     ],
     theme: {
-      accent: "#7EB5D6",
-      surface: "linear-gradient(135deg, #6AA3C8 0%, #A8D4F0 50%, #E0ECF5 100%)",
-      glow: "rgba(126, 181, 214, 0.34)",
-      border: "rgba(126, 181, 214, 0.2)"
+      accent: "#4A86CF",
+      surface: "linear-gradient(135deg, #3A74B8 0%, #6EA8E0 50%, #D6E4F5 100%)",
+      glow: "rgba(74, 134, 207, 0.34)",
+      border: "rgba(74, 134, 207, 0.2)"
     }
   },
   {
