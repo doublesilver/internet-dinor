@@ -38,7 +38,10 @@ const CHAR_OPTIONS = [
 
 // 확정된 배치 설정 — 편집 후 여기에 붙여넣기
 const SAVED_PLACEMENTS: Placement[] = [
-  { type: "etc-dino", src: "/images/characters/etc-dino.png", x: 197, y: -30, w: 538, h: 180, z: 50, opacity: 100 },
+  { type: "group-dino", src: "/images/characters/group-dino.png", x: 152, y: 312, w: 949, h: 610, z: 50, opacity: 100 },
+  { type: "group-dino", src: "/images/characters/group-dino.png", x: 121, y: 1731, w: 612, h: 392, z: 51, opacity: 100 },
+  { type: "hero-dino", src: "/images/characters/hero-dino.png", x: 1589, y: 2348, w: 258, h: 307, z: 52, opacity: 100 },
+  { type: "etc-dino", src: "/images/characters/etc-dino.png", x: 529, y: 3057, w: 967, h: 322, z: 53, opacity: 100 },
 ];
 
 function CharImage({ src, x, y, w, h, z, opacity }: { src: string; x: number; y: number; w: number; h: number; z: number; opacity: number }) {
