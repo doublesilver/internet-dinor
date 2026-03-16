@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 
 const placements = [
-  { src: "/images/characters/etc-dino.png", x: 177, y: -32, w: 538, h: 180 },
-  { src: "/images/characters/hero-dino.png", x: 667, y: 530, w: 150, h: 180 },
+  { src: "/images/characters/etc-dino.png", x: 250, y: 15, w: 300, h: 100 },
+  { src: "/images/characters/hero-dino.png", x: 885, y: 400, w: 150, h: 180 },
+  { src: "/images/characters/group-dino.png", x: 291, y: 329, w: 904, h: 581 },
+  { src: "/images/characters/etc-dino.png", x: 530, y: 3032, w: 877, h: 292 },
 ];
 
 export function CharacterPlacements() {
