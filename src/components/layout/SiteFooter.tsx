@@ -5,15 +5,8 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="border-t border-brand-border bg-[#333] pb-20 text-white" role="contentinfo">
       <div className="container-page space-y-6 py-10">
-        {/* Phone number - reference: 4rem bold orange */}
-        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <a href={settings.phoneLink} className="text-4xl font-black text-brand-orange">
-              {settings.phoneLabel}
-            </a>
-            <span className="ml-4 text-base text-white/80">평일 오전 10시 ~ 오후 7시 (토요일 및 공휴일 제외)</span>
-          </div>
-        </div>
+        {/* Title */}
+        <p className="text-lg font-bold text-white">인터넷 가격비교</p>
 
         {/* Links */}
         <nav aria-label="푸터 링크" className="flex flex-wrap gap-4 text-base">
@@ -22,23 +15,24 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
         </nav>
 
         {/* Business info */}
-        <address className="space-y-1 text-sm not-italic leading-relaxed text-white/60">
+        <address className="space-y-1.5 text-sm not-italic leading-relaxed text-white/60">
+          <p className="font-semibold text-white/80">{settings.siteName}</p>
+          <p>{settings.businessInfo.address}</p>
           <p>
-            상호명: {settings.siteName} | 대표자: {settings.businessInfo.owner} | 사업자등록번호: {settings.businessInfo.businessNumber}{" "}
-            <a href="/images/business-license.jpg" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">[사업자등록증 확인]</a>
+            대표 : {settings.businessInfo.owner}{" "}
+            사업자등록번호: {settings.businessInfo.businessNumber}{" "}
+            <a href="/images/business-license.jpg" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">[확인]</a>
           </p>
           <p>
-            통신판매업 신고번호: {settings.businessInfo.ecommerceNumber}{" "}
-            <a href="/docs/ecommerce-license.pdf" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">[신고증 확인]</a>
+            통신판매업 신고번호 : {settings.businessInfo.ecommerceNumber}{" "}
+            <a href="/docs/ecommerce-license.pdf" target="_blank" rel="noopener noreferrer" className="text-white/80 underline hover:text-white">[확인]</a>
           </p>
-          <p>주소: {settings.businessInfo.address} | 이메일: {settings.businessInfo.email}</p>
-          <p>개인정보관리책임자: {settings.businessInfo.owner} ({settings.businessInfo.email})</p>
-          {settings.footerNotice && <p className="mt-3 text-xs text-white/40">{settings.footerNotice}</p>}
+          <p>개인정보보호책임자 : {settings.businessInfo.owner} ({settings.businessInfo.email})</p>
         </address>
 
         {/* Copyright */}
         <p className="border-t border-white/10 pt-4 text-xs text-white/40">
-          © {new Date().getFullYear()} {settings.siteName}. All rights reserved.
+          Copyright {new Date().getFullYear()}. {settings.siteName} All Rights Reserved.
         </p>
       </div>
     </footer>
