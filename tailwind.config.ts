@@ -6,19 +6,19 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          orange: "#F4A58A",
-          "orange-dark": "#E8937A",
-          lavender: "#D4C8FF",
-          "lavender-soft": "#F6F2FF",
-          sky: "#8BCFE8",
-          "sky-soft": "#F0F8FF",
+          orange: "#7EB5D6",
+          "orange-dark": "#6AA3C8",
+          lavender: "#C8BBE8",
+          "lavender-soft": "#F5F2FA",
+          sky: "#A8D4F0",
+          "sky-soft": "#F0F7FD",
           graphite: "#3D4A5C",
-          slate: "#8892A0",
-          border: "#E8ECF0",
-          surface: "#F9FAFB",
-          peach: "#FFF0EB",
+          slate: "#7A8B9E",
+          border: "#DDE4ED",
+          surface: "#F5F8FC",
+          peach: "#FDDECF",
           green: "#7BCDA0",
-          "green-soft": "#F0FDF4",
+          "green-soft": "#EDFAF2",
           red: "#E88B8B",
           yellow: "#F0C97A"
         }

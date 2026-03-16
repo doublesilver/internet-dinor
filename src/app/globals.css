@@ -68,7 +68,7 @@
   }
 
   .status-badge-progress {
-    @apply status-badge bg-orange-50 text-brand-orange;
+    @apply status-badge bg-blue-50 text-brand-orange;
   }
 
   .scrollbar-hide {

@@ -67,7 +67,7 @@ export default async function BoardDetailPage({ params }: { params: Promise<{ ca
                   <Link
                     key={product!.id}
                     href={`/products/${product!.slug}`}
-                    className="rounded-full border border-brand-orange px-4 py-1.5 text-sm font-semibold text-brand-orange transition-colors hover:bg-orange-50"
+                    className="rounded-full border border-brand-orange px-4 py-1.5 text-sm font-semibold text-brand-orange transition-colors hover:bg-blue-50"
                   >
                     {product!.name}
                   </Link>

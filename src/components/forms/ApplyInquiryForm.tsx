@@ -319,7 +319,7 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
             <button
               type="button"
               onClick={() => setShowPostcode(true)}
-              className="shrink-0 rounded-xl border border-brand-orange px-4 py-2 text-sm font-bold text-brand-orange hover:bg-orange-50"
+              className="shrink-0 rounded-xl border border-brand-orange px-4 py-2 text-sm font-bold text-brand-orange hover:bg-blue-50"
             >
               주소 검색
             </button>
@@ -480,7 +480,7 @@ export function ApplyInquiryForm({ phoneLink }: ApplyInquiryFormProps) {
         </button>
         <a
           href={phoneLink}
-          className="flex-1 rounded-2xl border border-brand-orange px-6 py-4 text-center text-base font-bold text-brand-orange hover:bg-orange-50"
+          className="flex-1 rounded-2xl border border-brand-orange px-6 py-4 text-center text-base font-bold text-brand-orange hover:bg-blue-50"
         >
           전화 문의
         </a>

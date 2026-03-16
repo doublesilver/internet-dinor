@@ -9,7 +9,7 @@ export function FixedBottomBar({ settings }: { settings: SiteSettings }) {
       <div className="flex items-stretch divide-x divide-brand-border">
         <a
           href={settings.phoneLink}
-          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-brand-orange hover:bg-orange-50"
+          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-brand-orange hover:bg-blue-50"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
           <span className="text-xs font-bold text-brand-orange">전화상담</span>
@@ -30,7 +30,7 @@ export function FixedBottomBar({ settings }: { settings: SiteSettings }) {
         </Link>
         <Link
           href="/apply"
-          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-brand-orange hover:bg-orange-50"
+          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-brand-orange hover:bg-blue-50"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           <span className="text-xs font-bold text-brand-orange">빠른견적</span>
