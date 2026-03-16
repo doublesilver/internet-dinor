@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인터넷공룡 캐릭터 배치 도구</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', sans-serif; background: #1a1a2e; color: #fff; overflow-x: hidden; }
+
+  /* Toolbar */
+  #toolbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: rgba(20,20,40,0.95); backdrop-filter: blur(10px);
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 2px solid #4A86CF; flex-wrap: wrap;
+  }
+  #toolbar h1 { font-size: 14px; font-weight: 700; color: #4A86CF; white-space: nowrap; }
+  .tool-group { display: flex; align-items: center; gap: 6px; }
+  .tool-group label { font-size: 11px; color: #aaa; white-space: nowrap; }
+  .char-btn {
+    padding: 6px 12px; border-radius: 8px; border: 2px solid #555;
+    background: #2a2a4a; color: #fff; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .char-btn:hover { border-color: #4A86CF; background: #3a3a5a; }
+  .char-btn.active { border-color: #4A86CF; background: #4A86CF; }
+  .action-btn {
+    padding: 5px 10px; border-radius: 6px; border: 1px solid #666;
+    background: #333; color: #fff; font-size: 11px; cursor: pointer;
+  }
+  .action-btn:hover { background: #555; }
+  .action-btn.primary { background: #4A86CF; border-color: #4A86CF; }
+  .action-btn.primary:hover { background: #3A74B8; }
+  .action-btn.danger { background: #c0392b; border-color: #c0392b; }
+  #output-box {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+    background: rgba(20,20,40,0.95); backdrop-filter: blur(10px);
+    padding: 10px 16px; border-top: 2px solid #4A86CF;
+    font-family: monospace; font-size: 12px; max-height: 180px; overflow-y: auto;
+    display: none;
+  }
+  #output-box pre { white-space: pre-wrap; color: #8f8; }
+
+  /* Canvas area */
+  #canvas {
+    margin-top: 52px; position: relative; width: 1400px; margin-left: auto; margin-right: auto;
+    min-height: 100vh;
+  }
+
+  /* Simulated site sections */
+  .site-section {
+    position: relative; width: 100%; overflow: visible;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.5);
+  }
+  .site-section .section-label {
+    position: absolute; left: 12px; top: 8px;
+    font-size: 11px; color: rgba(255,255,255,0.3); font-weight: 400;
+  }
+
+  /* Draggable character */
+  .character {
+    position: absolute; cursor: grab; user-select: none;
+    transition: box-shadow 0.2s;
+    z-index: 100;
+  }
+  .character:active { cursor: grabbing; }
+  .character.selected {
+    outline: 2px dashed #4A86CF; outline-offset: 4px;
+    box-shadow: 0 0 20px rgba(74,134,207,0.4);
+  }
+  .character img {
+    width: 100%; height: 100%; object-fit: contain;
+    pointer-events: none;
+  }
+  .char-info {
+    position: absolute; bottom: -20px; left: 0; right: 0;
+    text-align: center; font-size: 10px; color: #4A86CF;
+    opacity: 0; transition: opacity 0.2s; white-space: nowrap;
+  }
+  .character.selected .char-info { opacity: 1; }
+
+  /* iframe overlay for live site */
+  #site-frame {
+    width: 100%; height: 3000px; border: none; pointer-events: none;
+    position: absolute; top: 0; left: 0;
+  }
+  #frame-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <h1>🦕 캐릭터 배치 도구</h1>
+  <div class="tool-group">
+    <label>추가:</label>
+    <button class="char-btn" onclick="addCharacter('hero-dino')">대표 공룡</button>
+    <button class="char-btn" onclick="addCharacter('group-dino')">단체 공룡</button>
+    <button class="char-btn" onclick="addCharacter('logo-dino')">로고</button>
+  </div>
+  <div class="tool-group">
+    <label>레이어:</label>
+    <button class="action-btn" onclick="changeZ(1)">앞으로 ↑</button>
+    <button class="action-btn" onclick="changeZ(-1)">뒤로 ↓</button>
+  </div>
+  <div class="tool-group">
+    <label>투명도:</label>
+    <input type="range" id="opacitySlider" min="10" max="100" value="100" style="width:80px;" oninput="changeOpacity(this.value)">
+    <span id="opacityLabel" style="font-size:11px;color:#aaa;">100%</span>
+  </div>
+  <div class="tool-group">
+    <button class="action-btn danger" onclick="deleteSelected()">삭제</button>
+    <button class="action-btn primary" onclick="exportConfig()">📋 코드 복사</button>
+  </div>
+</div>
+
+<div id="canvas">
+  <iframe id="site-frame" src="https://internetdinor.vercel.app"></iframe>
+  <div id="frame-overlay"></div>
+</div>
+
+<div id="output-box"><pre id="output-text"></pre></div>
+
+<script>
+let characters = [];
+let selectedId = null;
+let nextId = 1;
+let dragState = null;
+
+function addCharacter(type) {
+  const id = nextId++;
+  const el = document.createElement('div');
+  el.className = 'character';
+  el.id = `char-${id}`;
+  el.style.left = '100px';
+  el.style.top = '200px';
+
+  let w, h;
+  if (type === 'hero-dino') { w = 150; h = 180; }
+  else if (type === 'group-dino') { w = 280; h = 180; }
+  else { w = 220; h = 70; }
+
+  el.style.width = w + 'px';
+  el.style.height = h + 'px';
+  el.style.zIndex = 100 + characters.length;
+
+  el.innerHTML = `
+    <img src="/images/characters/${type}.png" alt="${type}" draggable="false">
+    <div class="char-info">${type} | ${w}×${h} | z:${100 + characters.length}</div>
+  `;
+
+  el.addEventListener('mousedown', (e) => startDrag(e, id));
+  el.addEventListener('click', (e) => { e.stopPropagation(); selectCharacter(id); });
+
+  document.getElementById('frame-overlay').appendChild(el);
+  characters.push({ id, type, el, x: 100, y: 200, w, h, z: 100 + characters.length, opacity: 100 });
+  selectCharacter(id);
+}
+
+function selectCharacter(id) {
+  document.querySelectorAll('.character').forEach(c => c.classList.remove('selected'));
+  selectedId = id;
+  const char = characters.find(c => c.id === id);
+  if (char) {
+    char.el.classList.add('selected');
+    document.getElementById('opacitySlider').value = char.opacity;
+    document.getElementById('opacityLabel').textContent = char.opacity + '%';
+  }
+}
+
+function startDrag(e, id) {
+  selectCharacter(id);
+  const char = characters.find(c => c.id === id);
+  if (!char) return;
+  dragState = { id, startX: e.clientX, startY: e.clientY, origX: char.x, origY: char.y };
+  e.preventDefault();
+}
+
+document.addEventListener('mousemove', (e) => {
+  if (!dragState) return;
+  const char = characters.find(c => c.id === dragState.id);
+  if (!char) return;
+  char.x = dragState.origX + (e.clientX - dragState.startX);
+  char.y = dragState.origY + (e.clientY - dragState.startY);
+  char.el.style.left = char.x + 'px';
+  char.el.style.top = char.y + 'px';
+  updateInfo(char);
+});
+
+document.addEventListener('mouseup', () => { dragState = null; });
+
+// Scroll wheel to resize
+document.addEventListener('wheel', (e) => {
+  if (!selectedId) return;
+  const char = characters.find(c => c.id === selectedId);
+  if (!char) return;
+  e.preventDefault();
+  const scale = e.deltaY > 0 ? 0.95 : 1.05;
+  char.w = Math.max(30, Math.round(char.w * scale));
+  char.h = Math.max(30, Math.round(char.h * scale));
+  char.el.style.width = char.w + 'px';
+  char.el.style.height = char.h + 'px';
+  updateInfo(char);
+}, { passive: false });
+
+function changeZ(delta) {
+  const char = characters.find(c => c.id === selectedId);
+  if (!char) return;
+  char.z = Math.max(1, char.z + delta * 10);
+  char.el.style.zIndex = char.z;
+  updateInfo(char);
+}
+
+function changeOpacity(val) {
+  const char = characters.find(c => c.id === selectedId);
+  if (!char) return;
+  char.opacity = parseInt(val);
+  char.el.style.opacity = char.opacity / 100;
+  document.getElementById('opacityLabel').textContent = val + '%';
+  updateInfo(char);
+}
+
+function deleteSelected() {
+  const idx = characters.findIndex(c => c.id === selectedId);
+  if (idx === -1) return;
+  characters[idx].el.remove();
+  characters.splice(idx, 1);
+  selectedId = null;
+}
+
+function updateInfo(char) {
+  const info = char.el.querySelector('.char-info');
+  if (info) info.textContent = `${char.type} | ${char.w}×${char.h} | x:${char.x} y:${char.y} | z:${char.z} | ${char.opacity}%`;
+}
+
+function exportConfig() {
+  const box = document.getElementById('output-box');
+  const text = document.getElementById('output-text');
+  box.style.display = 'block';
+
+  const lines = characters.map(c => {
+    return `{
+  image: "/images/characters/${c.type}.png",
+  position: { left: "${c.x}px", top: "${c.y}px" },
+  size: { width: "${c.w}px", height: "${c.h}px" },
+  zIndex: ${c.z},
+  opacity: ${c.opacity / 100}
+}`;
+  });
+
+  const output = `// 캐릭터 배치 설정\nconst characterPlacements = [\n${lines.join(',\n')}\n];`;
+  text.textContent = output;
+
+  navigator.clipboard.writeText(output).then(() => {
+    alert('클립보드에 복사되었습니다! 이 값을 그대로 전달해주세요.');
+  });
+}
+
+// Click blank area to deselect
+document.getElementById('frame-overlay').addEventListener('click', () => {
+  document.querySelectorAll('.character').forEach(c => c.classList.remove('selected'));
+  selectedId = null;
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
+  if (!selectedId) return;
+  const char = characters.find(c => c.id === selectedId);
+  if (!char) return;
+  const step = e.shiftKey ? 10 : 1;
+  if (e.key === 'ArrowLeft') { char.x -= step; char.el.style.left = char.x + 'px'; updateInfo(char); }
+  if (e.key === 'ArrowRight') { char.x += step; char.el.style.left = char.x + 'px'; updateInfo(char); }
+  if (e.key === 'ArrowUp') { char.y -= step; char.el.style.top = char.y + 'px'; updateInfo(char); e.preventDefault(); }
+  if (e.key === 'ArrowDown') { char.y += step; char.el.style.top = char.y + 'px'; updateInfo(char); e.preventDefault(); }
+});
+</script>
+</body>
+</html>
