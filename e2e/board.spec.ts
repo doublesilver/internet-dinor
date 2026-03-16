@@ -5,7 +5,7 @@ test("guide board opens a detail page from the post list", async ({ page }) => {
 
   await expect(page.getByRole("heading", { name: "꿀TIP 모아보기" })).toBeVisible();
 
-  const detailLink = page.getByRole("link", { name: /읽어보기|자세히 보기/ }).first();
+  const detailLink = page.locator("article a[href^='/board/guide/']").first();
   await expect(detailLink).toBeVisible();
   await detailLink.click();
 
