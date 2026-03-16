@@ -5,34 +5,34 @@ export interface CarrierTheme {
 }
 
 export const DEFAULT_CARRIER_THEME: CarrierTheme = {
-  accentColor: "#f15c2d",
+  accentColor: "#F4A58A",
   logoPath: "/images/carriers/sk_logo.png",
   logoAlt: "인터넷공룡"
 };
 
 export const CARRIER_THEME_MAP: Record<string, CarrierTheme> = {
   sk: {
-    accentColor: "#FFA13E",
+    accentColor: "#FFD0A0",
     logoPath: "/images/carriers/sk_logo.png",
     logoAlt: "SK"
   },
   kt: {
-    accentColor: "#FF5B62",
+    accentColor: "#F5A8AC",
     logoPath: "/images/carriers/kt_logo.png",
     logoAlt: "KT"
   },
   lg: {
-    accentColor: "#FE82B0",
+    accentColor: "#F5B8D0",
     logoPath: "/images/carriers/lg_logo.png",
     logoAlt: "LG"
   },
   skylife: {
-    accentColor: "#6DD5C0",
+    accentColor: "#A0E0D0",
     logoPath: "/images/carriers/kt_logo_sky.png",
     logoAlt: "Skylife"
   },
   hellovision: {
-    accentColor: "#FFA38B",
+    accentColor: "#FFC8B8",
     logoPath: "/images/carriers/lg_vision.png",
     logoAlt: "Hellovision"
   }

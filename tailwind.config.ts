@@ -6,21 +6,21 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          orange: "#f15c2d",
-          "orange-dark": "#d94a1f",
-          lavender: "#CDBDFF",
-          "lavender-soft": "#F5F1FF",
-          sky: "#2DC2F1",
-          "sky-soft": "#EEF9FF",
-          graphite: "#1F2937",
-          slate: "#5F6B7A",
-          border: "#eaeaea",
-          surface: "#F8FAFD",
-          peach: "#FFE9E2",
-          green: "#22C55E",
+          orange: "#F4A58A",
+          "orange-dark": "#E8937A",
+          lavender: "#D4C8FF",
+          "lavender-soft": "#F6F2FF",
+          sky: "#8BCFE8",
+          "sky-soft": "#F0F8FF",
+          graphite: "#3D4A5C",
+          slate: "#8892A0",
+          border: "#E8ECF0",
+          surface: "#F9FAFB",
+          peach: "#FFF0EB",
+          green: "#7BCDA0",
           "green-soft": "#F0FDF4",
-          red: "#EF4444",
-          yellow: "#F59E0B"
+          red: "#E88B8B",
+          yellow: "#F0C97A"
         }
       },
       maxWidth: {
