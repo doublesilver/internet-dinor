@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { publicNavigation, carrierNavigation } from "@/lib/constants/navigation";
@@ -23,7 +22,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <Image src="/images/characters/etc-dino.png" alt="인터넷공룡" width={442} height={147} className="h-12 w-auto md:h-14" priority />
+            <span className="font-surround text-3xl font-black text-brand-orange">인터넷공룡</span>
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
