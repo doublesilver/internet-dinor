@@ -23,7 +23,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             aria-label="홈으로 이동"
           >
             <span
-              className="font-surround text-2xl font-bold text-brand-orange"
+              className="font-surround text-3xl font-black text-brand-orange"
             >
               인터넷공룡
             </span>
@@ -32,7 +32,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
           <div className="hidden items-center gap-8 lg:flex">
             <nav
               aria-label="메인 네비게이션"
-              className="flex items-center gap-6 text-sm font-bold text-brand-slate"
+              className="flex items-center gap-6 text-base font-black text-brand-slate"
             >
               {publicNavigation.map((item) => (
                 <Link
@@ -84,7 +84,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
       {/* Carrier sub-nav (desktop only) */}
       <div className="hidden border-b border-brand-border bg-brand-surface lg:block">
         <div className="container-page">
-          <nav aria-label="통신사 네비게이션" className="flex h-14 items-center justify-center gap-6 text-sm font-medium text-brand-slate">
+          <nav aria-label="통신사 네비게이션" className="flex h-14 items-center justify-center gap-6 text-base font-bold text-brand-slate">
             {carrierNavigation.map((item) => (
               <Link
                 key={item.href}
