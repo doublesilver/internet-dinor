@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchOneEntry } from "@builder.io/sdk-react";
+import Image from "next/image";
 import Link from "next/link";
 import { BuilderEditableSection } from "@/components/builder/BuilderEditableSection";
 import { QuickInquiryForm } from "@/components/forms/QuickInquiryForm";
@@ -47,7 +48,9 @@ export default async function HomePage() {
       <BuilderEditableSection content={builderTopContent} />
 
       <section className="relative overflow-hidden bg-brand-orange">
-        <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
+        {/* 단체 공룡 - 히어로 배경 */}
+        <Image src="/images/characters/group-dino.png" alt="" width={775} height={498} className="pointer-events-none absolute left-[20%] top-[24px] hidden h-auto w-[55%] opacity-20 lg:block" />
+        <div className="container-page relative z-10 flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
           <div className="space-y-4 text-white md:w-[55%]">
             <h1 className="text-4xl font-black font-surround leading-[1.3] md:text-[55px]">
               이번달 남김없이!
@@ -106,8 +109,12 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-brand-sky py-10 md:py-14">
-        <div className="container-page">
+      <section className="relative overflow-hidden bg-brand-sky py-10 md:py-14">
+        {/* 대표 공룡 - 우측 */}
+        <Image src="/images/characters/hero-dino.png" alt="" width={181} height={217} className="pointer-events-none absolute right-[2%] top-[30%] hidden h-auto w-[130px] lg:block" />
+        {/* 단체 공룡 - 좌측 하단 */}
+        <Image src="/images/characters/group-dino.png" alt="" width={529} height={338} className="pointer-events-none absolute -left-[2%] bottom-0 hidden h-auto w-[340px] opacity-30 lg:block" />
+        <div className="container-page relative z-10">
           <div className="mb-6">
             <h2 className="text-3xl font-black font-surround text-white md:text-4xl">혜택 구성별 최대 사은품</h2>
           </div>
@@ -143,8 +150,10 @@ export default async function HomePage() {
       </section>
 
       {guides.length > 0 && (
-        <section className="bg-brand-surface py-10 md:py-14">
-          <div className="container-page">
+        <section className="relative overflow-hidden bg-brand-surface py-10 md:py-14">
+          {/* 기타 로고 - 하단 배경 */}
+          <Image src="/images/characters/etc-dino.png" alt="" width={921} height={307} className="pointer-events-none absolute bottom-0 left-[18%] hidden h-auto w-[65%] opacity-10 lg:block" />
+          <div className="container-page relative z-10">
             <div className="mb-6 flex items-end justify-between">
               <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">꿀TIP 모아보기</h2>
               <Button href={getBoardCategoryHref("guide") ?? "/board/guide"} variant="secondary">
