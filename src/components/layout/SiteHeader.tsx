@@ -23,7 +23,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             aria-label="홈으로 이동"
           >
             <span className="font-surround text-2xl font-black text-brand-orange lg:hidden">인터넷공룡</span>
-            <img src="/images/characters/etc-dino.png" alt="인터넷공룡" className="hidden h-14 w-auto lg:block" />
+            <span className="hidden lg:block lg:invisible lg:h-14 lg:w-[512px]" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
