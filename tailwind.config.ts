@@ -33,7 +33,7 @@ const config: Config = {
         xl2: "1.25rem"
       },
       fontFamily: {
-        surround: ['Cafe24Ssurround', 'Pretendard Variable', 'sans-serif']
+        surround: ['Jua', 'Pretendard Variable', 'sans-serif']
       }
     }
   },
