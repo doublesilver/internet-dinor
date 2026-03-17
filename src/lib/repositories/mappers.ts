@@ -161,6 +161,9 @@ function mapDesignSettingsJson(value: unknown): DesignSettings {
     tips_headingFontSize: d.tips_headingFontSize ?? headingSize,
     tips_headingColor: d.tips_headingColor ?? "#2C3E50",
 
+    carrierNav_fontSize: d.carrierNav_fontSize ?? "24px",
+    carrierNav_height: d.carrierNav_height ?? "56px",
+
     button_fontSize: buttonFontSize,
     button_radius: buttonRadius,
     button_primaryColor: primaryColor,

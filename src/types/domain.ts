@@ -101,6 +101,10 @@ export interface DesignSettings {
   tips_headingFontSize: string;
   tips_headingColor: string;
 
+  // 통신사 메뉴 (헤더 서브 네비게이션)
+  carrierNav_fontSize: string;
+  carrierNav_height: string;
+
   // 버튼 공통
   button_fontSize: string;
   button_radius: string;

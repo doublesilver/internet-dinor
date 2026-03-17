@@ -444,7 +444,25 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
         />
       </SectionPanel>
 
-      {/* 7. 버튼 스타일 */}
+      {/* 7. 통신사 메뉴 */}
+      <SectionPanel title="통신사 메뉴" description="헤더 하단 SK브로드밴드, KT 등 통신사 네비게이션 영역">
+        <PxField
+          label="글자 크기"
+          value={form.carrierNav_fontSize}
+          onChange={(v) => updateField("carrierNav_fontSize", v)}
+          min={14}
+          max={40}
+        />
+        <PxField
+          label="영역 높이"
+          value={form.carrierNav_height}
+          onChange={(v) => updateField("carrierNav_height", v)}
+          min={30}
+          max={80}
+        />
+      </SectionPanel>
+
+      {/* 8. 버튼 스타일 */}
       <SectionPanel title="버튼 스타일" description="전체 CTA 버튼 공통 스타일">
         <PxField
           label="폰트 크기"

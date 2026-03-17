@@ -35,6 +35,9 @@ export function SiteShell({ children, settings }: { children: ReactNode; setting
         "--design-tips-heading-font-size": ds.tips_headingFontSize,
         "--design-tips-heading-color": ds.tips_headingColor,
 
+        "--design-carrier-nav-font-size": ds.carrierNav_fontSize,
+        "--design-carrier-nav-height": ds.carrierNav_height,
+
         "--design-button-font-size": ds.button_fontSize,
         "--design-button-radius": ds.button_radius,
         "--design-primary": ds.button_primaryColor,

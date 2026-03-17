@@ -91,6 +91,9 @@ export const designSettingsSchema = z.object({
   tips_headingFontSize: z.string().optional().default("32px"),
   tips_headingColor: z.string().optional().default("#2C3E50"),
 
+  carrierNav_fontSize: z.string().optional().default("24px"),
+  carrierNav_height: z.string().optional().default("56px"),
+
   button_fontSize: z.string().optional().default("14px"),
   button_radius: z.string().optional().default("16px"),
   button_primaryColor: z.string().optional().default("#4A86CF"),
