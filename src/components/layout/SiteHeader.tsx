@@ -22,7 +22,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <img src="/images/characters/etc-dino.png" alt="인터넷공룡" className="h-10 w-auto lg:invisible lg:h-14 lg:w-[512px]" />
+            <img src="/images/characters/etc-dino.png" alt="인터넷공룡" className="h-14 w-auto lg:invisible lg:h-14 lg:w-[512px]" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
