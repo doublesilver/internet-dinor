@@ -3,7 +3,7 @@ import { siteSettingsSeed } from "@/data/seeds";
 import { mapSiteSettingsRow } from "@/lib/repositories/mappers";
 import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/server";
 import type { SiteSettings } from "@/types/domain";
-import type { SettingsEditorValues } from "@/lib/validators/content";
+import type { DesignSettingsValues, SettingsEditorValues } from "@/lib/validators/content";
 
 const SITE_SETTINGS_TAG = "site-settings";
 
@@ -51,7 +51,8 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
       ecommerceNumber: input.ecommerceNumber,
       address: input.address,
       email: input.email
-    }
+    },
+    design_settings_json: input.designSettings ?? null
   };
 
   if (hasSupabaseAdminEnv()) {
@@ -90,6 +91,41 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
   siteSettingsSeed.businessInfo.ecommerceNumber = input.ecommerceNumber;
   siteSettingsSeed.businessInfo.address = input.address;
   siteSettingsSeed.businessInfo.email = input.email;
+  if (input.designSettings) {
+    siteSettingsSeed.designSettings = input.designSettings;
+  }
 
+  return { success: true, data: siteSettingsSeed };
+}
+
+export async function updateDesignSettings(input: DesignSettingsValues) {
+  if (hasSupabaseAdminEnv()) {
+    const supabase = createSupabaseAdminClient();
+    const { data: currentSettings } = await supabase.from("site_settings").select("id").limit(1).maybeSingle();
+
+    if (!currentSettings?.id) {
+      return { success: false, statusCode: 404, message: "설정 정보를 찾을 수 없습니다." };
+    }
+
+    const { data, error } = await supabase
+      .from("site_settings")
+      .update({ design_settings_json: input })
+      .eq("id", currentSettings.id)
+      .select("*")
+      .maybeSingle();
+
+    if (error) {
+      return { success: false, statusCode: 500, message: "디자인 설정 저장 중 오류가 발생했습니다." };
+    }
+
+    if (!data) {
+      return { success: false, statusCode: 404, message: "설정 정보를 찾을 수 없습니다." };
+    }
+
+    revalidateTag(SITE_SETTINGS_TAG);
+    return { success: true, data: mapSiteSettingsRow(data) };
+  }
+
+  siteSettingsSeed.designSettings = input;
   return { success: true, data: siteSettingsSeed };
 }

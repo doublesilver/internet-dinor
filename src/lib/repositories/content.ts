@@ -28,5 +28,5 @@ export {
   deletePostOrReview,
   updatePostOrReviewStatus
 } from "@/lib/repositories/posts";
-export { getSiteSettings, updateSiteSettings } from "@/lib/repositories/settings";
+export { getSiteSettings, updateSiteSettings, updateDesignSettings } from "@/lib/repositories/settings";
 export { getRecentInquiries } from "@/lib/repositories/inquiries";

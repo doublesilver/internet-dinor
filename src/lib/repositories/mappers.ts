@@ -1,4 +1,4 @@
-import type { Carrier, InquiryRecord, Post, Product, Review, SiteSettings } from "@/types/domain";
+import type { Carrier, DesignSettings, InquiryRecord, Post, Product, Review, SiteSettings } from "@/types/domain";
 
 function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map((item) => String(item)) : [];
@@ -123,6 +123,23 @@ export function mapReviewRow(row: Record<string, unknown>): Review {
   };
 }
 
+function mapDesignSettingsJson(value: unknown): DesignSettings {
+  const d = asKeyValue(value);
+  return {
+    heroFontSize: d.heroFontSize ?? "55px",
+    headingFontSize: d.headingFontSize ?? "32px",
+    bodyFontSize: d.bodyFontSize ?? "16px",
+    buttonFontSize: d.buttonFontSize ?? "14px",
+    buttonRadius: d.buttonRadius ?? "16px",
+    sectionPadding: d.sectionPadding ?? "48px",
+    primaryColor: d.primaryColor ?? "#4A86CF",
+    primaryDarkColor: d.primaryDarkColor ?? "#3A74B8",
+    heroBgColor: d.heroBgColor ?? "#4A86CF",
+    sectionBgColor: d.sectionBgColor ?? "#D6E4F5",
+    ctaBgColor: d.ctaBgColor ?? "#333333"
+  };
+}
+
 export function mapSiteSettingsRow(row: Record<string, unknown>): SiteSettings {
   const businessInfo = asKeyValue(row.business_info_json);
 
@@ -142,7 +159,8 @@ export function mapSiteSettingsRow(row: Record<string, unknown>): SiteSettings {
       ecommerceNumber: businessInfo.ecommerceNumber ?? businessInfo.ecommerce_number ?? "",
       address: businessInfo.address ?? "",
       email: businessInfo.email ?? ""
-    }
+    },
+    designSettings: row.design_settings_json ? mapDesignSettingsJson(row.design_settings_json) : undefined
   };
 }
 

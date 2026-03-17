@@ -65,6 +65,20 @@ export const postEditorSchema = z.object({
   publishedAt: z.string().min(1, "게시일을 입력해주세요.")
 });
 
+export const designSettingsSchema = z.object({
+  heroFontSize: z.string().optional().default("55px"),
+  headingFontSize: z.string().optional().default("32px"),
+  bodyFontSize: z.string().optional().default("16px"),
+  buttonFontSize: z.string().optional().default("14px"),
+  buttonRadius: z.string().optional().default("16px"),
+  sectionPadding: z.string().optional().default("48px"),
+  primaryColor: z.string().optional().default("#4A86CF"),
+  primaryDarkColor: z.string().optional().default("#3A74B8"),
+  heroBgColor: z.string().optional().default("#4A86CF"),
+  sectionBgColor: z.string().optional().default("#D6E4F5"),
+  ctaBgColor: z.string().optional().default("#333333")
+});
+
 export const settingsEditorSchema = z.object({
   siteName: z.string().min(1, "사이트명을 입력해주세요."),
   phoneLabel: z.string().min(1, "대표번호를 입력해주세요."),
@@ -79,12 +93,14 @@ export const settingsEditorSchema = z.object({
   businessNumber: z.string().min(1, "사업자등록번호를 입력해주세요."),
   ecommerceNumber: z.string().optional().default(""),
   address: z.string().min(1, "주소를 입력해주세요."),
-  email: z.string().email("올바른 이메일 형식을 입력해주세요.")
+  email: z.string().email("올바른 이메일 형식을 입력해주세요."),
+  designSettings: designSettingsSchema.optional()
 });
 
 export type CarrierEditorValues = z.infer<typeof carrierEditorSchema>;
 export type ProductEditorValues = z.infer<typeof productEditorSchema>;
 export type PostEditorValues = z.infer<typeof postEditorSchema>;
 export type SettingsEditorValues = z.infer<typeof settingsEditorSchema>;
+export type DesignSettingsValues = z.infer<typeof designSettingsSchema>;
 export type ContentStatusValues = z.infer<typeof contentStatusSchema>;
 export type PostReviewStatusValues = z.infer<typeof postReviewStatusSchema>;

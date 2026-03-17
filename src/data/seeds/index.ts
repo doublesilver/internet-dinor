@@ -16,6 +16,19 @@ export const siteSettingsSeed: SiteSettings = {
     ecommerceNumber: "제 2026-3820239-30-2-00209 호",
     address: "경기도 의정부시 호국로1346번길 125, 2층 207호 (의정부동)",
     email: "ititdragon@gmail.com"
+  },
+  designSettings: {
+    heroFontSize: "55px",
+    headingFontSize: "32px",
+    bodyFontSize: "16px",
+    buttonFontSize: "14px",
+    buttonRadius: "16px",
+    sectionPadding: "48px",
+    primaryColor: "#4A86CF",
+    primaryDarkColor: "#3A74B8",
+    heroBgColor: "#4A86CF",
+    sectionBgColor: "#D6E4F5",
+    ctaBgColor: "#333333"
   }
 };
 

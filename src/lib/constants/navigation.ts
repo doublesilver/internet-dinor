@@ -21,5 +21,6 @@ export const adminNavigation = [
   { href: "/admin/carriers", label: "통신사" },
   { href: "/admin/posts", label: "게시물 관리" },
   { href: "/admin/settings", label: "설정" },
+  { href: "/admin/design", label: "디자인" },
   { href: "/admin/system", label: "운영 진단" }
 ];

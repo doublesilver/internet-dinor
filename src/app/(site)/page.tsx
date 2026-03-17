@@ -46,10 +46,13 @@ export default async function HomePage() {
       {/* Builder.io: 홈 상단 편집 가능 영역 (이미지/배너 배치 가능) */}
       <BuilderEditableSection content={builderTopContent} />
 
-      <section className="relative overflow-hidden bg-brand-orange">
+      <section className="relative overflow-hidden" style={{ backgroundColor: "var(--design-hero-bg, #4A86CF)" }}>
         <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
           <div className="space-y-4 text-white md:w-[55%]">
-            <h1 className="text-4xl font-black font-surround leading-[1.3] md:text-[55px]">
+            <h1
+              className="font-black font-surround leading-[1.3]"
+              style={{ fontSize: "var(--design-hero-font-size, 55px)" }}
+            >
               {settings.heroTitle}
               <br />
               최대{" "}
@@ -80,10 +83,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-brand-peach py-10 md:py-14">
+      <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-section-bg, #D6E4F5)" }}>
         <div className="container-page">
           <div className="mb-6">
-            <h2 className="text-3xl font-black font-surround text-brand-orange md:text-4xl">각 통신사 대표 상품</h2>
+            <h2
+              className="font-black font-surround text-brand-orange"
+              style={{ fontSize: "var(--design-heading-font-size, 32px)" }}
+            >각 통신사 대표 상품</h2>
             <p className="mt-2 text-sm text-gray-500">※3년약정, 휴대폰 1회선 결합 할인 기준, VAT포함가</p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -115,17 +121,34 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#333] py-8 md:py-12">
+      <section className="py-8 md:py-12" style={{ backgroundColor: "var(--design-cta-bg, #333333)" }}>
         <div className="container-page space-y-4 text-center text-white">
           <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
-          <h2 className="text-3xl font-black font-surround md:text-4xl">혜택이 이렇게나 많았다고?</h2>
+          <h2
+            className="font-black font-surround"
+            style={{ fontSize: "var(--design-heading-font-size, 32px)" }}
+          >혜택이 이렇게나 많았다고?</h2>
           <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
           <p className="text-sm opacity-70">현금 주는 건 비밀~!</p>
           <div className="mt-6 flex justify-center gap-4">
-            <Link href="/apply" className="rounded-full bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100">
+            <Link
+              href="/apply"
+              className="bg-white px-8 py-3 font-bold text-brand-orange hover:bg-gray-100"
+              style={{
+                borderRadius: "var(--design-button-radius, 9999px)",
+                fontSize: "var(--design-button-font-size, 14px)"
+              }}
+            >
               신청서 작성
             </Link>
-            <a href={settings.phoneLink} className="rounded-full border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10">
+            <a
+              href={settings.phoneLink}
+              className="border-2 border-white px-8 py-3 font-bold text-white hover:bg-white/10"
+              style={{
+                borderRadius: "var(--design-button-radius, 9999px)",
+                fontSize: "var(--design-button-font-size, 14px)"
+              }}
+            >
               전화 상담
             </a>
           </div>

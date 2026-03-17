@@ -6,8 +6,26 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 
 export function SiteShell({ children, settings }: { children: ReactNode; settings: SiteSettings }) {
+  const ds = settings.designSettings;
+
+  const designVars = ds
+    ? ({
+        "--design-hero-font-size": ds.heroFontSize,
+        "--design-heading-font-size": ds.headingFontSize,
+        "--design-body-font-size": ds.bodyFontSize,
+        "--design-button-font-size": ds.buttonFontSize,
+        "--design-button-radius": ds.buttonRadius,
+        "--design-section-padding": ds.sectionPadding,
+        "--design-primary": ds.primaryColor,
+        "--design-primary-dark": ds.primaryDarkColor,
+        "--design-hero-bg": ds.heroBgColor,
+        "--design-section-bg": ds.sectionBgColor,
+        "--design-cta-bg": ds.ctaBgColor
+      } as React.CSSProperties)
+    : undefined;
+
   return (
-    <div className="relative min-h-screen bg-white pb-16 md:pb-0">
+    <div className="relative min-h-screen bg-white pb-16 md:pb-0" style={designVars}>
       <Suspense><CharacterOverlay /></Suspense>
       <SiteHeader settings={settings} />
       <main>{children}</main>

@@ -69,6 +69,20 @@ export interface Review {
   status: ContentStatus;
 }
 
+export interface DesignSettings {
+  heroFontSize: string;
+  headingFontSize: string;
+  bodyFontSize: string;
+  buttonFontSize: string;
+  buttonRadius: string;
+  sectionPadding: string;
+  primaryColor: string;
+  primaryDarkColor: string;
+  heroBgColor: string;
+  sectionBgColor: string;
+  ctaBgColor: string;
+}
+
 export interface SiteSettings {
   siteName: string;
   phoneLabel: string;
@@ -86,6 +100,7 @@ export interface SiteSettings {
     address: string;
     email: string;
   };
+  designSettings?: DesignSettings;
 }
 
 export interface InquiryRecord {
