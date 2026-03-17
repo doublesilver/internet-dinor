@@ -13,6 +13,9 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
     phoneLink: settings.phoneLink,
     heroCtaLabel: settings.heroCtaLabel,
     secondaryCtaLabel: settings.secondaryCtaLabel,
+    heroTitle: settings.heroTitle ?? "이번달 최대로 남김없이!",
+    heroAmount: settings.heroAmount ?? "150만원",
+    heroSubtitle: settings.heroSubtitle ?? "당일설치! 당일입금!",
     footerNotice: settings.footerNotice,
     owner: settings.businessInfo.owner,
     businessNumber: settings.businessInfo.businessNumber,
@@ -73,6 +76,18 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
         <div>
           <label className="field-label">보조 CTA</label>
           <input className="field-base" value={form.secondaryCtaLabel} onChange={(event) => updateField("secondaryCtaLabel", event.target.value)} />
+        </div>
+        <div>
+          <label className="field-label">히어로 제목</label>
+          <input className="field-base" value={form.heroTitle} onChange={(event) => updateField("heroTitle", event.target.value)} />
+        </div>
+        <div>
+          <label className="field-label">히어로 금액</label>
+          <input className="field-base" value={form.heroAmount} onChange={(event) => updateField("heroAmount", event.target.value)} />
+        </div>
+        <div>
+          <label className="field-label">히어로 부제목</label>
+          <input className="field-base" value={form.heroSubtitle} onChange={(event) => updateField("heroSubtitle", event.target.value)} />
         </div>
         <div>
           <label className="field-label">대표자/상호명</label>

@@ -41,6 +41,9 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
     phone_link: input.phoneLink,
     hero_cta_label: input.heroCtaLabel,
     secondary_cta_label: input.secondaryCtaLabel,
+    hero_title: input.heroTitle ?? "이번달 최대로 남김없이!",
+    hero_amount: input.heroAmount ?? "150만원",
+    hero_subtitle: input.heroSubtitle ?? "당일설치! 당일입금!",
     footer_notice: input.footerNotice,
     business_info_json: {
       owner: input.owner,
@@ -78,6 +81,9 @@ export async function updateSiteSettings(input: SettingsEditorValues) {
   siteSettingsSeed.phoneLink = input.phoneLink;
   siteSettingsSeed.heroCtaLabel = input.heroCtaLabel;
   siteSettingsSeed.secondaryCtaLabel = input.secondaryCtaLabel;
+  siteSettingsSeed.heroTitle = input.heroTitle ?? "이번달 최대로 남김없이!";
+  siteSettingsSeed.heroAmount = input.heroAmount ?? "150만원";
+  siteSettingsSeed.heroSubtitle = input.heroSubtitle ?? "당일설치! 당일입금!";
   siteSettingsSeed.footerNotice = input.footerNotice;
   siteSettingsSeed.businessInfo.owner = input.owner;
   siteSettingsSeed.businessInfo.businessNumber = input.businessNumber;

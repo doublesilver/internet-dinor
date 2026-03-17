@@ -139,6 +139,7 @@ export async function updateProduct(id: string, input: ProductEditorValues) {
     bundle_type: input.bundleType,
     internet_speed: input.internetSpeed,
     monthly_price_label: input.monthlyPriceLabel,
+    original_price_label: input.originalPriceLabel || null,
     benefit_label: input.benefitLabel,
     badge_tags: parseCommaSeparatedText(input.badgeTagsText),
     target_tags: parseCommaSeparatedText(input.targetTagsText),
@@ -179,6 +180,7 @@ export async function updateProduct(id: string, input: ProductEditorValues) {
   product.bundleType = input.bundleType;
   product.internetSpeed = input.internetSpeed;
   product.monthlyPriceLabel = input.monthlyPriceLabel;
+  product.originalPriceLabel = input.originalPriceLabel || undefined;
   product.benefitLabel = input.benefitLabel;
   product.badgeTags = parseCommaSeparatedText(input.badgeTagsText);
   product.targetTags = parseCommaSeparatedText(input.targetTagsText);
@@ -205,6 +207,7 @@ export async function createProduct(input: ProductEditorValues) {
     bundle_type: input.bundleType,
     internet_speed: input.internetSpeed,
     monthly_price_label: input.monthlyPriceLabel,
+    original_price_label: input.originalPriceLabel || null,
     benefit_label: input.benefitLabel,
     badge_tags: parseCommaSeparatedText(input.badgeTagsText),
     target_tags: parseCommaSeparatedText(input.targetTagsText),
@@ -243,6 +246,7 @@ export async function createProduct(input: ProductEditorValues) {
     internetSpeed: input.internetSpeed,
     tvIncluded: input.tvIncluded,
     monthlyPriceLabel: input.monthlyPriceLabel,
+    originalPriceLabel: input.originalPriceLabel || undefined,
     benefitLabel: input.benefitLabel,
     badgeTags: parseCommaSeparatedText(input.badgeTagsText),
     targetTags: parseCommaSeparatedText(input.targetTagsText),

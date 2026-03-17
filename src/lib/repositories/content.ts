@@ -1,4 +1,4 @@
-export { getCarriers, getCarrierBySlug } from "@/lib/repositories/carriers";
+export { getCarriers, getCarrierBySlug, getAllCarriersAdmin, getCarrierById, updateCarrier } from "@/lib/repositories/carriers";
 export {
   getProducts,
   getAllProductsAdmin,

@@ -169,6 +169,9 @@ describe("site settings repository seed fallback", () => {
       phoneLink: "tel:15442825",
       heroCtaLabel: "최대 지원금 확인",
       secondaryCtaLabel: "전화 상담",
+      heroTitle: "이번달 최대로 남김없이!",
+      heroAmount: "150만원",
+      heroSubtitle: "당일설치! 당일입금!",
       footerNotice: "인터넷공룡은 통신사 공식 판매점으로 안전하고 빠른 상담을 제공합니다.",
       businessInfo: {
         owner: "장윤성",

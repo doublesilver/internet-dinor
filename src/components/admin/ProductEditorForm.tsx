@@ -24,6 +24,7 @@ export function ProductEditorForm({
     bundleType: product.bundleType,
     internetSpeed: product.internetSpeed,
     monthlyPriceLabel: product.monthlyPriceLabel,
+    originalPriceLabel: product.originalPriceLabel ?? "",
     benefitLabel: product.benefitLabel,
     badgeTagsText: product.badgeTags.join(", "),
     targetTagsText: product.targetTags.join(", "),
@@ -127,6 +128,10 @@ export function ProductEditorForm({
         <div>
           <label className="field-label">월 요금 문구</label>
           <input className="field-base" value={form.monthlyPriceLabel} onChange={(event) => updateField("monthlyPriceLabel", event.target.value)} />
+        </div>
+        <div>
+          <label className="field-label">원가 문구</label>
+          <input className="field-base" value={form.originalPriceLabel} onChange={(event) => updateField("originalPriceLabel", event.target.value)} />
         </div>
         <div>
           <label className="field-label">혜택 문구</label>

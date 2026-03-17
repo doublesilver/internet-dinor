@@ -7,6 +7,18 @@ const slugSchema = z
   .min(1, "슬러그를 입력해주세요.")
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "슬러그는 소문자, 숫자, 하이픈만 사용할 수 있습니다.");
 
+export const carrierEditorSchema = z.object({
+  name: z.string().min(1, "통신사명을 입력해주세요."),
+  shortName: z.string().min(1, "약칭을 입력해주세요."),
+  slug: slugSchema,
+  summary: z.string().min(1, "요약을 입력해주세요.").max(5000, "요약은 5000자 이하로 입력해주세요."),
+  heroTitle: z.string().min(1, "히어로 제목을 입력해주세요."),
+  heroDescription: z.string().min(1, "히어로 설명을 입력해주세요."),
+  featurePointsText: z.string().optional().default(""),
+  status: statusSchema,
+  sortOrder: z.coerce.number().int().default(0)
+});
+
 export const contentStatusSchema = z.object({
   status: statusSchema
 });
@@ -24,6 +36,7 @@ export const productEditorSchema = z.object({
   bundleType: z.enum(["internet_only", "internet_tv", "business", "custom"]),
   internetSpeed: z.string().min(1, "속도를 입력해주세요."),
   monthlyPriceLabel: z.string().min(1, "요금 문구를 입력해주세요."),
+  originalPriceLabel: z.string().optional(),
   benefitLabel: z.string().min(1, "혜택 문구를 입력해주세요."),
   badgeTagsText: z.string().optional().default(""),
   targetTagsText: z.string().optional().default(""),
@@ -58,6 +71,9 @@ export const settingsEditorSchema = z.object({
   phoneLink: z.string().min(1, "전화 링크를 입력해주세요."),
   heroCtaLabel: z.string().min(1, "메인 CTA를 입력해주세요."),
   secondaryCtaLabel: z.string().min(1, "보조 CTA를 입력해주세요."),
+  heroTitle: z.string().optional(),
+  heroAmount: z.string().optional(),
+  heroSubtitle: z.string().optional(),
   footerNotice: z.string().min(1, "푸터 문구를 입력해주세요."),
   owner: z.string().min(1, "대표자 또는 상호명을 입력해주세요."),
   businessNumber: z.string().min(1, "사업자등록번호를 입력해주세요."),
@@ -66,6 +82,7 @@ export const settingsEditorSchema = z.object({
   email: z.string().email("올바른 이메일 형식을 입력해주세요.")
 });
 
+export type CarrierEditorValues = z.infer<typeof carrierEditorSchema>;
 export type ProductEditorValues = z.infer<typeof productEditorSchema>;
 export type PostEditorValues = z.infer<typeof postEditorSchema>;
 export type SettingsEditorValues = z.infer<typeof settingsEditorSchema>;

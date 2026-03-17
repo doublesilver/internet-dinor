@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createPostOrReview } from "@/lib/repositories/content";
+import { createPostOrReview, getPostByTypeAndSlug, getReviewBySlug } from "@/lib/repositories/content";
 import { postEditorSchema } from "@/lib/validators/content";
 
 export async function POST(request: Request) {
@@ -17,6 +17,19 @@ export async function POST(request: Request) {
       { success: false, message: parsed.error.issues[0]?.message ?? "입력값을 확인해주세요." },
       { status: 400 }
     );
+  }
+
+  if (parsed.data.entityType === "review") {
+    const existing = await getReviewBySlug(parsed.data.slug);
+    if (existing) {
+      return NextResponse.json({ success: false, message: "이미 사용 중인 슬러그입니다." }, { status: 409 });
+    }
+  } else {
+    const type = parsed.data.type ?? "guide";
+    const existing = await getPostByTypeAndSlug(type, parsed.data.slug);
+    if (existing) {
+      return NextResponse.json({ success: false, message: "이미 사용 중인 슬러그입니다." }, { status: 409 });
+    }
   }
 
   const result = await createPostOrReview(parsed.data);

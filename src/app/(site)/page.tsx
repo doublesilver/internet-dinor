@@ -50,17 +50,17 @@ export default async function HomePage() {
         <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
           <div className="space-y-4 text-white md:w-[55%]">
             <h1 className="text-4xl font-black font-surround leading-[1.3] md:text-[55px]">
-              이번달 최대로 남김없이!
+              {settings.heroTitle}
               <br />
               최대{" "}
               <span
                 className="relative inline-block text-brand-orange"
                 style={{ textShadow: "3px 3px 0 #FFEF0A, -1px -1px 0 #FFEF0A, 1px -1px 0 #FFEF0A, -1px 1px 0 #FFEF0A, 1px 1px 0 #FFEF0A" }}
               >
-                150만원
+                {settings.heroAmount}
               </span>
               <br />
-              당일설치! 당일입금!
+              {settings.heroSubtitle}
             </h1>
             <div className="space-y-2">
               <p className="text-lg leading-relaxed">

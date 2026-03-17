@@ -75,6 +75,9 @@ export interface SiteSettings {
   phoneLink: string;
   heroCtaLabel: string;
   secondaryCtaLabel: string;
+  heroTitle: string;
+  heroAmount: string;
+  heroSubtitle: string;
   footerNotice: string;
   businessInfo: {
     owner: string;

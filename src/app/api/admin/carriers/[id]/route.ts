@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
-import { createProduct, getProductBySlug } from "@/lib/repositories/content";
-import { productEditorSchema } from "@/lib/validators/content";
+import { updateCarrier } from "@/lib/repositories/content";
+import { carrierEditorSchema } from "@/lib/validators/content";
 
-export async function POST(request: Request) {
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
+  if (!UUID_RE.test(id)) {
+    return NextResponse.json({ success: false, message: "잘못된 ID 형식입니다." }, { status: 400 });
+  }
+
   let payload;
   try {
     payload = await request.json();
@@ -10,7 +18,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, message: "잘못된 요청 형식입니다." }, { status: 400 });
   }
 
-  const parsed = productEditorSchema.safeParse(payload);
+  const parsed = carrierEditorSchema.safeParse(payload);
 
   if (!parsed.success) {
     return NextResponse.json(
@@ -19,12 +27,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const existing = await getProductBySlug(parsed.data.slug);
-  if (existing) {
-    return NextResponse.json({ success: false, message: "이미 사용 중인 슬러그입니다." }, { status: 409 });
-  }
-
-  const result = await createProduct(parsed.data);
+  const result = await updateCarrier(id, parsed.data);
 
   if (!result.success) {
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });

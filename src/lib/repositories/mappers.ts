@@ -132,6 +132,9 @@ export function mapSiteSettingsRow(row: Record<string, unknown>): SiteSettings {
     phoneLink: String(row.phone_link ?? "tel:15442825"),
     heroCtaLabel: String(row.hero_cta_label ?? "30초 상담 받기"),
     secondaryCtaLabel: String(row.secondary_cta_label ?? "전화 상담"),
+    heroTitle: String(row.hero_title ?? "이번달 최대로 남김없이!"),
+    heroAmount: String(row.hero_amount ?? "150만원"),
+    heroSubtitle: String(row.hero_subtitle ?? "당일설치! 당일입금!"),
     footerNotice: String(row.footer_notice ?? ""),
     businessInfo: {
       owner: businessInfo.owner ?? "인터넷공룡",
