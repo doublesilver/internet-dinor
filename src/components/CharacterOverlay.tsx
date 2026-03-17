@@ -44,10 +44,10 @@ const SAVED_PLACEMENTS: Placement[] = [
   { type: "hero-dino", src: "/images/characters/hero-dino.png", x: 1589, y: 2348, w: 258, h: 307, z: 1, opacity: 100 },
 ];
 
-function CharImage({ src, x, y, w, h, z, opacity }: { src: string; x: number; y: number; w: number; h: number; z: number; opacity: number }) {
+function CharImage({ src, x, y, w, h, z, opacity, fixed }: { src: string; x: number; y: number; w: number; h: number; z: number; opacity: number; fixed?: boolean }) {
   return (
     <div
-      style={{ position: "absolute", left: x, top: y, width: w, height: h, zIndex: z, opacity: opacity / 100, pointerEvents: "none", userSelect: "none" }}
+      style={{ position: fixed ? "fixed" : "absolute", left: x, top: fixed ? Math.max(0, y) : y, width: w, height: h, zIndex: z, opacity: opacity / 100, pointerEvents: "none", userSelect: "none" }}
       className="hidden lg:block"
     >
       <img src={src} alt="" draggable={false} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
@@ -131,9 +131,9 @@ export function CharacterOverlay() {
 
   return (
     <>
-      {/* 로고 — 모든 페이지에서 표시 */}
+      {/* 로고 — 모든 페이지에서 고정 표시 */}
       {SAVED_PLACEMENTS.filter(p => p.type === "etc-dino" && p.y < 100).map((p, i) => (
-        <CharImage key={`logo${i}`} {...p} />
+        <CharImage key={`logo${i}`} {...p} fixed />
       ))}
       {/* 나머지 캐릭터 — 메인 페이지에서만 표시 */}
       {isHomePage && SAVED_PLACEMENTS.filter(p => !(p.type === "etc-dino" && p.y < 100)).map((p, i) => (
