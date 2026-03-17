@@ -66,27 +66,27 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
           <input className="field-base" value={form.phoneLabel} onChange={(event) => updateField("phoneLabel", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">전화 링크</label>
+          <label className="field-label">전화번호 링크 <span className="font-normal text-brand-slate">(tel:15442825 형식)</span></label>
           <input className="field-base" value={form.phoneLink} onChange={(event) => updateField("phoneLink", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">메인 CTA</label>
+          <label className="field-label">메인 버튼 문구 <span className="font-normal text-brand-slate">(히어로 영역의 파란 버튼)</span></label>
           <input className="field-base" value={form.heroCtaLabel} onChange={(event) => updateField("heroCtaLabel", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">보조 CTA</label>
+          <label className="field-label">보조 버튼 문구 <span className="font-normal text-brand-slate">(전화 상담 버튼)</span></label>
           <input className="field-base" value={form.secondaryCtaLabel} onChange={(event) => updateField("secondaryCtaLabel", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">히어로 제목</label>
+          <label className="field-label">메인 상단 제목 <span className="font-normal text-brand-slate">(큰 글자로 보이는 문구)</span></label>
           <input className="field-base" value={form.heroTitle} onChange={(event) => updateField("heroTitle", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">히어로 금액</label>
+          <label className="field-label">메인 강조 금액 <span className="font-normal text-brand-slate">(예: 150만원)</span></label>
           <input className="field-base" value={form.heroAmount} onChange={(event) => updateField("heroAmount", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">히어로 부제목</label>
+          <label className="field-label">메인 부제목 <span className="font-normal text-brand-slate">(제목 아래 작은 문구)</span></label>
           <input className="field-base" value={form.heroSubtitle} onChange={(event) => updateField("heroSubtitle", event.target.value)} />
         </div>
         <div>
@@ -111,13 +111,13 @@ export function SettingsEditorForm({ settings }: { settings: SiteSettings }) {
         <input className="field-base" value={form.address} onChange={(event) => updateField("address", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">푸터 문구</label>
+        <label className="field-label">하단 고지문 <span className="font-normal text-brand-slate">(사이트 맨 아래 법적 고지 문구)</span></label>
         <textarea className="field-base min-h-24" value={form.footerNotice} onChange={(event) => updateField("footerNotice", event.target.value)} />
       </div>
 
       {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <Button type="button" onClick={handleSave} disabled={isPending}>
-        {isPending ? "저장 중..." : "설정 저장"}
+        {isPending ? "저장 중..." : "저장하기"}
       </Button>
     </div>
   );

@@ -11,7 +11,7 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-sm font-semibold text-brand-orange">Dashboard</p>
+        <p className="text-sm font-semibold text-brand-orange">대시보드</p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-graphite">운영 대시보드</h1>
       </div>
       <div className="grid gap-4 md:grid-cols-4">
@@ -35,7 +35,7 @@ export default async function AdminDashboardPage() {
       <div className="surface-card">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm font-semibold text-brand-orange">System Snapshot</p>
+            <p className="text-sm font-semibold text-brand-orange">시스템 현황</p>
             <h2 className="mt-2 text-2xl font-black tracking-tight text-brand-graphite">운영 진단 요약</h2>
             <p className="mt-2 text-sm leading-6 text-brand-slate">
               인증 모드: {diagnostics.authMode === "supabase" ? "Supabase Auth" : "Preview Login"} / DB 상태:{" "}

@@ -26,7 +26,7 @@ export default async function AdminProductsPage({
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold text-brand-orange">Products</p>
+        <p className="text-sm font-semibold text-brand-orange">상품 관리</p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-graphite">상품 관리</h1>
       </div>
       <div>
@@ -39,8 +39,8 @@ export default async function AdminProductsPage({
           <span className="text-sm font-medium text-brand-slate">상태:</span>
           {[
             { value: "", label: "전체" },
-            { value: "published", label: "published" },
-            { value: "draft", label: "draft" }
+            { value: "published", label: "게시중" },
+            { value: "draft", label: "임시저장" }
           ].map((option) => (
             <Link
               key={option.value}

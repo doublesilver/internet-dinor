@@ -11,7 +11,7 @@ export default async function AdminInquiriesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold text-brand-orange">Inquiries</p>
+        <p className="text-sm font-semibold text-brand-orange">문의 관리</p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-graphite">문의 관리</h1>
       </div>
       <div className="overflow-hidden rounded-[24px] border border-brand-border bg-white">

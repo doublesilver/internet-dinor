@@ -78,27 +78,27 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
           <input className="field-base" value={form.title} onChange={(event) => updateField("title", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">슬러그</label>
+          <label className="field-label">URL 주소명 <span className="font-normal text-brand-slate">(영문, 숫자, 하이픈만 가능)</span></label>
           <input className="field-base" value={form.slug} onChange={(event) => updateField("slug", event.target.value)} />
         </div>
         {!isReview ? (
           <div>
             <label className="field-label">게시물 유형</label>
             <select className="field-base" value={form.type} onChange={(event) => updateField("type", event.target.value as typeof form.type)}>
-              <option value="event">event</option>
-              <option value="guide">guide</option>
-              <option value="notice">notice</option>
+              <option value="event">이벤트</option>
+              <option value="guide">가이드</option>
+              <option value="notice">공지사항</option>
             </select>
           </div>
         ) : (
           <div>
             <label className="field-label">후기 유형</label>
             <select className="field-base" value={form.reviewType} onChange={(event) => updateField("reviewType", event.target.value as typeof form.reviewType)}>
-              <option value="internet_only">internet_only</option>
-              <option value="internet_tv">internet_tv</option>
-              <option value="moving">moving</option>
-              <option value="bundle">bundle</option>
-              <option value="renewal">renewal</option>
+              <option value="internet_only">인터넷 단독</option>
+              <option value="internet_tv">인터넷+TV</option>
+              <option value="moving">이사</option>
+              <option value="bundle">결합</option>
+              <option value="renewal">재약정</option>
             </select>
           </div>
         )}
@@ -109,7 +109,7 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
       </div>
 
       <div>
-        <label className="field-label">요약</label>
+        <label className="field-label">요약 <span className="font-normal text-brand-slate">(목록 페이지에 보이는 짧은 설명)</span></label>
         <textarea className="field-base min-h-24" value={form.summary} onChange={(event) => updateField("summary", event.target.value)} />
       </div>
 
@@ -121,17 +121,17 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
       {!isReview ? (
         <>
           <div>
-            <label className="field-label">CTA 문구</label>
+            <label className="field-label">버튼 문구 <span className="font-normal text-brand-slate">(게시물 하단 클릭 유도 버튼)</span></label>
             <input className="field-base" value={form.ctaLabel} onChange={(event) => updateField("ctaLabel", event.target.value)} />
           </div>
           <div>
-            <label className="field-label">연관 상품 슬러그</label>
+            <label className="field-label">연관 상품 URL명 <span className="font-normal text-brand-slate">(쉼표로 구분, 예: sk-internet-500, kt-giga)</span></label>
             <input className="field-base" value={form.relatedProductSlugsText} onChange={(event) => updateField("relatedProductSlugsText", event.target.value)} />
           </div>
         </>
       ) : (
         <div>
-          <label className="field-label">태그</label>
+          <label className="field-label">태그 <span className="font-normal text-brand-slate">(쉼표로 구분, 예: SK브로드밴드, 인터넷+TV)</span></label>
           <input className="field-base" value={form.tagsText} onChange={(event) => updateField("tagsText", event.target.value)} />
         </div>
       )}
@@ -144,8 +144,8 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
         <div>
           <label className="field-label">상태</label>
           <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value as typeof form.status)}>
-            <option value="draft">draft</option>
-            <option value="published">published</option>
+            <option value="draft">임시저장</option>
+            <option value="published">게시중</option>
           </select>
         </div>
       </div>
@@ -153,7 +153,7 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
       {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <div className="flex flex-col gap-3 md:flex-row">
         <Button type="button" onClick={handleSave} disabled={isPending}>
-          {isPending ? "저장 중..." : mode === "create" ? "생성" : "저장"}
+          {isPending ? "저장 중..." : mode === "create" ? "등록하기" : "저장하기"}
         </Button>
         <Button href="/admin/posts" variant="secondary">
           목록으로

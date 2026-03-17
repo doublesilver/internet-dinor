@@ -10,7 +10,7 @@ export default async function AdminCarriersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold text-brand-orange">Carriers</p>
+        <p className="text-sm font-semibold text-brand-orange">통신사 관리</p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-graphite">통신사 관리</h1>
       </div>
       <div className="grid gap-4">
@@ -24,7 +24,7 @@ export default async function AdminCarriersPage() {
                     carrier.status === "published" ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-600"
                   }`}
                 >
-                  {carrier.status}
+                  {carrier.status === "published" ? "게시중" : "임시저장"}
                 </span>
                 <span className="text-xs text-brand-slate">정렬 {carrier.sortOrder}</span>
               </div>

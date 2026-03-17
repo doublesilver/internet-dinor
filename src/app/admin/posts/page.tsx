@@ -36,7 +36,7 @@ export default async function AdminPostsPage({
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold text-brand-orange">Posts</p>
+        <p className="text-sm font-semibold text-brand-orange">게시물 관리</p>
         <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-graphite">게시물 관리</h1>
       </div>
       <div className="flex flex-wrap gap-3">
@@ -52,9 +52,9 @@ export default async function AdminPostsPage({
           <span className="text-sm font-medium text-brand-slate">유형:</span>
           {[
             { value: "all", label: "전체" },
-            { value: "event", label: "event" },
-            { value: "guide", label: "guide" },
-            { value: "notice", label: "notice" },
+            { value: "event", label: "이벤트" },
+            { value: "guide", label: "가이드" },
+            { value: "notice", label: "공지" },
             { value: "review", label: "후기" }
           ].map((option) => (
             <Link
@@ -72,8 +72,8 @@ export default async function AdminPostsPage({
           <span className="text-sm font-medium text-brand-slate">상태:</span>
           {[
             { value: "", label: "전체" },
-            { value: "published", label: "published" },
-            { value: "draft", label: "draft" }
+            { value: "published", label: "게시중" },
+            { value: "draft", label: "임시저장" }
           ].map((option) => (
             <Link
               key={option.value}
@@ -105,7 +105,7 @@ export default async function AdminPostsPage({
         {showReviews && filteredReviews.map((review) => (
           <article key={review.id} className="surface-card">
             <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-brand-orange">review</p>
+              <p className="text-sm font-semibold text-brand-orange">후기</p>
               <StatusQuickToggle endpoint={`/api/admin/posts/${review.id}/status`} initialStatus={review.status} entityLabel="후기" entityType="review" />
             </div>
             <h2 className="mt-2 text-xl font-bold text-brand-graphite">{review.title}</h2>

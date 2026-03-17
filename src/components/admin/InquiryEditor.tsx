@@ -53,7 +53,7 @@ export function InquiryEditor({ inquiry }: { inquiry: InquiryRecord }) {
       </div>
       {feedback ? <p className={`text-sm ${feedback.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{feedback.text}</p> : null}
       <Button type="button" onClick={handleSave} disabled={isPending}>
-        {isPending ? "저장 중..." : "저장"}
+        {isPending ? "저장 중..." : "저장하기"}
       </Button>
     </div>
   );

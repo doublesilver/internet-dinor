@@ -42,7 +42,7 @@ export default async function AdminSystemPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-sm font-semibold text-brand-orange">System</p>
+          <p className="text-sm font-semibold text-brand-orange">시스템 현황</p>
           <h1 className="mt-2 text-3xl font-black tracking-tight text-brand-graphite">운영 진단</h1>
           <p className="mt-3 text-sm leading-6 text-brand-slate">외주 1차 제작물 기준으로 관리자 인증, Supabase 연결, 데이터 소스 상태를 한 화면에서 점검합니다.</p>
         </div>
@@ -86,7 +86,7 @@ export default async function AdminSystemPage() {
 
       <div className="surface-card space-y-4">
         <div>
-          <p className="text-sm font-semibold text-brand-orange">Data Summary</p>
+          <p className="text-sm font-semibold text-brand-orange">데이터 현황</p>
           <h2 className="mt-2 text-2xl font-black tracking-tight text-brand-graphite">데이터 건수</h2>
         </div>
         <div className="grid gap-4 md:grid-cols-5">
@@ -94,7 +94,7 @@ export default async function AdminSystemPage() {
             <div key={item.id} className="rounded-[24px] border border-brand-border bg-white px-5 py-5">
               <p className="text-sm text-brand-slate">{item.label}</p>
               <p className="mt-3 text-3xl font-black text-brand-graphite">{item.count}</p>
-              <p className="mt-2 text-xs text-brand-slate">{item.source === "database" ? "database" : "mock fallback"}</p>
+              <p className="mt-2 text-xs text-brand-slate">{item.source === "database" ? "DB 연동" : "시드 데이터"}</p>
             </div>
           ))}
         </div>
@@ -102,8 +102,8 @@ export default async function AdminSystemPage() {
 
       <div className="surface-card space-y-4">
         <div>
-          <p className="text-sm font-semibold text-brand-orange">Action Items</p>
-          <h2 className="mt-2 text-2xl font-black tracking-tight text-brand-graphite">권장 조치</h2>
+          <p className="text-sm font-semibold text-brand-orange">권장 조치</p>
+          <h2 className="mt-2 text-2xl font-black tracking-tight text-brand-graphite">권장 조치 사항</h2>
         </div>
         <div className="space-y-3">
           {diagnostics.recommendations.map((item) => (

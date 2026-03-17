@@ -83,7 +83,7 @@ export function ProductEditorForm({
           <input className="field-base" value={form.name} onChange={(event) => updateField("name", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">슬러그</label>
+          <label className="field-label">URL 주소명 <span className="font-normal text-brand-slate">(영문, 숫자, 하이픈만 가능)</span></label>
           <input className="field-base" value={form.slug} onChange={(event) => updateField("slug", event.target.value)} />
         </div>
         <div>
@@ -97,7 +97,7 @@ export function ProductEditorForm({
           </select>
         </div>
         <div>
-          <label className="field-label">구성</label>
+          <label className="field-label">상품 구성 <span className="font-normal text-brand-slate">(인터넷 단독 / TV 포함 등)</span></label>
           <select className="field-base" value={form.bundleType} onChange={(event) => updateField("bundleType", event.target.value as typeof form.bundleType)}>
             <option value="internet_only">인터넷 단독</option>
             <option value="internet_tv">인터넷 + TV</option>
@@ -106,60 +106,60 @@ export function ProductEditorForm({
           </select>
         </div>
         <div>
-          <label className="field-label">속도</label>
+          <label className="field-label">인터넷 속도 <span className="font-normal text-brand-slate">(예: 500Mbps)</span></label>
           <input className="field-base" value={form.internetSpeed} onChange={(event) => updateField("internetSpeed", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">정렬순서</label>
+          <label className="field-label">정렬 순서 <span className="font-normal text-brand-slate">(숫자가 작을수록 위에 표시)</span></label>
           <input className="field-base" value={form.sortOrder} onChange={(event) => updateField("sortOrder", event.target.value)} />
         </div>
       </div>
 
       <div>
-        <label className="field-label">요약</label>
+        <label className="field-label">요약 <span className="font-normal text-brand-slate">(목록 페이지에 보이는 짧은 설명)</span></label>
         <textarea className="field-base min-h-24" value={form.summary} onChange={(event) => updateField("summary", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">상세 설명</label>
+        <label className="field-label">상세 설명 <span className="font-normal text-brand-slate">(상품 상세 페이지 본문)</span></label>
         <textarea className="field-base min-h-28" value={form.description} onChange={(event) => updateField("description", event.target.value)} />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="field-label">월 요금 문구</label>
+          <label className="field-label">월 요금 표시 문구 <span className="font-normal text-brand-slate">(예: 월 29,700원)</span></label>
           <input className="field-base" value={form.monthlyPriceLabel} onChange={(event) => updateField("monthlyPriceLabel", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">원가 문구</label>
+          <label className="field-label">정상가 표시 문구 <span className="font-normal text-brand-slate">(할인 전 가격, 취소선으로 표시)</span></label>
           <input className="field-base" value={form.originalPriceLabel} onChange={(event) => updateField("originalPriceLabel", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">혜택 문구</label>
+          <label className="field-label">혜택 강조 문구 <span className="font-normal text-brand-slate">(예: 사은품 최대 60만원)</span></label>
           <input className="field-base" value={form.benefitLabel} onChange={(event) => updateField("benefitLabel", event.target.value)} />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="field-label">배지 태그</label>
+          <label className="field-label">상품 배지 <span className="font-normal text-brand-slate">(쉼표로 구분, 예: 추천, 인기)</span></label>
           <input className="field-base" value={form.badgeTagsText} onChange={(event) => updateField("badgeTagsText", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">추천 대상 태그</label>
+          <label className="field-label">추천 대상 태그 <span className="font-normal text-brand-slate">(쉼표로 구분, 예: 1인가구, 학생)</span></label>
           <input className="field-base" value={form.targetTagsText} onChange={(event) => updateField("targetTagsText", event.target.value)} />
         </div>
       </div>
 
       <div>
-        <label className="field-label">상단 핵심 포인트</label>
+        <label className="field-label">상품 핵심 포인트 <span className="font-normal text-brand-slate">(한 줄에 하나씩 입력)</span></label>
         <textarea className="field-base min-h-24" value={form.heroPointsText} onChange={(event) => updateField("heroPointsText", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">상세 섹션 (`제목::본문` 한 줄씩)</label>
+        <label className="field-label">상세 섹션 <span className="font-normal text-brand-slate">(제목::본문 형식으로 한 줄씩, 예: 가입혜택::현금 30만원 지급)</span></label>
         <textarea className="field-base min-h-28" value={form.detailSectionsText} onChange={(event) => updateField("detailSectionsText", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">FAQ (`질문::답변` 한 줄씩)</label>
+        <label className="field-label">자주 묻는 질문 <span className="font-normal text-brand-slate">(질문::답변 형식으로 한 줄씩)</span></label>
         <textarea className="field-base min-h-28" value={form.faqItemsText} onChange={(event) => updateField("faqItemsText", event.target.value)} />
       </div>
 
@@ -175,8 +175,8 @@ export function ProductEditorForm({
         <div>
           <label className="field-label">상태</label>
           <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value as typeof form.status)}>
-            <option value="draft">draft</option>
-            <option value="published">published</option>
+            <option value="draft">임시저장</option>
+            <option value="published">게시중</option>
           </select>
         </div>
       </div>
@@ -184,7 +184,7 @@ export function ProductEditorForm({
       {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <div className="flex flex-col gap-3 md:flex-row">
         <Button type="button" onClick={handleSave} disabled={isPending}>
-          {isPending ? "저장 중..." : mode === "create" ? "상품 생성" : "상품 저장"}
+          {isPending ? "저장 중..." : mode === "create" ? "상품 등록하기" : "저장하기"}
         </Button>
         <Button href="/admin/products" variant="secondary">
           목록으로

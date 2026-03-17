@@ -60,48 +60,48 @@ export function CarrierEditorForm({ carrier }: { carrier: Carrier }) {
           <input className="field-base" value={form.name} onChange={(event) => updateField("name", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">약칭</label>
+          <label className="field-label">약칭 <span className="font-normal text-brand-slate">(짧은 이름, 예: SK, KT, LG)</span></label>
           <input className="field-base" value={form.shortName} onChange={(event) => updateField("shortName", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">슬러그</label>
+          <label className="field-label">URL 주소명 <span className="font-normal text-brand-slate">(영문, 숫자, 하이픈만 가능)</span></label>
           <input className="field-base" value={form.slug} onChange={(event) => updateField("slug", event.target.value)} />
         </div>
         <div>
-          <label className="field-label">정렬순서</label>
+          <label className="field-label">정렬 순서 <span className="font-normal text-brand-slate">(숫자가 작을수록 위에 표시)</span></label>
           <input className="field-base" value={form.sortOrder} onChange={(event) => updateField("sortOrder", event.target.value)} />
         </div>
       </div>
 
       <div>
-        <label className="field-label">요약</label>
+        <label className="field-label">요약 <span className="font-normal text-brand-slate">(목록 페이지에 보이는 짧은 설명)</span></label>
         <textarea className="field-base min-h-24" value={form.summary} onChange={(event) => updateField("summary", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">히어로 제목</label>
+        <label className="field-label">통신사 상단 제목 <span className="font-normal text-brand-slate">(통신사 페이지 상단 큰 문구)</span></label>
         <input className="field-base" value={form.heroTitle} onChange={(event) => updateField("heroTitle", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">히어로 설명</label>
+        <label className="field-label">통신사 상단 설명 <span className="font-normal text-brand-slate">(통신사 페이지 상단 설명 문구)</span></label>
         <textarea className="field-base min-h-24" value={form.heroDescription} onChange={(event) => updateField("heroDescription", event.target.value)} />
       </div>
       <div>
-        <label className="field-label">특징 포인트 (한 줄씩)</label>
+        <label className="field-label">통신사 특징 포인트 <span className="font-normal text-brand-slate">(한 줄에 하나씩 입력)</span></label>
         <textarea className="field-base min-h-24" value={form.featurePointsText} onChange={(event) => updateField("featurePointsText", event.target.value)} />
       </div>
 
       <div>
         <label className="field-label">상태</label>
         <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value as typeof form.status)}>
-          <option value="draft">draft</option>
-          <option value="published">published</option>
+          <option value="draft">임시저장</option>
+          <option value="published">게시중</option>
         </select>
       </div>
 
       {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
       <div className="flex flex-col gap-3 md:flex-row">
         <Button type="button" onClick={handleSave} disabled={isPending}>
-          {isPending ? "저장 중..." : "통신사 저장"}
+          {isPending ? "저장 중..." : "저장하기"}
         </Button>
         <Button href="/admin/carriers" variant="secondary">
           목록으로

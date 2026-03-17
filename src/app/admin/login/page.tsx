@@ -13,7 +13,7 @@ export default async function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-brand-surface px-4">
       <div className="surface-card w-full max-w-md">
-        <p className="text-sm font-semibold text-brand-orange">Admin Login</p>
+        <p className="text-sm font-semibold text-brand-orange">관리자 로그인</p>
         <h1 className="mt-3 text-3xl font-black tracking-tight text-brand-graphite">관리자 로그인</h1>
         <p className="mt-3 text-sm leading-6 text-brand-slate">{getAdminAuthDescription()}</p>
         <p className="mt-3 rounded-2xl bg-brand-lavender-soft px-4 py-3 text-sm text-brand-graphite">
