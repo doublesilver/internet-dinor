@@ -133,9 +133,11 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
       {/* Typography */}
       <div className="surface-card space-y-4">
         <h2 className="text-lg font-bold text-brand-graphite">타이포그래피</h2>
+        <p className="text-xs text-brand-slate">글자 크기를 변경하면 해당 영역의 모든 텍스트에 적용됩니다.</p>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label className="field-label">히어로 폰트 크기</label>
+            <p className="mb-1 text-xs text-brand-slate">→ 메인 페이지 상단 "이번달 최대로 남김없이!" 제목</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -150,6 +152,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
           </div>
           <div>
             <label className="field-label">섹션 제목 폰트 크기</label>
+            <p className="mb-1 text-xs text-brand-slate">→ "각 통신사 대표 상품", "혜택 구성별", "실시간 신청 현황" 등 섹션 제목</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -164,6 +167,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
           </div>
           <div>
             <label className="field-label">본문 폰트 크기</label>
+            <p className="mb-1 text-xs text-brand-slate">→ 설명 문구, 안내 텍스트 등 일반 본문</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -178,6 +182,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
           </div>
           <div>
             <label className="field-label">버튼 폰트 크기</label>
+            <p className="mb-1 text-xs text-brand-slate">→ "신청서 작성", "전화 상담" 등 CTA 버튼 텍스트</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -199,15 +204,16 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
         <div className="grid gap-4 md:grid-cols-2">
           {(
             [
-              { key: "primaryColor", label: "기본 컬러" },
-              { key: "primaryDarkColor", label: "기본 컬러 (어두운)" },
-              { key: "heroBgColor", label: "히어로 배경색" },
-              { key: "sectionBgColor", label: "섹션 배경색" },
-              { key: "ctaBgColor", label: "CTA 배경색" }
-            ] as Array<{ key: keyof DesignSettings; label: string }>
-          ).map(({ key, label }) => (
+              { key: "primaryColor", label: "기본 컬러", desc: "→ 버튼, 링크, 섹션 제목 등 사이트 전체 강조색" },
+              { key: "primaryDarkColor", label: "기본 컬러 (어두운)", desc: "→ 버튼 호버 시 배경색" },
+              { key: "heroBgColor", label: "히어로 배경색", desc: "→ 메인 페이지 최상단 파란색 영역" },
+              { key: "sectionBgColor", label: "섹션 배경색", desc: "→ '각 통신사 대표 상품' 영역 배경" },
+              { key: "ctaBgColor", label: "CTA 배경색", desc: "→ '혜택이 이렇게나 많았다고?' 어두운 영역 배경" }
+            ] as Array<{ key: keyof DesignSettings; label: string; desc: string }>
+          ).map(({ key, label, desc }) => (
             <div key={key}>
               <label className="field-label">{label}</label>
+              <p className="mb-1 text-xs text-brand-slate">{desc}</p>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -231,9 +237,11 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
       {/* Layout */}
       <div className="surface-card space-y-4">
         <h2 className="text-lg font-bold text-brand-graphite">레이아웃</h2>
+        <p className="text-xs text-brand-slate">버튼 모양과 섹션 간 간격을 조절합니다.</p>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label className="field-label">버튼 모서리 반경</label>
+            <p className="mb-1 text-xs text-brand-slate">→ 모든 CTA 버튼의 둥글기 (0=각진, 50=완전 둥근)</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -248,6 +256,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
           </div>
           <div>
             <label className="field-label">섹션 상하 여백</label>
+            <p className="mb-1 text-xs text-brand-slate">→ 히어로, 통신사 상품, CTA 등 각 섹션의 위아래 패딩</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
