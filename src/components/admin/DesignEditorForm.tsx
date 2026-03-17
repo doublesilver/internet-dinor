@@ -30,6 +30,9 @@ const DEFAULT_DESIGN: DesignSettings = {
   tips_headingFontSize: "32px",
   tips_headingColor: "#2C3E50",
 
+  carrierNav_fontSize: "24px",
+  carrierNav_height: "56px",
+
   button_fontSize: "14px",
   button_radius: "16px",
   button_primaryColor: "#4A86CF",
