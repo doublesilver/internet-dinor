@@ -83,8 +83,8 @@ function createPostPayload(overrides: Record<string, unknown> = {}) {
 function createSettingsPayload(overrides: Record<string, unknown> = {}) {
   return {
     siteName: "인터넷공룡",
-    phoneLabel: "1660-1234",
-    phoneLink: "tel:16601234",
+    phoneLabel: "1544-2825",
+    phoneLink: "tel:15442825",
     heroCtaLabel: "최대 지원금 확인",
     secondaryCtaLabel: "전화 상담",
     footerNotice: "안내 문구",

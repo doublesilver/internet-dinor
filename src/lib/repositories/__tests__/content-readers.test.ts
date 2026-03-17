@@ -165,8 +165,8 @@ describe("site settings repository seed fallback", () => {
 
     await expect(settingsModule.getSiteSettings()).resolves.toEqual({
       siteName: "인터넷공룡",
-      phoneLabel: "1660-1234",
-      phoneLink: "tel:16601234",
+      phoneLabel: "1544-2825",
+      phoneLink: "tel:15442825",
       heroCtaLabel: "최대 지원금 확인",
       secondaryCtaLabel: "전화 상담",
       footerNotice: "인터넷공룡은 통신사 공식 판매점으로 안전하고 빠른 상담을 제공합니다.",

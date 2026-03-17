@@ -128,8 +128,8 @@ export function mapSiteSettingsRow(row: Record<string, unknown>): SiteSettings {
 
   return {
     siteName: String(row.site_name ?? "인터넷공룡"),
-    phoneLabel: String(row.phone_label ?? "1660-1234"),
-    phoneLink: String(row.phone_link ?? "tel:16601234"),
+    phoneLabel: String(row.phone_label ?? "1544-2825"),
+    phoneLink: String(row.phone_link ?? "tel:15442825"),
     heroCtaLabel: String(row.hero_cta_label ?? "30초 상담 받기"),
     secondaryCtaLabel: String(row.secondary_cta_label ?? "전화 상담"),
     footerNotice: String(row.footer_notice ?? ""),

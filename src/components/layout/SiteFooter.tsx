@@ -34,16 +34,16 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
 
           {/* Right: Contact CTA */}
           <div className="shrink-0 space-y-3 text-center md:text-right">
-            <p className="text-sm font-medium text-white/70">지금 바로 전문 상담사에게 문의하세요</p>
-            <a href={settings.phoneLink} className="block text-4xl font-black text-brand-orange md:text-5xl">
+            <p className="text-lg font-bold text-white">지금 바로 전문 상담사에게 문의하세요</p>
+            <a href={settings.phoneLink} className="block text-5xl font-black text-brand-orange md:text-6xl">
               {settings.phoneLabel}
             </a>
-            <p className="text-sm text-white/50">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
+            <p className="text-base font-semibold text-white/60">평일 오전 10시 ~ 오후 7시 (주말/공휴일 휴무)</p>
             <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
-              <Link href="/apply" className="inline-flex items-center justify-center rounded-2xl bg-brand-orange px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-orange-dark">
+              <Link href="/apply" className="inline-flex items-center justify-center rounded-2xl bg-brand-orange px-6 py-4 text-base font-black text-white transition-colors hover:bg-brand-orange-dark">
                 신청서 작성
               </Link>
-              <a href={settings.phoneLink} className="inline-flex items-center justify-center rounded-2xl border border-brand-orange bg-white px-5 py-3 text-sm font-bold text-brand-orange transition-colors hover:bg-blue-50">
+              <a href={settings.phoneLink} className="inline-flex items-center justify-center rounded-2xl border border-brand-orange bg-white px-6 py-4 text-base font-black text-brand-orange transition-colors hover:bg-blue-50">
                 전화 상담
               </a>
             </div>

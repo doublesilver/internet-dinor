@@ -22,13 +22,14 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             href="/"
             aria-label="홈으로 이동"
           >
-            <img src="/images/characters/etc-dino.png" alt="인터넷공룡" className="h-14 w-auto lg:invisible lg:h-14 lg:w-[512px]" />
+            <span className="font-surround text-2xl font-black text-brand-orange lg:hidden">인터넷공룡</span>
+            <span className="hidden lg:block lg:invisible lg:h-14 lg:w-[512px]" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
             <nav
               aria-label="메인 네비게이션"
-              className="flex items-center gap-6 text-base font-black text-brand-slate"
+              className="flex items-center gap-6 text-lg font-black text-brand-slate"
             >
               {publicNavigation.map((item) => (
                 <Link
