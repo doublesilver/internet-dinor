@@ -137,7 +137,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label className="field-label">히어로 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 메인 페이지 상단 "이번달 최대로 남김없이!" 제목</p>
+            <p className="mb-1 text-xs text-brand-slate">→ 메인 페이지 상단 히어로 제목</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -152,7 +152,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
           </div>
           <div>
             <label className="field-label">섹션 제목 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ "각 통신사 대표 상품", "혜택 구성별", "실시간 신청 현황" 등 섹션 제목</p>
+            <p className="mb-1 text-xs text-brand-slate">→ 각 통신사 대표 상품, 혜택 구성별, 실시간 신청 현황 등 섹션 제목</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -182,7 +182,7 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
           </div>
           <div>
             <label className="field-label">버튼 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ "신청서 작성", "전화 상담" 등 CTA 버튼 텍스트</p>
+            <p className="mb-1 text-xs text-brand-slate">→ 신청서 작성, 전화 상담 등 CTA 버튼 텍스트</p>
             <div className="flex items-center gap-2">
               <input
                 type="number"
