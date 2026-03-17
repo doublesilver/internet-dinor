@@ -81,12 +81,13 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
       {/* Carrier sub-nav (desktop only) */}
       <div className="hidden border-b border-brand-border bg-brand-surface lg:block">
         <div className="container-page">
-          <nav aria-label="통신사 네비게이션" className="flex h-11 items-center justify-center gap-6 text-lg font-black text-brand-slate">
+          <nav aria-label="통신사 네비게이션" className="flex h-11 items-center justify-center gap-6 text-lg font-black">
             {carrierNavigation.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="hover:text-brand-orange"
+                style={{ color: item.color }}
+                className="transition-opacity hover:opacity-70"
               >
                 {item.label}
               </Link>
@@ -125,7 +126,8 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-xl px-4 py-2 text-sm font-medium text-brand-graphite hover:bg-brand-surface"
+                  className="rounded-xl px-4 py-2 text-sm font-bold hover:bg-brand-surface"
+                  style={{ color: item.color }}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}

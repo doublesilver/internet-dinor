@@ -7,11 +7,11 @@ export const publicNavigation = [
 ];
 
 export const carrierNavigation = [
-  { href: "/carriers/sk", label: "SK브로드밴드" },
-  { href: "/carriers/kt", label: "KT" },
-  { href: "/carriers/lg", label: "LG유플러스" },
-  { href: "/carriers/skylife", label: "KT스카이라이프" },
-  { href: "/carriers/hellovision", label: "LG헬로비전" }
+  { href: "/carriers/sk", label: "SK브로드밴드", color: "#FFA13E" },
+  { href: "/carriers/kt", label: "KT", color: "#FF5B62" },
+  { href: "/carriers/lg", label: "LG유플러스", color: "#FE82B0" },
+  { href: "/carriers/skylife", label: "KT스카이라이프", color: "#6DD5C0" },
+  { href: "/carriers/hellovision", label: "LG헬로비전", color: "#FFA38B" }
 ];
 
 export const adminNavigation = [
