@@ -10,17 +10,37 @@ export function SiteShell({ children, settings }: { children: ReactNode; setting
 
   const designVars = ds
     ? ({
-        "--design-hero-font-size": ds.heroFontSize,
-        "--design-heading-font-size": ds.headingFontSize,
-        "--design-body-font-size": ds.bodyFontSize,
-        "--design-button-font-size": ds.buttonFontSize,
-        "--design-button-radius": ds.buttonRadius,
-        "--design-section-padding": ds.sectionPadding,
-        "--design-primary": ds.primaryColor,
-        "--design-primary-dark": ds.primaryDarkColor,
-        "--design-hero-bg": ds.heroBgColor,
-        "--design-section-bg": ds.sectionBgColor,
-        "--design-cta-bg": ds.ctaBgColor
+        "--design-hero-bg": ds.hero_bgColor,
+        "--design-hero-title-font-size": ds.hero_titleFontSize,
+        "--design-hero-title-color": ds.hero_titleColor,
+        "--design-hero-subtitle-font-size": ds.hero_subtitleFontSize,
+        "--design-hero-subtitle-color": ds.hero_subtitleColor,
+
+        "--design-carrier-bg": ds.carrierProducts_bgColor,
+        "--design-carrier-heading-font-size": ds.carrierProducts_headingFontSize,
+        "--design-carrier-heading-color": ds.carrierProducts_headingColor,
+
+        "--design-benefits-bg": ds.benefits_bgColor,
+        "--design-benefits-heading-font-size": ds.benefits_headingFontSize,
+        "--design-benefits-heading-color": ds.benefits_headingColor,
+
+        "--design-cta-bg": ds.cta_bgColor,
+        "--design-cta-heading-font-size": ds.cta_headingFontSize,
+        "--design-cta-heading-color": ds.cta_headingColor,
+
+        "--design-recent-heading-font-size": ds.recent_headingFontSize,
+        "--design-recent-heading-color": ds.recent_headingColor,
+
+        "--design-tips-bg": ds.tips_bgColor,
+        "--design-tips-heading-font-size": ds.tips_headingFontSize,
+        "--design-tips-heading-color": ds.tips_headingColor,
+
+        "--design-button-font-size": ds.button_fontSize,
+        "--design-button-radius": ds.button_radius,
+        "--design-primary": ds.button_primaryColor,
+        "--design-primary-dark": ds.button_primaryDarkColor,
+
+        "--design-section-padding": ds.section_padding
       } as React.CSSProperties)
     : undefined;
 

@@ -66,17 +66,37 @@ export const postEditorSchema = z.object({
 });
 
 export const designSettingsSchema = z.object({
-  heroFontSize: z.string().optional().default("55px"),
-  headingFontSize: z.string().optional().default("32px"),
-  bodyFontSize: z.string().optional().default("16px"),
-  buttonFontSize: z.string().optional().default("14px"),
-  buttonRadius: z.string().optional().default("16px"),
-  sectionPadding: z.string().optional().default("48px"),
-  primaryColor: z.string().optional().default("#4A86CF"),
-  primaryDarkColor: z.string().optional().default("#3A74B8"),
-  heroBgColor: z.string().optional().default("#4A86CF"),
-  sectionBgColor: z.string().optional().default("#D6E4F5"),
-  ctaBgColor: z.string().optional().default("#333333")
+  hero_bgColor: z.string().optional().default("#4A86CF"),
+  hero_titleFontSize: z.string().optional().default("55px"),
+  hero_titleColor: z.string().optional().default("#ffffff"),
+  hero_subtitleFontSize: z.string().optional().default("18px"),
+  hero_subtitleColor: z.string().optional().default("rgba(255,255,255,0.85)"),
+
+  carrierProducts_bgColor: z.string().optional().default("#D6E4F5"),
+  carrierProducts_headingFontSize: z.string().optional().default("32px"),
+  carrierProducts_headingColor: z.string().optional().default("#4A86CF"),
+
+  benefits_bgColor: z.string().optional().default("#6EA8E0"),
+  benefits_headingFontSize: z.string().optional().default("32px"),
+  benefits_headingColor: z.string().optional().default("#ffffff"),
+
+  cta_bgColor: z.string().optional().default("#333333"),
+  cta_headingFontSize: z.string().optional().default("32px"),
+  cta_headingColor: z.string().optional().default("#ffffff"),
+
+  recent_headingFontSize: z.string().optional().default("32px"),
+  recent_headingColor: z.string().optional().default("#2C3E50"),
+
+  tips_bgColor: z.string().optional().default("#F5F8FC"),
+  tips_headingFontSize: z.string().optional().default("32px"),
+  tips_headingColor: z.string().optional().default("#2C3E50"),
+
+  button_fontSize: z.string().optional().default("14px"),
+  button_radius: z.string().optional().default("16px"),
+  button_primaryColor: z.string().optional().default("#4A86CF"),
+  button_primaryDarkColor: z.string().optional().default("#3A74B8"),
+
+  section_padding: z.string().optional().default("48px")
 });
 
 export const settingsEditorSchema = z.object({

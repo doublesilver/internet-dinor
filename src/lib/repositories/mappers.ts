@@ -125,18 +125,48 @@ export function mapReviewRow(row: Record<string, unknown>): Review {
 
 function mapDesignSettingsJson(value: unknown): DesignSettings {
   const d = asKeyValue(value);
+
+  // Backward-compat: map old flat keys to new granular keys
+  const heroBg = d.hero_bgColor ?? d.heroBgColor ?? "#4A86CF";
+  const headingSize = d.carrierProducts_headingFontSize ?? d.headingFontSize ?? "32px";
+  const primaryColor = d.button_primaryColor ?? d.primaryColor ?? "#4A86CF";
+  const primaryDarkColor = d.button_primaryDarkColor ?? d.primaryDarkColor ?? "#3A74B8";
+  const buttonRadius = d.button_radius ?? d.buttonRadius ?? "16px";
+  const buttonFontSize = d.button_fontSize ?? d.buttonFontSize ?? "14px";
+  const sectionPadding = d.section_padding ?? d.sectionPadding ?? "48px";
+
   return {
-    heroFontSize: d.heroFontSize ?? "55px",
-    headingFontSize: d.headingFontSize ?? "32px",
-    bodyFontSize: d.bodyFontSize ?? "16px",
-    buttonFontSize: d.buttonFontSize ?? "14px",
-    buttonRadius: d.buttonRadius ?? "16px",
-    sectionPadding: d.sectionPadding ?? "48px",
-    primaryColor: d.primaryColor ?? "#4A86CF",
-    primaryDarkColor: d.primaryDarkColor ?? "#3A74B8",
-    heroBgColor: d.heroBgColor ?? "#4A86CF",
-    sectionBgColor: d.sectionBgColor ?? "#D6E4F5",
-    ctaBgColor: d.ctaBgColor ?? "#333333"
+    hero_bgColor: heroBg,
+    hero_titleFontSize: d.hero_titleFontSize ?? d.heroFontSize ?? "55px",
+    hero_titleColor: d.hero_titleColor ?? "#ffffff",
+    hero_subtitleFontSize: d.hero_subtitleFontSize ?? "18px",
+    hero_subtitleColor: d.hero_subtitleColor ?? "rgba(255,255,255,0.85)",
+
+    carrierProducts_bgColor: d.carrierProducts_bgColor ?? d.sectionBgColor ?? "#D6E4F5",
+    carrierProducts_headingFontSize: headingSize,
+    carrierProducts_headingColor: d.carrierProducts_headingColor ?? primaryColor,
+
+    benefits_bgColor: d.benefits_bgColor ?? "#6EA8E0",
+    benefits_headingFontSize: d.benefits_headingFontSize ?? headingSize,
+    benefits_headingColor: d.benefits_headingColor ?? "#ffffff",
+
+    cta_bgColor: d.cta_bgColor ?? d.ctaBgColor ?? "#333333",
+    cta_headingFontSize: d.cta_headingFontSize ?? headingSize,
+    cta_headingColor: d.cta_headingColor ?? "#ffffff",
+
+    recent_headingFontSize: d.recent_headingFontSize ?? headingSize,
+    recent_headingColor: d.recent_headingColor ?? "#2C3E50",
+
+    tips_bgColor: d.tips_bgColor ?? "#F5F8FC",
+    tips_headingFontSize: d.tips_headingFontSize ?? headingSize,
+    tips_headingColor: d.tips_headingColor ?? "#2C3E50",
+
+    button_fontSize: buttonFontSize,
+    button_radius: buttonRadius,
+    button_primaryColor: primaryColor,
+    button_primaryDarkColor: primaryDarkColor,
+
+    section_padding: sectionPadding
   };
 }
 

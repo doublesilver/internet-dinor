@@ -5,17 +5,37 @@ import type { DesignSettings } from "@/types/domain";
 import { Button } from "@/components/ui/Button";
 
 const DEFAULT_DESIGN: DesignSettings = {
-  heroFontSize: "55px",
-  headingFontSize: "32px",
-  bodyFontSize: "16px",
-  buttonFontSize: "14px",
-  buttonRadius: "16px",
-  sectionPadding: "48px",
-  primaryColor: "#4A86CF",
-  primaryDarkColor: "#3A74B8",
-  heroBgColor: "#4A86CF",
-  sectionBgColor: "#D6E4F5",
-  ctaBgColor: "#333333"
+  hero_bgColor: "#4A86CF",
+  hero_titleFontSize: "55px",
+  hero_titleColor: "#ffffff",
+  hero_subtitleFontSize: "18px",
+  hero_subtitleColor: "rgba(255,255,255,0.85)",
+
+  carrierProducts_bgColor: "#D6E4F5",
+  carrierProducts_headingFontSize: "32px",
+  carrierProducts_headingColor: "#4A86CF",
+
+  benefits_bgColor: "#6EA8E0",
+  benefits_headingFontSize: "32px",
+  benefits_headingColor: "#ffffff",
+
+  cta_bgColor: "#333333",
+  cta_headingFontSize: "32px",
+  cta_headingColor: "#ffffff",
+
+  recent_headingFontSize: "32px",
+  recent_headingColor: "#2C3E50",
+
+  tips_bgColor: "#F5F8FC",
+  tips_headingFontSize: "32px",
+  tips_headingColor: "#2C3E50",
+
+  button_fontSize: "14px",
+  button_radius: "16px",
+  button_primaryColor: "#4A86CF",
+  button_primaryDarkColor: "#3A74B8",
+
+  section_padding: "48px"
 };
 
 type Message = { type: "success" | "error"; text: string } | null;
@@ -26,6 +46,105 @@ function parsePxValue(value: string): number {
 
 function toPx(value: number): string {
   return `${value}px`;
+}
+
+function ColorField({
+  label,
+  value,
+  onChange
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div>
+      <label className="field-label">{label}</label>
+      <div className="flex items-center gap-2">
+        <div
+          className="h-5 w-5 flex-shrink-0 rounded-full border border-gray-300"
+          style={{ backgroundColor: value }}
+        />
+        <input
+          type="color"
+          className="h-9 w-12 cursor-pointer rounded border border-gray-200 p-0.5"
+          value={value.startsWith("rgba") ? "#ffffff" : value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+        <input
+          type="text"
+          className="field-base font-mono"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          maxLength={30}
+        />
+      </div>
+    </div>
+  );
+}
+
+function PxField({
+  label,
+  value,
+  onChange,
+  min,
+  max
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  min?: number;
+  max?: number;
+}) {
+  return (
+    <div>
+      <label className="field-label">{label}</label>
+      <div className="flex items-center gap-2">
+        <input
+          type="number"
+          className="field-base"
+          value={parsePxValue(value)}
+          onChange={(e) => onChange(toPx(Number(e.target.value)))}
+          min={min}
+          max={max}
+        />
+        <span className="text-sm text-brand-slate">px</span>
+      </div>
+    </div>
+  );
+}
+
+function SectionPanel({
+  title,
+  description,
+  children
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="surface-card overflow-hidden">
+      <button
+        type="button"
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <div>
+          <p className="font-semibold text-brand-graphite">{title}</p>
+          <p className="text-xs text-brand-slate">{description}</p>
+        </div>
+        <span className="flex-shrink-0 text-brand-slate">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <div className="border-t border-gray-100 px-5 pb-5 pt-4">
+          <div className="grid gap-4 md:grid-cols-2">{children}</div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function DesignEditorForm({ designSettings }: { designSettings?: DesignSettings }) {
@@ -62,217 +181,313 @@ export function DesignEditorForm({ designSettings }: { designSettings?: DesignSe
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Live Preview */}
       <div
         className="surface-card overflow-hidden rounded-2xl"
-        style={{
-          "--preview-hero-bg": form.heroBgColor,
-          "--preview-section-bg": form.sectionBgColor,
-          "--preview-cta-bg": form.ctaBgColor,
-          "--preview-primary": form.primaryColor,
-          "--preview-button-radius": form.buttonRadius,
-          "--preview-button-font-size": form.buttonFontSize,
-          "--preview-hero-font-size": form.heroFontSize,
-          "--preview-heading-font-size": form.headingFontSize,
-          "--preview-body-font-size": form.bodyFontSize,
-          "--preview-section-padding": form.sectionPadding
-        } as React.CSSProperties}
+        style={
+          {
+            "--preview-hero-bg": form.hero_bgColor,
+            "--preview-hero-title-color": form.hero_titleColor,
+            "--preview-hero-title-size": form.hero_titleFontSize,
+            "--preview-carrier-bg": form.carrierProducts_bgColor,
+            "--preview-carrier-heading-color": form.carrierProducts_headingColor,
+            "--preview-carrier-heading-size": form.carrierProducts_headingFontSize,
+            "--preview-benefits-bg": form.benefits_bgColor,
+            "--preview-cta-bg": form.cta_bgColor,
+            "--preview-cta-color": form.cta_headingColor,
+            "--preview-recent-color": form.recent_headingColor,
+            "--preview-tips-bg": form.tips_bgColor,
+            "--preview-tips-color": form.tips_headingColor,
+            "--preview-button-radius": form.button_radius,
+            "--preview-button-font-size": form.button_fontSize,
+            "--preview-section-padding": form.section_padding
+          } as React.CSSProperties
+        }
       >
         <p className="px-4 pt-4 text-xs font-semibold uppercase text-brand-slate">미리보기</p>
+
         {/* Hero preview */}
         <div
           className="p-6"
-          style={{ backgroundColor: form.heroBgColor, paddingTop: form.sectionPadding, paddingBottom: form.sectionPadding }}
+          style={{
+            backgroundColor: form.hero_bgColor,
+            paddingTop: form.section_padding,
+            paddingBottom: form.section_padding
+          }}
         >
-          <h1 className="font-black font-surround text-white" style={{ fontSize: form.heroFontSize }}>
+          <h1
+            className="font-black font-surround"
+            style={{ fontSize: form.hero_titleFontSize, color: form.hero_titleColor }}
+          >
             이번달 최대로 남김없이!
           </h1>
-          <p className="mt-2 text-white/80" style={{ fontSize: form.bodyFontSize }}>
+          <p
+            className="mt-2"
+            style={{ fontSize: form.hero_subtitleFontSize, color: form.hero_subtitleColor }}
+          >
             전국 최대 사은품 지급하는 곳!
           </p>
           <button
-            className="mt-4 font-bold text-white"
+            className="mt-4 font-bold"
             style={{
-              backgroundColor: form.primaryDarkColor,
-              borderRadius: form.buttonRadius,
-              fontSize: form.buttonFontSize,
+              backgroundColor: form.button_primaryDarkColor,
+              color: "#ffffff",
+              borderRadius: form.button_radius,
+              fontSize: form.button_fontSize,
               padding: "10px 24px"
             }}
           >
             최대 지원금 확인
           </button>
         </div>
-        {/* Section heading preview */}
-        <div className="p-6" style={{ backgroundColor: form.sectionBgColor }}>
-          <h2 className="font-black font-surround" style={{ fontSize: form.headingFontSize, color: form.primaryColor }}>
+
+        {/* Carrier products preview */}
+        <div className="p-6" style={{ backgroundColor: form.carrierProducts_bgColor }}>
+          <h2
+            className="font-black font-surround"
+            style={{
+              fontSize: form.carrierProducts_headingFontSize,
+              color: form.carrierProducts_headingColor
+            }}
+          >
             각 통신사 대표 상품
           </h2>
-          <p className="mt-1 text-gray-600" style={{ fontSize: form.bodyFontSize }}>
-            섹션 본문 텍스트 예시입니다.
-          </p>
         </div>
+
+        {/* Benefits preview */}
+        <div className="p-6" style={{ backgroundColor: form.benefits_bgColor }}>
+          <h2
+            className="font-black font-surround"
+            style={{
+              fontSize: form.benefits_headingFontSize,
+              color: form.benefits_headingColor
+            }}
+          >
+            혜택 구성별 최대 사은품
+          </h2>
+        </div>
+
         {/* CTA preview */}
-        <div className="p-6 text-center" style={{ backgroundColor: form.ctaBgColor }}>
-          <h2 className="font-black font-surround text-white" style={{ fontSize: form.headingFontSize }}>
+        <div className="p-6 text-center" style={{ backgroundColor: form.cta_bgColor }}>
+          <h2
+            className="font-black font-surround"
+            style={{ fontSize: form.cta_headingFontSize, color: form.cta_headingColor }}
+          >
             혜택이 이렇게나 많았다고?
           </h2>
           <button
-            className="mt-4 font-bold text-white border-2 border-white"
+            className="mt-4 font-bold border-2"
             style={{
-              borderRadius: form.buttonRadius,
-              fontSize: form.buttonFontSize,
+              borderRadius: form.button_radius,
+              fontSize: form.button_fontSize,
+              color: form.cta_headingColor,
+              borderColor: form.cta_headingColor,
               padding: "10px 24px"
             }}
           >
             전화 상담
           </button>
         </div>
-      </div>
 
-      {/* Typography */}
-      <div className="surface-card space-y-4">
-        <h2 className="text-lg font-bold text-brand-graphite">타이포그래피</h2>
-        <p className="text-xs text-brand-slate">글자 크기를 변경하면 해당 영역의 모든 텍스트에 적용됩니다.</p>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className="field-label">히어로 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 메인 페이지 상단 히어로 제목</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                className="field-base"
-                value={parsePxValue(form.heroFontSize)}
-                onChange={(e) => updateField("heroFontSize", toPx(Number(e.target.value)))}
-                min={20}
-                max={120}
-              />
-              <span className="text-sm text-brand-slate">px</span>
-            </div>
-          </div>
-          <div>
-            <label className="field-label">섹션 제목 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 각 통신사 대표 상품, 혜택 구성별, 실시간 신청 현황 등 섹션 제목</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                className="field-base"
-                value={parsePxValue(form.headingFontSize)}
-                onChange={(e) => updateField("headingFontSize", toPx(Number(e.target.value)))}
-                min={16}
-                max={80}
-              />
-              <span className="text-sm text-brand-slate">px</span>
-            </div>
-          </div>
-          <div>
-            <label className="field-label">본문 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 설명 문구, 안내 텍스트 등 일반 본문</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                className="field-base"
-                value={parsePxValue(form.bodyFontSize)}
-                onChange={(e) => updateField("bodyFontSize", toPx(Number(e.target.value)))}
-                min={12}
-                max={24}
-              />
-              <span className="text-sm text-brand-slate">px</span>
-            </div>
-          </div>
-          <div>
-            <label className="field-label">버튼 폰트 크기</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 신청서 작성, 전화 상담 등 CTA 버튼 텍스트</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                className="field-base"
-                value={parsePxValue(form.buttonFontSize)}
-                onChange={(e) => updateField("buttonFontSize", toPx(Number(e.target.value)))}
-                min={10}
-                max={24}
-              />
-              <span className="text-sm text-brand-slate">px</span>
-            </div>
-          </div>
+        {/* Recent preview */}
+        <div className="p-6">
+          <h2
+            className="font-black font-surround"
+            style={{ fontSize: form.recent_headingFontSize, color: form.recent_headingColor }}
+          >
+            실시간 신청 현황
+          </h2>
+        </div>
+
+        {/* Tips preview */}
+        <div className="p-6" style={{ backgroundColor: form.tips_bgColor }}>
+          <h2
+            className="font-black font-surround"
+            style={{ fontSize: form.tips_headingFontSize, color: form.tips_headingColor }}
+          >
+            꿀TIP 모아보기
+          </h2>
         </div>
       </div>
 
-      {/* Colors */}
-      <div className="surface-card space-y-4">
-        <h2 className="text-lg font-bold text-brand-graphite">색상</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          {(
-            [
-              { key: "primaryColor", label: "기본 컬러", desc: "→ 버튼, 링크, 섹션 제목 등 사이트 전체 강조색" },
-              { key: "primaryDarkColor", label: "기본 컬러 (어두운)", desc: "→ 버튼 호버 시 배경색" },
-              { key: "heroBgColor", label: "히어로 배경색", desc: "→ 메인 페이지 최상단 파란색 영역" },
-              { key: "sectionBgColor", label: "섹션 배경색", desc: "→ '각 통신사 대표 상품' 영역 배경" },
-              { key: "ctaBgColor", label: "CTA 배경색", desc: "→ '혜택이 이렇게나 많았다고?' 어두운 영역 배경" }
-            ] as Array<{ key: keyof DesignSettings; label: string; desc: string }>
-          ).map(({ key, label, desc }) => (
-            <div key={key}>
-              <label className="field-label">{label}</label>
-              <p className="mb-1 text-xs text-brand-slate">{desc}</p>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  className="h-9 w-12 cursor-pointer rounded border border-gray-200 p-0.5"
-                  value={form[key]}
-                  onChange={(e) => updateField(key, e.target.value)}
-                />
-                <input
-                  type="text"
-                  className="field-base font-mono uppercase"
-                  value={form[key]}
-                  onChange={(e) => updateField(key, e.target.value)}
-                  maxLength={7}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 1. 히어로 섹션 */}
+      <SectionPanel title="히어로 섹션" description="메인 상단 파란 배경 영역">
+        <ColorField
+          label="배경색"
+          value={form.hero_bgColor}
+          onChange={(v) => updateField("hero_bgColor", v)}
+        />
+        <PxField
+          label="제목 크기"
+          value={form.hero_titleFontSize}
+          onChange={(v) => updateField("hero_titleFontSize", v)}
+          min={20}
+          max={120}
+        />
+        <ColorField
+          label="제목 색상"
+          value={form.hero_titleColor}
+          onChange={(v) => updateField("hero_titleColor", v)}
+        />
+        <PxField
+          label="부제목 크기"
+          value={form.hero_subtitleFontSize}
+          onChange={(v) => updateField("hero_subtitleFontSize", v)}
+          min={12}
+          max={40}
+        />
+        <ColorField
+          label="부제목 색상"
+          value={form.hero_subtitleColor}
+          onChange={(v) => updateField("hero_subtitleColor", v)}
+        />
+      </SectionPanel>
 
-      {/* Layout */}
-      <div className="surface-card space-y-4">
-        <h2 className="text-lg font-bold text-brand-graphite">레이아웃</h2>
-        <p className="text-xs text-brand-slate">버튼 모양과 섹션 간 간격을 조절합니다.</p>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className="field-label">버튼 모서리 반경</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 모든 CTA 버튼의 둥글기 (0=각진, 50=완전 둥근)</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                className="field-base"
-                value={parsePxValue(form.buttonRadius)}
-                onChange={(e) => updateField("buttonRadius", toPx(Number(e.target.value)))}
-                min={0}
-                max={50}
-              />
-              <span className="text-sm text-brand-slate">px</span>
-            </div>
-          </div>
-          <div>
-            <label className="field-label">섹션 상하 여백</label>
-            <p className="mb-1 text-xs text-brand-slate">→ 히어로, 통신사 상품, CTA 등 각 섹션의 위아래 패딩</p>
-            <div className="flex items-center gap-2">
-              <input
-                type="number"
-                className="field-base"
-                value={parsePxValue(form.sectionPadding)}
-                onChange={(e) => updateField("sectionPadding", toPx(Number(e.target.value)))}
-                min={16}
-                max={120}
-              />
-              <span className="text-sm text-brand-slate">px</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* 2. 통신사 대표 상품 섹션 */}
+      <SectionPanel title="통신사 대표 상품 섹션" description="각 통신사 대표 상품 카드 영역">
+        <ColorField
+          label="배경색"
+          value={form.carrierProducts_bgColor}
+          onChange={(v) => updateField("carrierProducts_bgColor", v)}
+        />
+        <PxField
+          label="제목 크기"
+          value={form.carrierProducts_headingFontSize}
+          onChange={(v) => updateField("carrierProducts_headingFontSize", v)}
+          min={16}
+          max={80}
+        />
+        <ColorField
+          label="제목 색상"
+          value={form.carrierProducts_headingColor}
+          onChange={(v) => updateField("carrierProducts_headingColor", v)}
+        />
+      </SectionPanel>
 
-      {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
+      {/* 3. 혜택 구성별 섹션 */}
+      <SectionPanel title="혜택 구성별 섹션" description="혜택 구성별 최대 사은품 카드 영역">
+        <ColorField
+          label="배경색"
+          value={form.benefits_bgColor}
+          onChange={(v) => updateField("benefits_bgColor", v)}
+        />
+        <PxField
+          label="제목 크기"
+          value={form.benefits_headingFontSize}
+          onChange={(v) => updateField("benefits_headingFontSize", v)}
+          min={16}
+          max={80}
+        />
+        <ColorField
+          label="제목 색상"
+          value={form.benefits_headingColor}
+          onChange={(v) => updateField("benefits_headingColor", v)}
+        />
+      </SectionPanel>
+
+      {/* 4. CTA 배너 */}
+      <SectionPanel title="CTA 배너" description='"혜택이 이렇게나 많았다고?" 어두운 배너 영역'>
+        <ColorField
+          label="배경색"
+          value={form.cta_bgColor}
+          onChange={(v) => updateField("cta_bgColor", v)}
+        />
+        <PxField
+          label="제목 크기"
+          value={form.cta_headingFontSize}
+          onChange={(v) => updateField("cta_headingFontSize", v)}
+          min={16}
+          max={80}
+        />
+        <ColorField
+          label="제목 색상"
+          value={form.cta_headingColor}
+          onChange={(v) => updateField("cta_headingColor", v)}
+        />
+      </SectionPanel>
+
+      {/* 5. 실시간 신청 현황 */}
+      <SectionPanel title="실시간 신청 현황" description="최근 신청 목록 섹션">
+        <PxField
+          label="제목 크기"
+          value={form.recent_headingFontSize}
+          onChange={(v) => updateField("recent_headingFontSize", v)}
+          min={16}
+          max={80}
+        />
+        <ColorField
+          label="제목 색상"
+          value={form.recent_headingColor}
+          onChange={(v) => updateField("recent_headingColor", v)}
+        />
+      </SectionPanel>
+
+      {/* 6. 꿀TIP 모아보기 */}
+      <SectionPanel title="꿀TIP 모아보기" description="가이드/팁 카드 갤러리 섹션">
+        <ColorField
+          label="배경색"
+          value={form.tips_bgColor}
+          onChange={(v) => updateField("tips_bgColor", v)}
+        />
+        <PxField
+          label="제목 크기"
+          value={form.tips_headingFontSize}
+          onChange={(v) => updateField("tips_headingFontSize", v)}
+          min={16}
+          max={80}
+        />
+        <ColorField
+          label="제목 색상"
+          value={form.tips_headingColor}
+          onChange={(v) => updateField("tips_headingColor", v)}
+        />
+      </SectionPanel>
+
+      {/* 7. 버튼 스타일 */}
+      <SectionPanel title="버튼 스타일" description="전체 CTA 버튼 공통 스타일">
+        <PxField
+          label="폰트 크기"
+          value={form.button_fontSize}
+          onChange={(v) => updateField("button_fontSize", v)}
+          min={10}
+          max={24}
+        />
+        <PxField
+          label="모서리 둥글기"
+          value={form.button_radius}
+          onChange={(v) => updateField("button_radius", v)}
+          min={0}
+          max={50}
+        />
+        <ColorField
+          label="기본 색상"
+          value={form.button_primaryColor}
+          onChange={(v) => updateField("button_primaryColor", v)}
+        />
+        <ColorField
+          label="호버 색상 (어두운)"
+          value={form.button_primaryDarkColor}
+          onChange={(v) => updateField("button_primaryDarkColor", v)}
+        />
+      </SectionPanel>
+
+      {/* 8. 공통 */}
+      <SectionPanel title="공통" description="섹션 간격 등 전체 공통 설정">
+        <PxField
+          label="섹션 상하 여백"
+          value={form.section_padding}
+          onChange={(v) => updateField("section_padding", v)}
+          min={16}
+          max={120}
+        />
+      </SectionPanel>
+
+      {message ? (
+        <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>
+          {message.text}
+        </p>
+      ) : null}
       <Button type="button" onClick={handleSave} disabled={isPending}>
         {isPending ? "저장 중..." : "디자인 설정 저장"}
       </Button>

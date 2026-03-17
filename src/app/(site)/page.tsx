@@ -48,10 +48,13 @@ export default async function HomePage() {
 
       <section className="relative overflow-hidden" style={{ backgroundColor: "var(--design-hero-bg, #4A86CF)" }}>
         <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
-          <div className="space-y-4 text-white md:w-[55%]">
+          <div className="space-y-4 md:w-[55%]">
             <h1
               className="font-black font-surround leading-[1.3]"
-              style={{ fontSize: "var(--design-hero-font-size, 55px)" }}
+              style={{
+                fontSize: "var(--design-hero-title-font-size, 55px)",
+                color: "var(--design-hero-title-color, #ffffff)"
+              }}
             >
               {settings.heroTitle}
               <br />
@@ -66,12 +69,15 @@ export default async function HomePage() {
               {settings.heroSubtitle}
             </h1>
             <div className="space-y-2">
-              <p className="text-lg leading-relaxed">
+              <p
+                className="text-lg leading-relaxed"
+                style={{ color: "var(--design-hero-subtitle-color, rgba(255,255,255,0.85))", fontSize: "var(--design-hero-subtitle-font-size, 18px)" }}
+              >
                 전국 최대 사은품 지급하는 곳!
                 <br />
                 비밀지원금은 <span className="font-bold">빠른견적</span>을 통해 문의해주세요.
               </p>
-              <p className="text-xs opacity-70">※ 지원금은 통신사 및 상품에 따라 상이합니다 ※</p>
+              <p className="text-xs opacity-70" style={{ color: "var(--design-hero-subtitle-color, rgba(255,255,255,0.85))" }}>※ 지원금은 통신사 및 상품에 따라 상이합니다 ※</p>
             </div>
           </div>
           <div className="md:w-[40%]">
@@ -83,12 +89,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-section-bg, #D6E4F5)" }}>
+      <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-carrier-bg, #D6E4F5)" }}>
         <div className="container-page">
           <div className="mb-6">
             <h2
-              className="font-black font-surround text-brand-orange"
-              style={{ fontSize: "var(--design-heading-font-size, 32px)" }}
+              className="font-black font-surround"
+              style={{
+                fontSize: "var(--design-carrier-heading-font-size, 32px)",
+                color: "var(--design-carrier-heading-color, #4A86CF)"
+              }}
             >각 통신사 대표 상품</h2>
             <p className="mt-2 text-sm text-gray-500">※3년약정, 휴대폰 1회선 결합 할인 기준, VAT포함가</p>
           </div>
@@ -112,24 +121,33 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-brand-sky py-10 md:py-14">
+      <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-benefits-bg, #6EA8E0)" }}>
         <div className="container-page">
           <div className="mb-6">
-            <h2 className="text-3xl font-black font-surround text-white md:text-4xl">혜택 구성별 최대 사은품</h2>
+            <h2
+              className="font-black font-surround"
+              style={{
+                fontSize: "var(--design-benefits-heading-font-size, 32px)",
+                color: "var(--design-benefits-heading-color, #ffffff)"
+              }}
+            >혜택 구성별 최대 사은품</h2>
           </div>
           <ServiceCategoryCards />
         </div>
       </section>
 
       <section className="py-8 md:py-12" style={{ backgroundColor: "var(--design-cta-bg, #333333)" }}>
-        <div className="container-page space-y-4 text-center text-white">
-          <p className="text-lg font-medium">너 빼고 다 신청 중..</p>
+        <div className="container-page space-y-4 text-center">
+          <p className="text-lg font-medium" style={{ color: "var(--design-cta-heading-color, #ffffff)" }}>너 빼고 다 신청 중..</p>
           <h2
             className="font-black font-surround"
-            style={{ fontSize: "var(--design-heading-font-size, 32px)" }}
+            style={{
+              fontSize: "var(--design-cta-heading-font-size, 32px)",
+              color: "var(--design-cta-heading-color, #ffffff)"
+            }}
           >혜택이 이렇게나 많았다고?</h2>
-          <p className="text-base opacity-90">약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
-          <p className="text-sm opacity-70">현금 주는 건 비밀~!</p>
+          <p className="text-base opacity-90" style={{ color: "var(--design-cta-heading-color, #ffffff)" }}>약정끝난 인터넷 변경하고 몰랐던 비밀지원금 왕창 받아 가자!</p>
+          <p className="text-sm opacity-70" style={{ color: "var(--design-cta-heading-color, #ffffff)" }}>현금 주는 건 비밀~!</p>
           <div className="mt-6 flex justify-center gap-4">
             <Link
               href="/apply"
@@ -158,7 +176,13 @@ export default async function HomePage() {
       <section className="py-10 md:py-14">
         <div className="container-page">
           <div className="mb-6 text-center">
-            <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">실시간 신청 현황</h2>
+            <h2
+              className="font-black font-surround"
+              style={{
+                fontSize: "var(--design-recent-heading-font-size, 32px)",
+                color: "var(--design-recent-heading-color, #2C3E50)"
+              }}
+            >실시간 신청 현황</h2>
             <p className="mt-3 text-brand-slate">지금도 많은 분들이 인터넷공룡을 통해 신청하고 계십니다.</p>
           </div>
           <RecentApplications />
@@ -166,10 +190,16 @@ export default async function HomePage() {
       </section>
 
       {guides.length > 0 && (
-        <section className="bg-brand-surface py-10 md:py-14">
+        <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-tips-bg, #F5F8FC)" }}>
           <div className="container-page">
             <div className="mb-6 flex items-end justify-between">
-              <h2 className="text-3xl font-black font-surround text-brand-graphite md:text-4xl">꿀TIP 모아보기</h2>
+              <h2
+                className="font-black font-surround"
+                style={{
+                  fontSize: "var(--design-tips-heading-font-size, 32px)",
+                  color: "var(--design-tips-heading-color, #2C3E50)"
+                }}
+              >꿀TIP 모아보기</h2>
               <Button href={getBoardCategoryHref("guide") ?? "/board/guide"} variant="secondary">
                 전체 보기
               </Button>

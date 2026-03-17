@@ -18,17 +18,37 @@ export const siteSettingsSeed: SiteSettings = {
     email: "ititdragon@gmail.com"
   },
   designSettings: {
-    heroFontSize: "55px",
-    headingFontSize: "32px",
-    bodyFontSize: "16px",
-    buttonFontSize: "14px",
-    buttonRadius: "16px",
-    sectionPadding: "48px",
-    primaryColor: "#4A86CF",
-    primaryDarkColor: "#3A74B8",
-    heroBgColor: "#4A86CF",
-    sectionBgColor: "#D6E4F5",
-    ctaBgColor: "#333333"
+    hero_bgColor: "#4A86CF",
+    hero_titleFontSize: "55px",
+    hero_titleColor: "#ffffff",
+    hero_subtitleFontSize: "18px",
+    hero_subtitleColor: "rgba(255,255,255,0.85)",
+
+    carrierProducts_bgColor: "#D6E4F5",
+    carrierProducts_headingFontSize: "32px",
+    carrierProducts_headingColor: "#4A86CF",
+
+    benefits_bgColor: "#6EA8E0",
+    benefits_headingFontSize: "32px",
+    benefits_headingColor: "#ffffff",
+
+    cta_bgColor: "#333333",
+    cta_headingFontSize: "32px",
+    cta_headingColor: "#ffffff",
+
+    recent_headingFontSize: "32px",
+    recent_headingColor: "#2C3E50",
+
+    tips_bgColor: "#F5F8FC",
+    tips_headingFontSize: "32px",
+    tips_headingColor: "#2C3E50",
+
+    button_fontSize: "14px",
+    button_radius: "16px",
+    button_primaryColor: "#4A86CF",
+    button_primaryDarkColor: "#3A74B8",
+
+    section_padding: "48px"
   }
 };
 

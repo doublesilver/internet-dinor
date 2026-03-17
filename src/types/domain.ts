@@ -70,17 +70,45 @@ export interface Review {
 }
 
 export interface DesignSettings {
-  heroFontSize: string;
-  headingFontSize: string;
-  bodyFontSize: string;
-  buttonFontSize: string;
-  buttonRadius: string;
-  sectionPadding: string;
-  primaryColor: string;
-  primaryDarkColor: string;
-  heroBgColor: string;
-  sectionBgColor: string;
-  ctaBgColor: string;
+  // 히어로 섹션 (메인 상단 파란 영역)
+  hero_bgColor: string;
+  hero_titleFontSize: string;
+  hero_titleColor: string;
+  hero_subtitleFontSize: string;
+  hero_subtitleColor: string;
+
+  // 통신사 대표 상품 섹션
+  carrierProducts_bgColor: string;
+  carrierProducts_headingFontSize: string;
+  carrierProducts_headingColor: string;
+
+  // 혜택 구성별 섹션
+  benefits_bgColor: string;
+  benefits_headingFontSize: string;
+  benefits_headingColor: string;
+
+  // CTA 배너 ("혜택이 이렇게나 많았다고?")
+  cta_bgColor: string;
+  cta_headingFontSize: string;
+  cta_headingColor: string;
+
+  // 실시간 신청 현황 섹션
+  recent_headingFontSize: string;
+  recent_headingColor: string;
+
+  // 꿀TIP 섹션
+  tips_bgColor: string;
+  tips_headingFontSize: string;
+  tips_headingColor: string;
+
+  // 버튼 공통
+  button_fontSize: string;
+  button_radius: string;
+  button_primaryColor: string;
+  button_primaryDarkColor: string;
+
+  // 섹션 공통
+  section_padding: string;
 }
 
 export interface SiteSettings {
