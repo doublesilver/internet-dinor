@@ -18,7 +18,7 @@
 
   body {
     @apply bg-white text-brand-graphite antialiased;
-    font-family: var(--font-gowun), 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   }
 
   * {

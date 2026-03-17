@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Gowun_Dodum, Jua } from "next/font/google";
 import "./globals.css";
-
-const gowunDodum = Gowun_Dodum({ weight: "400", subsets: ["latin"], variable: "--font-gowun" });
-const jua = Jua({ weight: "400", subsets: ["latin"], variable: "--font-jua" });
 
 const SITE_NAME = "인터넷공룡";
 const SITE_DESCRIPTION = "인터넷/TV/통신 비교 상담 서비스 인터넷공룡";
@@ -33,7 +29,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="ko" className={`${gowunDodum.variable} ${jua.variable}`}>
+    <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+      </head>
       <body>{children}</body>
     </html>
   );
