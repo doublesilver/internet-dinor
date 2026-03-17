@@ -81,7 +81,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
       {/* Carrier sub-nav (desktop only) */}
       <div className="hidden border-b border-brand-border bg-brand-surface lg:block">
         <div className="container-page">
-          <nav aria-label="통신사 네비게이션" className="flex h-11 items-center justify-center gap-6 text-lg" style={{ fontFamily: "Jua, sans-serif" }}>
+          <nav aria-label="통신사 네비게이션" className="flex h-14 items-center justify-center gap-8 text-2xl" style={{ fontFamily: "Jua, sans-serif" }}>
             {carrierNavigation.map((item) => (
               <Link
                 key={item.href}

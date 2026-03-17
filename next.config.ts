@@ -19,7 +19,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.builder.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.builder.io https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://cdn.builder.io; frame-src https://builder.io https://*.builder.io; frame-ancestors 'self' https://builder.io https://*.builder.io;"
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.builder.io; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.builder.io https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fastly.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co https://cdn.builder.io https://cdn.jsdelivr.net; frame-src https://builder.io https://*.builder.io; frame-ancestors 'self' https://builder.io https://*.builder.io;"
   },
   {
     key: "Permissions-Policy",
