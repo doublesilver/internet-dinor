@@ -47,7 +47,7 @@ const SAVED_PLACEMENTS: Placement[] = [
 function CharImage({ src, x, y, w, h, z, opacity, fixed }: { src: string; x: number; y: number; w: number; h: number; z: number; opacity: number; fixed?: boolean }) {
   return (
     <div
-      style={{ position: fixed ? "fixed" : "absolute", left: x, top: fixed ? Math.max(0, y) : y, width: w, height: h, zIndex: z, opacity: opacity / 100, pointerEvents: "none", userSelect: "none" }}
+      style={{ position: fixed ? "fixed" : "absolute", left: x, top: y, width: w, height: h, zIndex: z, opacity: opacity / 100, pointerEvents: "none", userSelect: "none" }}
       className="hidden lg:block"
     >
       <img src={src} alt="" draggable={false} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
