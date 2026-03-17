@@ -81,7 +81,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
       {/* Carrier sub-nav (desktop only) */}
       <div className="hidden border-b border-brand-border bg-brand-surface lg:block">
         <div className="container-page">
-          <nav aria-label="통신사 네비게이션" className="flex h-11 items-center justify-center gap-6 text-lg font-black" style={{ fontFamily: "'Cafe24SsurroundAir', 'Jua', sans-serif" }}>
+          <nav aria-label="통신사 네비게이션" className="flex h-11 items-center justify-center gap-6 text-lg font-black" style={{ fontFamily: "'Gaegu', cursive" }}>
             {carrierNavigation.map((item) => (
               <Link
                 key={item.href}
@@ -121,7 +121,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
               </Link>
             ))}
             <div className="mt-2 border-t border-brand-border pt-2">
-              <p className="px-4 py-1 text-xs font-semibold text-brand-slate" style={{ fontFamily: "'Cafe24SsurroundAir', 'Jua', sans-serif" }}>통신사별 상품</p>
+              <p className="px-4 py-1 text-xs font-semibold text-brand-slate" style={{ fontFamily: "'Gaegu', cursive" }}>통신사별 상품</p>
               {carrierNavigation.map((item) => (
                 <Link
                   key={item.href}

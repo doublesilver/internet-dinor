@@ -33,17 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
-        <link href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/Cafe24SsurroundAir.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <style>{`
-          @font-face {
-            font-family: 'Cafe24SsurroundAir';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/Cafe24SsurroundAir.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
-        `}</style>
+        <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>
