@@ -10,17 +10,21 @@ const deletePostOrReviewMock = vi.fn();
 const updatePostOrReviewStatusMock = vi.fn();
 const updateSiteSettingsMock = vi.fn();
 
-vi.mock("@/lib/repositories/content", () => ({
-  createProduct: createProductMock,
-  updateProduct: updateProductMock,
-  deleteProduct: deleteProductMock,
-  updateProductStatus: updateProductStatusMock,
-  createPostOrReview: createPostOrReviewMock,
-  updatePostOrReview: updatePostOrReviewMock,
-  deletePostOrReview: deletePostOrReviewMock,
-  updatePostOrReviewStatus: updatePostOrReviewStatusMock,
-  updateSiteSettings: updateSiteSettingsMock
-}));
+vi.mock("@/lib/repositories/content", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/repositories/content")>();
+  return {
+    ...actual,
+    createProduct: createProductMock,
+    updateProduct: updateProductMock,
+    deleteProduct: deleteProductMock,
+    updateProductStatus: updateProductStatusMock,
+    createPostOrReview: createPostOrReviewMock,
+    updatePostOrReview: updatePostOrReviewMock,
+    deletePostOrReview: deletePostOrReviewMock,
+    updatePostOrReviewStatus: updatePostOrReviewStatusMock,
+    updateSiteSettings: updateSiteSettingsMock
+  };
+});
 
 function createJsonRequest(method: string, body: unknown, url = "http://localhost/api/admin/test") {
   return new Request(url, {
