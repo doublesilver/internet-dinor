@@ -73,7 +73,13 @@ export async function updateCarrier(id: string, input: CarrierEditorValues) {
 
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("carriers").update(payload).eq("id", id).select("*").maybeSingle();
+    let { data, error } = await supabase.from("carriers").update(payload).eq("id", id).select("*").maybeSingle();
+
+    // price_data 컬럼이 없으면 해당 필드 제외하고 재시도
+    if (error && String(error.message).includes("price_data")) {
+      const { price_data: _, ...payloadWithoutPrice } = payload;
+      ({ data, error } = await supabase.from("carriers").update(payloadWithoutPrice).eq("id", id).select("*").maybeSingle());
+    }
 
     if (error) {
       return { success: false, statusCode: 500, message: "통신사 저장 중 오류가 발생했습니다." };
