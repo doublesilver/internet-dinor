@@ -89,7 +89,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-carrier-bg, #D6E4F5)" }}>
+      <section
+        className="py-10 md:py-14"
+        style={{
+          backgroundColor: "var(--design-carrier-bg, #D6E4F5)",
+          fontFamily: "'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif"
+        }}
+      >
         <div className="container-page">
           <div className="mb-6">
             <h2
