@@ -26,7 +26,7 @@ export function CarrierProductCard({
   return (
     <article className="flex flex-col overflow-hidden rounded-[30px] bg-white shadow-[4px_4px_2px_rgba(0,0,0,0.1)]">
       {/* Carrier logo */}
-      <div className="flex items-center justify-center border-b border-brand-border px-4 py-4">
+      <div className={`flex items-center justify-center border-b border-brand-border py-4 ${carrierSlug === "hellovision" ? "px-0" : "px-4"}`}>
         <Image
           src={theme.logoPath}
           alt={theme.logoAlt}
