@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { deletePostOrReview, updatePostOrReview } from "@/lib/repositories/content";
 import { postEditorSchema } from "@/lib/validators/content";
 
@@ -33,6 +34,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
 
+  revalidatePath("/");
+  revalidatePath("/board");
+
   return NextResponse.json({
     success: true,
     data: result.data
@@ -58,6 +62,9 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
   if (!result.success) {
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
+
+  revalidatePath("/");
+  revalidatePath("/board");
 
   return NextResponse.json({ success: true });
 }

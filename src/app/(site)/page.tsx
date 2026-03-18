@@ -187,8 +187,8 @@ export default async function HomePage() {
                 fontSize: "var(--design-recent-heading-font-size, 32px)",
                 color: "var(--design-recent-heading-color, #2C3E50)"
               }}
-            >실시간 신청 현황</h2>
-            <p className="mt-3 text-brand-slate">지금도 많은 분들이 인터넷공룡을 통해 신청하고 계십니다.</p>
+            >신청 현황 (예시)</h2>
+            <p className="mt-3 text-brand-slate">인터넷공룡을 통해 이렇게 신청하실 수 있습니다.</p>
           </div>
           <RecentApplications />
         </div>

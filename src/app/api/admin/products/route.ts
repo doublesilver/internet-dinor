@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createProduct, getProductBySlug } from "@/lib/repositories/content";
 import { productEditorSchema } from "@/lib/validators/content";
 
@@ -29,6 +30,9 @@ export async function POST(request: Request) {
   if (!result.success) {
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
+
+  revalidatePath("/");
+  revalidatePath("/compare");
 
   return NextResponse.json({
     success: true,

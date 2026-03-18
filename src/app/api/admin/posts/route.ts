@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createPostOrReview, getPostByTypeAndSlug, getReviewBySlug } from "@/lib/repositories/content";
 import { postEditorSchema } from "@/lib/validators/content";
 
@@ -37,6 +38,9 @@ export async function POST(request: Request) {
   if (!result.success) {
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
+
+  revalidatePath("/");
+  revalidatePath("/board");
 
   return NextResponse.json({
     success: true,

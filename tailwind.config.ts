@@ -33,7 +33,7 @@ const config: Config = {
         xl2: "1.25rem"
       },
       fontFamily: {
-        surround: ['Jua', 'Pretendard Variable', 'sans-serif']
+        surround: ['Pretendard Variable', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif']
       }
     }
   },

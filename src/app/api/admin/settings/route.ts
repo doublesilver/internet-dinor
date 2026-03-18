@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { updateDesignSettings, updateSiteSettings } from "@/lib/repositories/content";
 import { designSettingsSchema, settingsEditorSchema } from "@/lib/validators/content";
 
@@ -27,6 +28,8 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
     }
 
+    revalidatePath("/");
+
     return NextResponse.json({ success: true, data: result.data });
   }
 
@@ -45,6 +48,8 @@ export async function PATCH(request: Request) {
   if (!result.success) {
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
+
+  revalidatePath("/", "layout");
 
   return NextResponse.json({
     success: true,

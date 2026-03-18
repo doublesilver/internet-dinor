@@ -9,8 +9,24 @@ function isProtectedAdminPath(pathname: string) {
   return pathname.startsWith("/admin") || pathname.startsWith("/api/admin");
 }
 
+function isStateMutatingMethod(method: string) {
+  return method === "POST" || method === "PATCH" || method === "PUT" || method === "DELETE";
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // CSRF 보호: 상태 변경 API 요청에 대해 Origin 헤더 검증
+  if (pathname.startsWith("/api/") && isStateMutatingMethod(request.method)) {
+    const origin = request.headers.get("origin");
+    const host = request.headers.get("host");
+    if (origin && host) {
+      const originHost = new URL(origin).host;
+      if (originHost !== host) {
+        return NextResponse.json({ success: false, message: "잘못된 요청 출처입니다." }, { status: 403 });
+      }
+    }
+  }
 
   if (!isProtectedAdminPath(pathname)) {
     return NextResponse.next();
@@ -51,5 +67,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"]
+  matcher: ["/admin/:path*", "/api/:path*"]
 };

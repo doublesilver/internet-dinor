@@ -96,7 +96,7 @@ export function PriceDataEditor({ priceData, accentColor, onChange }: PriceDataE
             )}
             <div className="space-y-2">
               {data.internetOptions.map((opt, i) => (
-                <div key={i} className="flex items-center gap-2 rounded-xl bg-brand-surface p-3">
+                <div key={`internet-${i}-${opt.label}`} className="flex items-center gap-2 rounded-xl bg-brand-surface p-3">
                   <div className="flex-1">
                     <label className="text-xs text-brand-slate">표시명</label>
                     <input className="field-base !py-1.5 text-sm" value={opt.label} onChange={(e) => updateInternet(i, "label", e.target.value)} placeholder="100M" />
@@ -130,7 +130,7 @@ export function PriceDataEditor({ priceData, accentColor, onChange }: PriceDataE
             )}
             <div className="space-y-2">
               {data.tvOptions.map((opt, i) => (
-                <div key={i} className="flex items-center gap-2 rounded-xl bg-brand-surface p-3">
+                <div key={`tv-${i}-${opt.label}`} className="flex items-center gap-2 rounded-xl bg-brand-surface p-3">
                   <div className="flex-1">
                     <label className="text-xs text-brand-slate">표시명</label>
                     <input className="field-base !py-1.5 text-sm" value={opt.label} onChange={(e) => updateTv(i, "label", e.target.value)} placeholder="스탠다드" />
@@ -160,7 +160,7 @@ export function PriceDataEditor({ priceData, accentColor, onChange }: PriceDataE
             )}
             <div className="space-y-2">
               {data.mobileOptions.map((opt, i) => (
-                <div key={i} className="flex items-center gap-2 rounded-xl bg-brand-surface p-3">
+                <div key={`mobile-${i}-${opt.label}`} className="flex items-center gap-2 rounded-xl bg-brand-surface p-3">
                   <div className="flex-1">
                     <label className="text-xs text-brand-slate">표시명</label>
                     <input className="field-base !py-1.5 text-sm" value={opt.label} onChange={(e) => updateMobile(i, "label", e.target.value)} placeholder="1회선" />

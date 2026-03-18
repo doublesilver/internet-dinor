@@ -32,9 +32,6 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="ko">
       <head>
         <meta name="naver-site-verification" content="ec6e750e2c69ac6047776c6467df964e04287fe7" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>

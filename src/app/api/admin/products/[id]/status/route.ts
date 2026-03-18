@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { updateProductStatus } from "@/lib/repositories/content";
 import { contentStatusSchema } from "@/lib/validators/content";
 
@@ -32,6 +33,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (!result.success) {
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
+
+  revalidatePath("/");
+  revalidatePath("/compare");
 
   return NextResponse.json({
     success: true,
