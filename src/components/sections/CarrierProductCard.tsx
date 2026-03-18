@@ -26,13 +26,13 @@ export function CarrierProductCard({
   return (
     <article className="flex flex-col overflow-hidden rounded-[30px] bg-white shadow-[4px_4px_2px_rgba(0,0,0,0.1)]">
       {/* Carrier logo */}
-      <div className={`flex items-center justify-center border-b border-brand-border py-4 ${carrierSlug === "hellovision" ? "px-0" : "px-4"}`}>
+      <div className="flex items-center justify-center border-b border-brand-border px-4" style={{ width: "241.2px", height: "73px", margin: "0 auto" }}>
         <Image
           src={theme.logoPath}
           alt={theme.logoAlt}
-          width={180}
-          height={60}
-          className={carrierSlug === "hellovision" ? "w-full h-auto object-contain" : "h-10 w-auto object-contain"}
+          width={220}
+          height={65}
+          className="max-h-full max-w-full object-contain"
         />
       </div>
 
