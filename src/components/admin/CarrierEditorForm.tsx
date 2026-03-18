@@ -54,13 +54,17 @@ export function CarrierEditorForm({ carrier }: { carrier: Carrier }) {
           })
         });
 
-        const result = (await response.json()) as { success: boolean; message?: string };
+        const result = (await response.json()) as { success: boolean; message?: string; warning?: string };
         if (!response.ok || !result.success) {
           setMessage({ type: "error", text: result.message ?? "통신사 저장에 실패했습니다." });
           return;
         }
 
-        setMessage({ type: "success", text: "저장되었습니다." });
+        if (result.warning) {
+          setMessage({ type: "error", text: result.warning });
+        } else {
+          setMessage({ type: "success", text: "저장되었습니다." });
+        }
       } catch {
         setMessage({ type: "error", text: "저장 중 오류가 발생했습니다." });
       }

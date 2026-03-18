@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { updateCarrier } from "@/lib/repositories/content";
 import { carrierEditorSchema } from "@/lib/validators/content";
 
@@ -33,8 +34,15 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     return NextResponse.json({ success: false, message: result.message }, { status: result.statusCode ?? 500 });
   }
 
+  // 캐시 무효화 - 라이브 페이지에 즉시 반영
+  if (result.data && "slug" in result.data) {
+    revalidatePath(`/carriers/${result.data.slug}`);
+    revalidatePath("/");
+  }
+
   return NextResponse.json({
     success: true,
-    data: result.data
+    data: result.data,
+    warning: "warning" in result ? result.warning : undefined
   });
 }

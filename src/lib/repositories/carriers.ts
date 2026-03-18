@@ -79,10 +79,18 @@ export async function updateCarrier(id: string, input: CarrierEditorValues) {
     if (error && String(error.message).includes("price_data")) {
       const { price_data: _, ...payloadWithoutPrice } = payload;
       ({ data, error } = await supabase.from("carriers").update(payloadWithoutPrice).eq("id", id).select("*").maybeSingle());
+
+      if (!error && data) {
+        return {
+          success: true,
+          data: mapCarrierRow(data),
+          warning: "요금 계산기 데이터는 저장되지 않았습니다. Supabase에 price_data 컬럼을 추가해주세요: ALTER TABLE public.carriers ADD COLUMN IF NOT EXISTS price_data jsonb;"
+        };
+      }
     }
 
     if (error) {
-      return { success: false, statusCode: 500, message: "통신사 저장 중 오류가 발생했습니다." };
+      return { success: false, statusCode: 500, message: `통신사 저장 중 오류: ${error.message}` };
     }
 
     if (!data) {
