@@ -81,13 +81,14 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
       {/* Carrier sub-nav (desktop only) */}
       <div className="hidden border-b border-brand-border bg-brand-surface lg:block">
         <div className="container-page">
-          <nav aria-label="통신사 네비게이션" className="flex items-center justify-center gap-8 font-black" style={{ height: "var(--design-carrier-nav-height, 56px)", fontSize: "var(--design-carrier-nav-font-size, 24px)" }}>
+          <nav aria-label="통신사 네비게이션" className="flex items-center justify-between font-surround font-black" style={{ height: "var(--design-carrier-nav-height, 56px)", fontSize: "var(--design-carrier-nav-font-size, 24px)" }}>
             {carrierNavigation.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                style={{ color: item.color }}
-                className="transition-opacity hover:opacity-70"
+                className="rounded-lg px-4 py-2 text-brand-orange transition-colors"
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = item.color; e.currentTarget.style.color = "#fff"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = ""; }}
               >
                 {item.label}
               </Link>
