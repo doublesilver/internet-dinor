@@ -93,7 +93,7 @@ export default async function HomePage() {
         <div className="container-page">
           <div className="mb-6">
             <h2
-              className="font-black font-surround"
+              className="font-black"
               style={{
                 fontSize: "var(--design-carrier-heading-font-size, 32px)",
                 color: "var(--design-carrier-heading-color, #4A86CF)"
