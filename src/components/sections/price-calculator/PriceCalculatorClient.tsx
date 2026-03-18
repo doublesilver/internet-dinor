@@ -6,8 +6,8 @@ import { PriceCalculatorSelector, type CalculatorSelection } from "@/components/
 import { formatPrice, getCarrierPriceData } from "@/components/sections/price-calculator/priceData";
 import type { PriceCalculatorClientProps } from "@/components/sections/price-calculator/types";
 
-export function PriceCalculatorClient({ carrierName, accentColor, products, carrierSlug }: PriceCalculatorClientProps) {
-  const priceData = getCarrierPriceData(carrierSlug);
+export function PriceCalculatorClient({ carrierName, accentColor, products, carrierSlug, priceData: priceDataOverride }: PriceCalculatorClientProps) {
+  const priceData = getCarrierPriceData(carrierSlug, priceDataOverride);
 
   const [selection, setSelection] = useState<CalculatorSelection>({
     internetIndex: 0,

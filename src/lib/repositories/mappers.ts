@@ -1,4 +1,4 @@
-import type { Carrier, DesignSettings, InquiryRecord, Post, Product, Review, SiteSettings } from "@/types/domain";
+import type { Carrier, CarrierPriceData, DesignSettings, InquiryRecord, Post, Product, Review, SiteSettings } from "@/types/domain";
 
 function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map((item) => String(item)) : [];
@@ -42,6 +42,31 @@ function asFaqItems(value: unknown): Array<{ q: string; a: string }> {
     }));
 }
 
+function asPriceData(value: unknown): CarrierPriceData | undefined {
+  if (!value || typeof value !== "object") return undefined;
+  const obj = value as Record<string, unknown>;
+  if (!Array.isArray(obj.internetOptions) || obj.internetOptions.length === 0) return undefined;
+  return {
+    internetOptions: (obj.internetOptions as Array<Record<string, unknown>>).map((o) => ({
+      label: String(o.label ?? ""),
+      speed: String(o.speed ?? ""),
+      price: Number(o.price ?? 0)
+    })),
+    tvOptions: Array.isArray(obj.tvOptions)
+      ? (obj.tvOptions as Array<Record<string, unknown>>).map((o) => ({
+          label: String(o.label ?? ""),
+          price: Number(o.price ?? 0)
+        }))
+      : [],
+    mobileOptions: Array.isArray(obj.mobileOptions)
+      ? (obj.mobileOptions as Array<Record<string, unknown>>).map((o) => ({
+          label: String(o.label ?? ""),
+          discount: Number(o.discount ?? 0)
+        }))
+      : []
+  };
+}
+
 export function mapCarrierRow(row: Record<string, unknown>): Carrier {
   return {
     id: String(row.id),
@@ -52,6 +77,7 @@ export function mapCarrierRow(row: Record<string, unknown>): Carrier {
     heroTitle: String(row.hero_title ?? ""),
     heroDescription: String(row.hero_description ?? ""),
     featurePoints: asStringArray(row.feature_points),
+    priceData: asPriceData(row.price_data),
     status: row.status === "draft" ? "draft" : "published",
     sortOrder: Number(row.sort_order ?? 0)
   };

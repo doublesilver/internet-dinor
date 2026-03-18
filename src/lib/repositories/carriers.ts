@@ -66,6 +66,7 @@ export async function updateCarrier(id: string, input: CarrierEditorValues) {
     hero_title: input.heroTitle,
     hero_description: input.heroDescription,
     feature_points: parseLineSeparatedText(input.featurePointsText),
+    price_data: input.priceData ?? null,
     status: input.status,
     sort_order: input.sortOrder
   };
@@ -97,6 +98,7 @@ export async function updateCarrier(id: string, input: CarrierEditorValues) {
   carrier.heroTitle = input.heroTitle;
   carrier.heroDescription = input.heroDescription;
   carrier.featurePoints = parseLineSeparatedText(input.featurePointsText);
+  carrier.priceData = input.priceData ?? undefined;
   carrier.status = input.status;
   carrier.sortOrder = input.sortOrder;
 

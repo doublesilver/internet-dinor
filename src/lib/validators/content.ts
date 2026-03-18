@@ -7,6 +7,22 @@ const slugSchema = z
   .min(1, "슬러그를 입력해주세요.")
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "슬러그는 소문자, 숫자, 하이픈만 사용할 수 있습니다.");
 
+const priceDataSchema = z.object({
+  internetOptions: z.array(z.object({
+    label: z.string(),
+    speed: z.string(),
+    price: z.number()
+  })).default([]),
+  tvOptions: z.array(z.object({
+    label: z.string(),
+    price: z.number()
+  })).default([]),
+  mobileOptions: z.array(z.object({
+    label: z.string(),
+    discount: z.number()
+  })).default([])
+}).optional();
+
 export const carrierEditorSchema = z.object({
   name: z.string().min(1, "통신사명을 입력해주세요."),
   shortName: z.string().min(1, "약칭을 입력해주세요."),
@@ -15,6 +31,7 @@ export const carrierEditorSchema = z.object({
   heroTitle: z.string().min(1, "히어로 제목을 입력해주세요."),
   heroDescription: z.string().min(1, "히어로 설명을 입력해주세요."),
   featurePointsText: z.string().optional().default(""),
+  priceData: priceDataSchema,
   status: statusSchema,
   sortOrder: z.coerce.number().int().default(0)
 });

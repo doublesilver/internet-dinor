@@ -5,6 +5,28 @@ export type ProductBundleType = "internet_only" | "internet_tv" | "business" | "
 export type InquiryType = "quick" | "product" | "apply";
 export type InquiryStatus = "new" | "pending" | "contacted" | "retry" | "consulted" | "in_progress" | "closed";
 
+export interface CarrierInternetOption {
+  label: string;
+  speed: string;
+  price: number;
+}
+
+export interface CarrierTvOption {
+  label: string;
+  price: number;
+}
+
+export interface CarrierMobileOption {
+  label: string;
+  discount: number;
+}
+
+export interface CarrierPriceData {
+  internetOptions: CarrierInternetOption[];
+  tvOptions: CarrierTvOption[];
+  mobileOptions: CarrierMobileOption[];
+}
+
 export interface Carrier {
   id: string;
   slug: string;
@@ -14,6 +36,7 @@ export interface Carrier {
   heroTitle: string;
   heroDescription: string;
   featurePoints: string[];
+  priceData?: CarrierPriceData;
   status: ContentStatus;
   sortOrder: number;
 }

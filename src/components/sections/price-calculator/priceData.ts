@@ -1,26 +1,8 @@
-export interface InternetOption {
-  label: string;
-  speed: string;
-  price: number;
-}
+import type { CarrierPriceData } from "@/types/domain";
 
-export interface TvOption {
-  label: string;
-  price: number;
-}
+export type { CarrierPriceData };
 
-export interface MobileOption {
-  label: string;
-  discount: number;
-}
-
-export interface CarrierPriceData {
-  internetOptions: InternetOption[];
-  tvOptions: TvOption[];
-  mobileOptions: MobileOption[];
-}
-
-export const CARRIER_PRICE_DATA: Record<string, CarrierPriceData> = {
+export const DEFAULT_CARRIER_PRICE_DATA: Record<string, CarrierPriceData> = {
   sk: {
     internetOptions: [
       { label: "100M", speed: "100M", price: 22000 },
@@ -108,8 +90,11 @@ export const CARRIER_PRICE_DATA: Record<string, CarrierPriceData> = {
   }
 };
 
-export function getCarrierPriceData(carrierSlug: string): CarrierPriceData | null {
-  return CARRIER_PRICE_DATA[carrierSlug] ?? null;
+export function getCarrierPriceData(carrierSlug: string, override?: CarrierPriceData): CarrierPriceData | null {
+  if (override && override.internetOptions.length > 0) {
+    return override;
+  }
+  return DEFAULT_CARRIER_PRICE_DATA[carrierSlug] ?? null;
 }
 
 export function formatPrice(price: number): string {

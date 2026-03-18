@@ -86,7 +86,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
           <p className="mb-5 text-center text-2xl font-black text-brand-graphite md:text-3xl">
             <strong>등록된 공개 상품</strong> 기준으로 혜택과 요금을 비교해보세요!
           </p>
-          <PriceCalculator carrierSlug={carrier.slug} carrierName={carrier.shortName} products={products} />
+          <PriceCalculator carrierSlug={carrier.slug} carrierName={carrier.shortName} products={products} priceData={carrier.priceData} />
         </div>
       </section>
 

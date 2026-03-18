@@ -1,4 +1,4 @@
-import type { Product } from "@/types/domain";
+import type { CarrierPriceData, Product } from "@/types/domain";
 
 export type PriceCalculatorProducts = [Product, ...Product[]];
 
@@ -6,6 +6,7 @@ export interface PriceCalculatorProps {
   carrierSlug: string;
   carrierName: string;
   products: Product[];
+  priceData?: CarrierPriceData;
 }
 
 export interface PriceCalculatorClientProps {
@@ -13,6 +14,7 @@ export interface PriceCalculatorClientProps {
   carrierName: string;
   accentColor: string;
   products: PriceCalculatorProducts;
+  priceData?: CarrierPriceData;
 }
 
 export function hasPriceCalculatorProducts(products: Product[]): products is PriceCalculatorProducts {

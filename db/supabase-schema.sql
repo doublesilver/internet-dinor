@@ -19,6 +19,7 @@ create table if not exists public.carriers (
   hero_title text,
   hero_description text,
   feature_points jsonb not null default '[]'::jsonb,
+  price_data jsonb,
   status text not null default 'draft' check (status in ('draft', 'published')),
   sort_order integer not null default 0,
   created_at timestamptz not null default timezone('utc', now()),

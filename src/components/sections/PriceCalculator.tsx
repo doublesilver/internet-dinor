@@ -3,12 +3,12 @@ import { PriceCalculatorClient } from "@/components/sections/price-calculator/Pr
 import { PriceCalculatorEmptyState } from "@/components/sections/price-calculator/PriceCalculatorEmptyState";
 import { hasPriceCalculatorProducts, type PriceCalculatorProps } from "@/components/sections/price-calculator/types";
 
-export function PriceCalculator({ carrierSlug, carrierName, products }: PriceCalculatorProps) {
+export function PriceCalculator({ carrierSlug, carrierName, products, priceData }: PriceCalculatorProps) {
   if (!hasPriceCalculatorProducts(products)) {
     return <PriceCalculatorEmptyState carrierName={carrierName} />;
   }
 
   const accentColor = getCarrierAccentColor(carrierSlug);
 
-  return <PriceCalculatorClient carrierSlug={carrierSlug} carrierName={carrierName} accentColor={accentColor} products={products} />;
+  return <PriceCalculatorClient carrierSlug={carrierSlug} carrierName={carrierName} accentColor={accentColor} products={products} priceData={priceData} />;
 }
