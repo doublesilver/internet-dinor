@@ -32,7 +32,7 @@ export function CarrierProductCard({
           alt={theme.logoAlt}
           width={180}
           height={60}
-          className="h-10 w-auto object-contain"
+          className={carrierSlug === "hellovision" ? "w-full h-auto object-contain" : "h-10 w-auto object-contain"}
         />
       </div>
 
