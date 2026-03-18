@@ -187,7 +187,7 @@ export default async function HomePage() {
                 fontSize: "var(--design-recent-heading-font-size, 32px)",
                 color: "var(--design-recent-heading-color, #2C3E50)"
               }}
-            >신청 현황 <strong>(예시)</strong></h2>
+            >신청 현황</h2>
             <p className="mt-3 text-brand-slate">인터넷공룡을 통해 이렇게 신청하실 수 있습니다.</p>
           </div>
           <RecentApplications />
