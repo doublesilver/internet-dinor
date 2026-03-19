@@ -35,7 +35,7 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
 
   return (
     <div className="overflow-hidden rounded-[20px] bg-white shadow-lg">
-      <div className="grid gap-4 p-4 lg:grid-cols-[minmax(0,300px)_1fr]">
+      <div className="grid gap-4 p-4 lg:grid-cols-[minmax(0,320px)_1fr]">
         <PriceCalculatorSelector
           accentColor={accentColor}
           priceData={priceData}
