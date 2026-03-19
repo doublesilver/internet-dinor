@@ -1,20 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { publicNavigation, carrierNavigation } from "@/lib/constants/navigation";
 import type { SiteSettings } from "@/types/domain";
 
 export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (!menuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-30 bg-white shadow-sm" role="banner">
+    <header ref={headerRef} className="sticky top-0 z-30 bg-white shadow-sm" role="banner">
       {/* Main nav bar */}
       <div className="border-b border-brand-border">
         <div className="container-page flex h-16 items-center justify-between gap-4 py-0">
@@ -97,17 +104,11 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         </div>
       </div>
 
-      {/* Mobile menu backdrop + drawer */}
+      {/* Mobile menu drawer */}
       {menuOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-20 bg-black/40 lg:hidden"
-            onClick={() => setMenuOpen(false)}
-            aria-hidden="true"
-          />
           <nav
             aria-label="모바일 네비게이션"
-            className="fixed inset-x-0 top-16 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-brand-border bg-white px-4 pb-6 lg:hidden"
+            className="absolute inset-x-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-brand-border bg-white px-4 pb-6 shadow-lg lg:hidden"
           >
             <div className="flex flex-col gap-1 pt-2">
               <a
@@ -145,7 +146,6 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
               </div>
             </div>
           </nav>
-        </>
       )}
     </header>
   );
