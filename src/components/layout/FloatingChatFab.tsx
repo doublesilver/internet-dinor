@@ -19,7 +19,7 @@ export function FloatingChatFab({ settings }: { settings: SiteSettings }) {
         <Link
           href="/apply"
           onClick={() => setOpen(false)}
-          className="flex items-center gap-2.5 rounded-full bg-brand-orange pl-4 pr-5 py-2.5 text-white shadow-lg transition-transform hover:scale-105"
+          className="flex items-center gap-2.5 rounded-full bg-white pl-4 pr-5 py-2.5 text-brand-graphite shadow-lg ring-1 ring-gray-200 transition-transform hover:scale-105"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
