@@ -16,8 +16,13 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         setMenuOpen(false);
       }
     };
+    const handleScroll = () => setMenuOpen(false);
     document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener("click", handleClick);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [menuOpen]);
 
   return (
