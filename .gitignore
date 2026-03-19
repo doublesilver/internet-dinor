@@ -12,3 +12,13 @@ coverage
 .npmrc
 .vscode
 .claude
+
+# 민감 문서
+사업자등록증*
+통신판매업*
+
+# WSL Zone.Identifier 메타데이터
+*:Zone.Identifier
+
+# 레퍼런스 사이트 저장본
+인터넷하우스*

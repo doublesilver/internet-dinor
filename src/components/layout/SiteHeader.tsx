@@ -97,46 +97,55 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu backdrop + drawer */}
       {menuOpen && (
-        <nav
-          aria-label="모바일 네비게이션"
-          className="border-t border-brand-border bg-white px-4 pb-4 lg:hidden"
-        >
-          <div className="flex flex-col gap-1 pt-2">
-            <a
-              href={settings.phoneLink}
-              className="flex items-center gap-2 rounded-xl bg-brand-orange px-4 py-3 text-base font-bold text-white"
-              onClick={() => setMenuOpen(false)}
-            >
-              📞 {settings.phoneLabel}
-            </a>
-            {publicNavigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-xl px-4 py-3 text-sm font-medium text-brand-graphite hover:bg-brand-surface"
+        <>
+          <div
+            className="fixed inset-0 z-20 bg-black/40 lg:hidden"
+            onClick={() => setMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <nav
+            aria-label="모바일 네비게이션"
+            className="fixed inset-x-0 top-16 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-brand-border bg-white px-4 pb-6 lg:hidden"
+          >
+            <div className="flex flex-col gap-1 pt-2">
+              <a
+                href={settings.phoneLink}
+                className="flex items-center gap-2 rounded-xl bg-brand-orange px-4 py-3 text-base font-bold text-white"
                 onClick={() => setMenuOpen(false)}
               >
-                {item.label}
-              </Link>
-            ))}
-            <div className="mt-2 border-t border-brand-border pt-2">
-              <p className="px-4 py-1 text-xs font-bold text-brand-slate">통신사별 상품</p>
-              {carrierNavigation.map((item) => (
+                📞 {settings.phoneLabel}
+              </a>
+              {publicNavigation.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-xl px-4 py-2 text-sm font-bold hover:bg-brand-surface"
-                  style={{ color: item.color }}
+                  className="block rounded-xl px-4 py-3 text-sm font-medium text-brand-graphite hover:bg-brand-surface"
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
                 </Link>
               ))}
+              <div className="mt-2 border-t border-brand-border pt-2">
+                <p className="px-4 py-1 text-xs font-bold text-brand-slate">통신사별 상품</p>
+                <div className="grid grid-cols-2 gap-1 pt-1">
+                  {carrierNavigation.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold hover:bg-brand-surface"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <span className="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-brand-graphite">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </>
       )}
     </header>
   );
