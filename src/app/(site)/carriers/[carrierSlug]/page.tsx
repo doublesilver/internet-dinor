@@ -50,7 +50,7 @@ export default async function CarrierDetailPage({ params }: { params: Promise<{ 
           <p className="text-sm font-medium text-brand-slate">
             홈 &gt; 통신사별 상품 &gt; <span style={{ color: theme.accentColor }}>{carrier.shortName}</span>
           </p>
-          <h1 className="text-3xl font-black tracking-tight text-brand-graphite md:text-5xl">{carrier.heroTitle}</h1>
+          <h1 className="text-2xl font-black tracking-tight text-brand-graphite sm:text-3xl md:text-4xl lg:text-5xl">{carrier.heroTitle}</h1>
           <p className="max-w-3xl text-base leading-7 text-brand-slate md:text-lg">{carrier.heroDescription}</p>
           <div className="flex flex-wrap gap-3">
             {carrier.featurePoints.map((point) => (

@@ -32,7 +32,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <section className="py-8 md:py-12 bg-brand-sky-soft">
-        <div className="container-page grid gap-5 md:grid-cols-[1fr_420px]">
+        <div className="container-page grid gap-5 lg:grid-cols-[1fr_minmax(0,420px)]">
           <div className="surface-card bg-white">
             <p className="text-sm font-semibold text-brand-orange">홈 &gt; 상품 상세 &gt; {product.name}</p>
             <div className="mt-5 flex flex-wrap gap-2">

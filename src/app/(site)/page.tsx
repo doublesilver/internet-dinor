@@ -48,11 +48,11 @@ export default async function HomePage() {
 
       <section className="relative overflow-hidden" style={{ backgroundColor: "var(--design-hero-bg, #4A86CF)" }}>
         <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
-          <div className="space-y-4 md:w-[55%]">
+          <div className="space-y-4 md:flex-1">
             <h1
               className="font-black font-surround leading-[1.3]"
               style={{
-                fontSize: "var(--design-hero-title-font-size, 55px)",
+                fontSize: "var(--design-hero-title-font-size, clamp(28px, 4vw, 55px))",
                 color: "var(--design-hero-title-color, #ffffff)"
               }}
             >
@@ -80,7 +80,7 @@ export default async function HomePage() {
               <p className="text-xs opacity-70" style={{ color: "var(--design-hero-subtitle-color, rgba(255,255,255,0.85))" }}>※ 지원금은 통신사 및 상품에 따라 상이합니다 ※</p>
             </div>
           </div>
-          <div className="md:w-[40%]">
+          <div className="md:w-[min(40%,420px)] md:shrink-0">
             <div className="rounded-[25px] bg-white p-6 shadow-lg md:p-8">
               <h3 className="mb-5 text-center text-2xl font-bold text-brand-orange">빠른 견적 문의</h3>
               <QuickInquiryForm sourcePage="/" submitLabel={settings.heroCtaLabel} />
@@ -100,7 +100,7 @@ export default async function HomePage() {
             <h2
               className="font-black"
               style={{
-                fontSize: "var(--design-carrier-heading-font-size, 32px)",
+                fontSize: "var(--design-carrier-heading-font-size, clamp(24px, 3vw, 32px))",
                 color: "var(--design-carrier-heading-color, #4A86CF)"
               }}
             >각 통신사 대표 상품</h2>
@@ -132,7 +132,7 @@ export default async function HomePage() {
             <h2
               className="font-black font-surround"
               style={{
-                fontSize: "var(--design-benefits-heading-font-size, 32px)",
+                fontSize: "var(--design-benefits-heading-font-size, clamp(24px, 3vw, 32px))",
                 color: "var(--design-benefits-heading-color, #ffffff)"
               }}
             >혜택 구성별 최대 사은품</h2>
@@ -147,7 +147,7 @@ export default async function HomePage() {
           <h2
             className="font-black font-surround"
             style={{
-              fontSize: "var(--design-cta-heading-font-size, 32px)",
+              fontSize: "var(--design-cta-heading-font-size, clamp(24px, 3vw, 32px))",
               color: "var(--design-cta-heading-color, #ffffff)"
             }}
           >혜택이 이렇게나 많았다고?</h2>
@@ -184,7 +184,7 @@ export default async function HomePage() {
             <h2
               className="font-black font-surround"
               style={{
-                fontSize: "var(--design-recent-heading-font-size, 32px)",
+                fontSize: "var(--design-recent-heading-font-size, clamp(24px, 3vw, 32px))",
                 color: "var(--design-recent-heading-color, #2C3E50)"
               }}
             >신청 현황</h2>
@@ -201,7 +201,7 @@ export default async function HomePage() {
               <h2
                 className="font-black font-surround"
                 style={{
-                  fontSize: "var(--design-tips-heading-font-size, 32px)",
+                  fontSize: "var(--design-tips-heading-font-size, clamp(24px, 3vw, 32px))",
                   color: "var(--design-tips-heading-color, #2C3E50)"
                 }}
               >꿀TIP 모아보기</h2>
