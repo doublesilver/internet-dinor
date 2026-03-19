@@ -12,9 +12,9 @@ export function FloatingSidebar({ settings }: { settings: SiteSettings }) {
       {/* 비밀혜택 3초안내 */}
       <Link
         href="/apply"
-        className="group flex flex-col items-center gap-1.5 rounded-xl bg-brand-orange px-3 py-3 text-white shadow-lg transition-transform hover:scale-105"
+        className="group flex flex-col items-center gap-1.5 rounded-xl bg-white px-3 py-3 text-brand-graphite shadow-lg ring-1 ring-gray-200 transition-transform hover:scale-105"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-orange">
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
@@ -53,7 +53,7 @@ export function FloatingSidebar({ settings }: { settings: SiteSettings }) {
         className="group flex flex-col items-center gap-1.5 rounded-xl bg-white px-3 py-3 text-brand-orange shadow-lg ring-1 ring-gray-200 transition-transform hover:scale-105"
       >
         <Image
-          src="/images/characters/logo-dino.png"
+          src="/images/characters/representative-dino.png"
           alt="인터넷공룡"
           width={32}
           height={32}
