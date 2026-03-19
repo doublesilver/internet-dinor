@@ -10,7 +10,7 @@ export function FloatingChatFab({ settings }: { settings: SiteSettings }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-20 right-4 z-50 flex flex-col items-end gap-2 md:bottom-6">
+    <div className="fixed bottom-20 right-4 z-50 flex flex-col items-end gap-2 md:hidden">
       {/* Expanded menu */}
       <div
         className={`flex flex-col gap-2 transition-all duration-200 ${open ? "visible translate-y-0 opacity-100" : "invisible translate-y-4 opacity-0"}`}
