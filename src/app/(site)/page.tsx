@@ -47,7 +47,7 @@ export default async function HomePage() {
       <BuilderEditableSection content={builderTopContent} />
 
       <section className="relative overflow-hidden" style={{ backgroundColor: "var(--design-hero-bg, #4A86CF)" }}>
-        <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-start md:justify-between md:py-14">
+        <div className="container-page flex flex-col gap-5 py-6 md:flex-row md:items-start md:justify-between md:gap-8 md:py-10">
           <div className="space-y-4 md:flex-1">
             <h1
               className="font-black font-surround leading-[1.3]"
@@ -81,7 +81,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="md:w-[min(40%,420px)] md:shrink-0">
-            <div className="rounded-[25px] bg-white p-6 shadow-lg md:p-8">
+            <div className="rounded-[20px] bg-white p-5 shadow-lg md:p-6">
               <h3 className="mb-5 text-center text-2xl font-bold text-brand-orange">빠른 견적 문의</h3>
               <QuickInquiryForm sourcePage="/" submitLabel={settings.heroCtaLabel} />
             </div>
@@ -90,7 +90,7 @@ export default async function HomePage() {
       </section>
 
       <section
-        className="py-10 md:py-14"
+        className="py-8 md:py-10"
         style={{
           backgroundColor: "var(--design-carrier-bg, #D6E4F5)"
         }}
@@ -126,7 +126,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-benefits-bg, #6EA8E0)" }}>
+      <section className="py-8 md:py-10" style={{ backgroundColor: "var(--design-benefits-bg, #6EA8E0)" }}>
         <div className="container-page">
           <div className="mb-6">
             <h2
@@ -178,7 +178,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-14">
+      <section className="py-8 md:py-10">
         <div className="container-page">
           <div className="mb-6 text-center">
             <h2
@@ -195,7 +195,7 @@ export default async function HomePage() {
       </section>
 
       {guides.length > 0 && (
-        <section className="py-10 md:py-14" style={{ backgroundColor: "var(--design-tips-bg, #F5F8FC)" }}>
+        <section className="py-8 md:py-10" style={{ backgroundColor: "var(--design-tips-bg, #F5F8FC)" }}>
           <div className="container-page">
             <div className="mb-6 flex items-end justify-between">
               <h2

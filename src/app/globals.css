@@ -11,7 +11,7 @@
   }
 
   body {
-    @apply bg-white text-brand-graphite antialiased;
+    @apply bg-white text-brand-graphite antialiased text-[15px];
     font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
   }
 
@@ -22,7 +22,7 @@
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
   }
 
   .section-space {
@@ -30,7 +30,7 @@
   }
 
   .surface-card {
-    @apply rounded-[24px] border border-brand-border bg-white p-4 md:p-5 shadow-soft;
+    @apply rounded-[20px] border border-brand-border bg-white p-3.5 md:p-4 shadow-soft;
   }
 
   .field-label {
