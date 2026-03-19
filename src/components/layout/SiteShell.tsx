@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from "react";
 import type { SiteSettings } from "@/types/domain";
 import { CharacterOverlay } from "@/components/CharacterOverlay";
 import { FixedBottomBar } from "@/components/layout/FixedBottomBar";
+import { FloatingChatFab } from "@/components/layout/FloatingChatFab";
 import { FloatingSidebar } from "@/components/layout/FloatingSidebar";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -55,6 +56,7 @@ export function SiteShell({ children, settings }: { children: ReactNode; setting
       <main>{children}</main>
       <SiteFooter settings={settings} />
       <FloatingSidebar settings={settings} />
+      <FloatingChatFab settings={settings} />
       <FixedBottomBar settings={settings} />
     </div>
   );
