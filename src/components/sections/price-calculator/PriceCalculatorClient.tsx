@@ -33,6 +33,17 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
   if (selectedMobile && selectedMobile.discount !== 0) summaryParts.push(`휴대폰 ${selectedMobile.label}`);
   const summaryText = summaryParts.join(" + ");
 
+  // Match the best product based on selected internet speed and TV
+  const hasTv = tvPrice > 0;
+  const selectedSpeed = selectedInternet?.speed ?? "";
+  const matchedProduct = products.find((p) => {
+    const speedMatch = p.internetSpeed === selectedSpeed;
+    const bundleMatch = hasTv ? p.bundleType === "internet_tv" : p.bundleType === "internet_only";
+    return speedMatch && bundleMatch;
+  })
+    ?? products.find((p) => p.internetSpeed === selectedSpeed)
+    ?? products[0];
+
   return (
     <div className="overflow-hidden rounded-[20px] bg-white shadow-lg">
       <div className="grid gap-4 p-4 lg:grid-cols-[minmax(0,320px)_1fr]">
@@ -93,7 +104,7 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
       <PriceCalculatorFooter
         accentColor={accentColor}
         monthlyPriceLabel={formatPrice(totalPrice)}
-        productSlug={products[0]?.slug ?? ""}
+        productSlug={matchedProduct?.slug ?? ""}
         calcDetail={{
           internetLabel: selectedInternet?.label ?? "",
           internetSpeed: selectedInternet?.speed ?? "",
