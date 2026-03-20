@@ -94,6 +94,10 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
         accentColor={accentColor}
         monthlyPriceLabel={formatPrice(totalPrice)}
         productSlug={products[0]?.slug ?? ""}
+        carrierSlug={carrierSlug}
+        internetIndex={selection.internetIndex}
+        tvIndex={selection.tvIndex}
+        mobileIndex={selection.mobileIndex}
       />
     </div>
   );

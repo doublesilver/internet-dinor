@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getProductBySlug, getProducts, getSiteSettings } from "@/lib/repositories/content";
 import { getBundleTypeLabel } from "@/lib/utils/labels";
+import { formatPrice, getCarrierPriceData } from "@/components/sections/price-calculator/priceData";
 
 export async function generateStaticParams() {
   const products = await getProducts();
@@ -23,11 +24,46 @@ export async function generateMetadata({ params }: { params: Promise<{ productSl
   };
 }
 
-export default async function ProductDetailPage({ params }: { params: Promise<{ productSlug: string }> }) {
+export default async function ProductDetailPage({ params, searchParams }: { params: Promise<{ productSlug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { productSlug } = await params;
+  const resolvedSearchParams = await searchParams;
   const [product, settings] = await Promise.all([getProductBySlug(productSlug), getSiteSettings()]);
 
   if (!product) notFound();
+
+  // Calculate price from calculator query params if present
+  const carrierParam = typeof resolvedSearchParams.carrier === "string" ? resolvedSearchParams.carrier : null;
+  const internetIdx = typeof resolvedSearchParams.internet === "string" ? parseInt(resolvedSearchParams.internet, 10) : NaN;
+  const tvIdx = typeof resolvedSearchParams.tv === "string" ? parseInt(resolvedSearchParams.tv, 10) : NaN;
+  const mobileIdx = typeof resolvedSearchParams.mobile === "string" ? parseInt(resolvedSearchParams.mobile, 10) : NaN;
+
+  let calculatedPriceLabel: string | null = null;
+  let calcSummary: { internetLabel?: string; internetSpeed?: string; internetPrice?: number; tvLabel?: string; tvPrice?: number; mobileLabel?: string; mobileDiscount?: number } | null = null;
+
+  if (carrierParam && !isNaN(internetIdx) && !isNaN(tvIdx) && !isNaN(mobileIdx)) {
+    const priceData = getCarrierPriceData(carrierParam);
+    if (priceData) {
+      const internet = priceData.internetOptions[internetIdx];
+      const tv = priceData.tvOptions[tvIdx];
+      const mobile = priceData.mobileOptions[mobileIdx];
+      if (internet) {
+        const internetPrice = internet.price;
+        const tvPrice = tv?.price ?? 0;
+        const mobileDiscount = mobile?.discount ?? 0;
+        const totalPrice = Math.max(0, internetPrice + tvPrice + mobileDiscount);
+        calculatedPriceLabel = formatPrice(totalPrice);
+        calcSummary = {
+          internetLabel: internet.label,
+          internetSpeed: internet.speed,
+          internetPrice,
+          tvLabel: tv?.label,
+          tvPrice,
+          mobileLabel: mobile?.label,
+          mobileDiscount,
+        };
+      }
+    }
+  }
 
   return (
     <>
@@ -47,7 +83,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <div className="mt-5 grid gap-3 md:grid-cols-3">
               <div className="rounded-2xl bg-brand-surface p-4">
                 <p className="text-sm text-brand-slate">속도</p>
-                <p className="mt-2 text-lg font-bold text-brand-graphite">{product.internetSpeed}</p>
+                <p className="mt-2 text-lg font-bold text-brand-graphite">{calcSummary?.internetSpeed ?? product.internetSpeed}</p>
               </div>
               <div className="rounded-2xl bg-brand-surface p-4">
                 <p className="text-sm text-brand-slate">구성</p>
@@ -55,9 +91,32 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </div>
               <div className="rounded-2xl bg-brand-surface p-4">
                 <p className="text-sm text-brand-slate">월 이용료</p>
-                <p className="mt-2 text-lg font-bold text-brand-orange">{product.monthlyPriceLabel}</p>
+                <p className="mt-2 text-lg font-bold text-brand-orange">{calculatedPriceLabel ?? product.monthlyPriceLabel}</p>
               </div>
             </div>
+            {calcSummary && (
+              <div className="mt-3 grid gap-2 md:grid-cols-3">
+                <div className="rounded-2xl border border-brand-border p-3">
+                  <p className="text-xs text-brand-slate">인터넷</p>
+                  <p className="mt-1 text-sm font-bold text-brand-graphite">{calcSummary.internetLabel}</p>
+                  <p className="text-sm font-semibold text-brand-orange">{formatPrice(calcSummary.internetPrice ?? 0)}</p>
+                </div>
+                <div className="rounded-2xl border border-brand-border p-3">
+                  <p className="text-xs text-brand-slate">TV</p>
+                  <p className="mt-1 text-sm font-bold text-brand-graphite">{calcSummary.tvLabel ?? "미결합"}</p>
+                  <p className="text-sm font-semibold text-brand-orange">
+                    {(calcSummary.tvPrice ?? 0) > 0 ? `+${formatPrice(calcSummary.tvPrice!)}` : "없음"}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-brand-border p-3">
+                  <p className="text-xs text-brand-slate">휴대폰 결합</p>
+                  <p className="mt-1 text-sm font-bold text-brand-graphite">{calcSummary.mobileLabel ?? "미결합"}</p>
+                  <p className="text-sm font-semibold text-brand-orange">
+                    {(calcSummary.mobileDiscount ?? 0) < 0 ? `-${formatPrice(Math.abs(calcSummary.mobileDiscount!))}` : "할인 없음"}
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="mt-5 flex flex-wrap gap-3">
               <Button href="#inquiry">이 상품 문의하기</Button>
               <Button href={settings.phoneLink} variant="secondary">

@@ -4,9 +4,20 @@ interface PriceCalculatorFooterProps {
   accentColor: string;
   monthlyPriceLabel: string;
   productSlug: string;
+  carrierSlug: string;
+  internetIndex: number;
+  tvIndex: number;
+  mobileIndex: number;
 }
 
-export function PriceCalculatorFooter({ accentColor, monthlyPriceLabel, productSlug }: PriceCalculatorFooterProps) {
+export function PriceCalculatorFooter({ accentColor, monthlyPriceLabel, productSlug, carrierSlug, internetIndex, tvIndex, mobileIndex }: PriceCalculatorFooterProps) {
+  const calcParams = new URLSearchParams({
+    carrier: carrierSlug,
+    internet: String(internetIndex),
+    tv: String(tvIndex),
+    mobile: String(mobileIndex),
+  }).toString();
+
   return (
     <div className="flex flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row" style={{ backgroundColor: accentColor }}>
       <p className="text-center text-white sm:text-left">
@@ -15,7 +26,7 @@ export function PriceCalculatorFooter({ accentColor, monthlyPriceLabel, productS
       </p>
       <div className="flex gap-3">
         <Link
-          href={`/products/${productSlug}`}
+          href={`/products/${productSlug}?${calcParams}`}
           className="rounded-full bg-white px-6 py-3 text-sm font-bold hover:bg-gray-100"
           style={{ color: accentColor }}
         >
