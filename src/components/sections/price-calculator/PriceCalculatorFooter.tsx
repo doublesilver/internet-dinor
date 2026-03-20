@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 interface CalcDetail {
+  carrierName: string;
+  summary: string;
   internetLabel: string;
   internetSpeed: string;
   internetPrice: number;
@@ -20,6 +22,8 @@ interface PriceCalculatorFooterProps {
 
 export function PriceCalculatorFooter({ accentColor, monthlyPriceLabel, productSlug, calcDetail }: PriceCalculatorFooterProps) {
   const calcParams = new URLSearchParams({
+    carrier: calcDetail.carrierName,
+    summary: calcDetail.summary,
     iLabel: calcDetail.internetLabel,
     iSpeed: calcDetail.internetSpeed,
     iPrice: String(calcDetail.internetPrice),

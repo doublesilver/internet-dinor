@@ -106,6 +106,8 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
         monthlyPriceLabel={formatPrice(totalPrice)}
         productSlug={matchedProduct?.slug ?? ""}
         calcDetail={{
+          carrierName,
+          summary: summaryText,
           internetLabel: selectedInternet?.label ?? "",
           internetSpeed: selectedInternet?.speed ?? "",
           internetPrice,

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ProductInquiryForm } from "@/components/forms/ProductInquiryForm";
-import { CalculatorPriceOverride } from "@/components/sections/CalculatorPriceOverride";
+import { CalculatorHeaderOverride, CalculatorPriceOverride } from "@/components/sections/CalculatorPriceOverride";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { getProductBySlug, getProducts, getSiteSettings } from "@/lib/repositories/content";
@@ -36,7 +36,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <section className="py-8 md:py-12 bg-brand-sky-soft">
         <div className="container-page grid gap-5 md:grid-cols-[1fr_420px]">
           <div className="surface-card bg-white">
-            <p className="text-sm font-semibold text-brand-orange">홈 &gt; 상품 상세 &gt; {product.name}</p>
+            <Suspense fallback={
+              <>
+                <p className="text-sm font-semibold text-brand-orange">홈 &gt; 상품 상세 &gt; {product.name}</p>
+                <h1 className="mt-5 text-4xl font-black tracking-tight text-brand-graphite">{product.name}</h1>
+              </>
+            }>
+              <CalculatorHeaderOverride fallbackName={product.name} />
+            </Suspense>
             <div className="mt-5 flex flex-wrap gap-2">
               {product.badgeTags.map((tag) => (
                 <span key={tag} className="rounded-full bg-brand-lavender-soft px-3 py-1 text-xs font-semibold text-brand-graphite">
@@ -44,7 +51,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 </span>
               ))}
             </div>
-            <h1 className="mt-5 text-4xl font-black tracking-tight text-brand-graphite">{product.name}</h1>
             <p className="mt-4 text-base leading-7 text-brand-slate">{product.description}</p>
             <div className="mt-5 grid gap-3 md:grid-cols-3">
               <Suspense fallback={
