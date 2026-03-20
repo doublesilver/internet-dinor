@@ -1,21 +1,33 @@
 import Link from "next/link";
 
+interface CalcDetail {
+  internetLabel: string;
+  internetSpeed: string;
+  internetPrice: number;
+  tvLabel: string;
+  tvPrice: number;
+  mobileLabel: string;
+  mobileDiscount: number;
+  totalPrice: number;
+}
+
 interface PriceCalculatorFooterProps {
   accentColor: string;
   monthlyPriceLabel: string;
   productSlug: string;
-  carrierSlug: string;
-  internetIndex: number;
-  tvIndex: number;
-  mobileIndex: number;
+  calcDetail: CalcDetail;
 }
 
-export function PriceCalculatorFooter({ accentColor, monthlyPriceLabel, productSlug, carrierSlug, internetIndex, tvIndex, mobileIndex }: PriceCalculatorFooterProps) {
+export function PriceCalculatorFooter({ accentColor, monthlyPriceLabel, productSlug, calcDetail }: PriceCalculatorFooterProps) {
   const calcParams = new URLSearchParams({
-    carrier: carrierSlug,
-    internet: String(internetIndex),
-    tv: String(tvIndex),
-    mobile: String(mobileIndex),
+    iLabel: calcDetail.internetLabel,
+    iSpeed: calcDetail.internetSpeed,
+    iPrice: String(calcDetail.internetPrice),
+    tLabel: calcDetail.tvLabel,
+    tPrice: String(calcDetail.tvPrice),
+    mLabel: calcDetail.mobileLabel,
+    mDiscount: String(calcDetail.mobileDiscount),
+    total: String(calcDetail.totalPrice),
   }).toString();
 
   return (

@@ -94,10 +94,16 @@ export function PriceCalculatorClient({ carrierName, accentColor, products, carr
         accentColor={accentColor}
         monthlyPriceLabel={formatPrice(totalPrice)}
         productSlug={products[0]?.slug ?? ""}
-        carrierSlug={carrierSlug}
-        internetIndex={selection.internetIndex}
-        tvIndex={selection.tvIndex}
-        mobileIndex={selection.mobileIndex}
+        calcDetail={{
+          internetLabel: selectedInternet?.label ?? "",
+          internetSpeed: selectedInternet?.speed ?? "",
+          internetPrice,
+          tvLabel: selectedTv?.label ?? "미결합",
+          tvPrice,
+          mobileLabel: selectedMobile?.label ?? "미결합",
+          mobileDiscount,
+          totalPrice,
+        }}
       />
     </div>
   );
