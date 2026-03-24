@@ -16,16 +16,7 @@ export async function mockJsonResponse(
 }
 
 export async function waitForHydration(page: Page) {
-  // React hydration 완료를 기다립니다.
-  // React 18은 DOM 노드에 __reactFiber$ 키를 통해 fiber를 붙입니다 (non-enumerable 포함).
-  // form 요소에 React fiber가 연결되면 hydration이 완료된 것입니다.
-  await page.waitForFunction(() => {
-    const form = document.querySelector("form");
-    if (!form) return false;
-    return Object.getOwnPropertyNames(form).some((key) =>
-      key.startsWith("__reactFiber$"),
-    );
-  });
+  await page.waitForSelector("form[data-hydrated]", { timeout: 15000 });
 }
 
 export async function fillBasicContactFields(
