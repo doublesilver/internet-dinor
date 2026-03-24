@@ -1,4 +1,13 @@
-import type { Carrier, CarrierPriceData, DesignSettings, InquiryRecord, Post, Product, Review, SiteSettings } from "@/types/domain";
+import type {
+  Carrier,
+  CarrierPriceData,
+  DesignSettings,
+  InquiryRecord,
+  Post,
+  Product,
+  Review,
+  SiteSettings,
+} from "@/types/domain";
 
 function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map((item) => String(item)) : [];
@@ -9,7 +18,9 @@ function asKeyValue(value: unknown): Record<string, string> {
     return {};
   }
 
-  return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, String(item)]));
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [key, String(item)]),
+  );
 }
 
 function asUnknownRecord(value: unknown): Record<string, unknown> {
@@ -20,14 +31,16 @@ function asUnknownRecord(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 
-function asDetailSections(value: unknown): Array<{ title: string; body: string }> {
+function asDetailSections(
+  value: unknown,
+): Array<{ title: string; body: string }> {
   if (!Array.isArray(value)) return [];
 
   return value
     .filter((item) => item && typeof item === "object")
     .map((item) => ({
       title: String((item as { title?: unknown }).title ?? ""),
-      body: String((item as { body?: unknown }).body ?? "")
+      body: String((item as { body?: unknown }).body ?? ""),
     }));
 }
 
@@ -38,32 +51,35 @@ function asFaqItems(value: unknown): Array<{ q: string; a: string }> {
     .filter((item) => item && typeof item === "object")
     .map((item) => ({
       q: String((item as { q?: unknown }).q ?? ""),
-      a: String((item as { a?: unknown }).a ?? "")
+      a: String((item as { a?: unknown }).a ?? ""),
     }));
 }
 
 function asPriceData(value: unknown): CarrierPriceData | undefined {
   if (!value || typeof value !== "object") return undefined;
   const obj = value as Record<string, unknown>;
-  if (!Array.isArray(obj.internetOptions) || obj.internetOptions.length === 0) return undefined;
+  if (!Array.isArray(obj.internetOptions) || obj.internetOptions.length === 0)
+    return undefined;
   return {
-    internetOptions: (obj.internetOptions as Array<Record<string, unknown>>).map((o) => ({
+    internetOptions: (
+      obj.internetOptions as Array<Record<string, unknown>>
+    ).map((o) => ({
       label: String(o.label ?? ""),
       speed: String(o.speed ?? ""),
-      price: Number(o.price ?? 0)
+      price: Number(o.price ?? 0),
     })),
     tvOptions: Array.isArray(obj.tvOptions)
       ? (obj.tvOptions as Array<Record<string, unknown>>).map((o) => ({
           label: String(o.label ?? ""),
-          price: Number(o.price ?? 0)
+          price: Number(o.price ?? 0),
         }))
       : [],
     mobileOptions: Array.isArray(obj.mobileOptions)
       ? (obj.mobileOptions as Array<Record<string, unknown>>).map((o) => ({
           label: String(o.label ?? ""),
-          discount: Number(o.discount ?? 0)
+          discount: Number(o.discount ?? 0),
         }))
-      : []
+      : [],
   };
 }
 
@@ -79,7 +95,7 @@ export function mapCarrierRow(row: Record<string, unknown>): Carrier {
     featurePoints: asStringArray(row.feature_points),
     priceData: asPriceData(row.price_data),
     status: row.status === "draft" ? "draft" : "published",
-    sortOrder: Number(row.sort_order ?? 0)
+    sortOrder: Number(row.sort_order ?? 0),
   };
 }
 
@@ -92,13 +108,17 @@ export function mapProductRow(row: Record<string, unknown>): Product {
     summary: String(row.summary ?? ""),
     description: String(row.description ?? ""),
     bundleType:
-      row.bundle_type === "internet_tv" || row.bundle_type === "business" || row.bundle_type === "custom"
+      row.bundle_type === "internet_tv" ||
+      row.bundle_type === "business" ||
+      row.bundle_type === "custom"
         ? row.bundle_type
         : "internet_only",
     internetSpeed: String(row.internet_speed ?? ""),
     tvIncluded: Boolean(row.tv_included),
     monthlyPriceLabel: String(row.monthly_price_label ?? ""),
-    originalPriceLabel: row.original_price_label ? String(row.original_price_label) : undefined,
+    originalPriceLabel: row.original_price_label
+      ? String(row.original_price_label)
+      : undefined,
     benefitLabel: String(row.benefit_label ?? ""),
     badgeTags: asStringArray(row.badge_tags),
     targetTags: asStringArray(row.target_tags),
@@ -107,7 +127,7 @@ export function mapProductRow(row: Record<string, unknown>): Product {
     faqItems: asFaqItems(row.faq_items),
     isFeatured: Boolean(row.is_featured),
     status: row.status === "draft" ? "draft" : "published",
-    sortOrder: Number(row.sort_order ?? 0)
+    sortOrder: Number(row.sort_order ?? 0),
   };
 }
 
@@ -124,7 +144,7 @@ export function mapPostRow(row: Record<string, unknown>): Post {
     relatedProductSlugs: asStringArray(row.related_product_slugs),
     isFeatured: Boolean(row.is_featured),
     publishedAt: String(row.published_at ?? ""),
-    status: row.status === "draft" ? "draft" : "published"
+    status: row.status === "draft" ? "draft" : "published",
   };
 }
 
@@ -144,8 +164,20 @@ export function mapReviewRow(row: Record<string, unknown>): Review {
         : "internet_tv",
     tags: asStringArray(row.tags),
     featured: Boolean(row.featured),
+    authorName: row.author_name ? String(row.author_name) : undefined,
+    source:
+      row.source === "customer"
+        ? "customer"
+        : row.source === "admin"
+          ? "admin"
+          : undefined,
     publishedAt: String(row.published_at ?? ""),
-    status: row.status === "draft" ? "draft" : "published"
+    status:
+      row.status === "draft"
+        ? "draft"
+        : row.status === "pending"
+          ? "pending"
+          : "published",
   };
 }
 
@@ -154,9 +186,11 @@ function mapDesignSettingsJson(value: unknown): DesignSettings {
 
   // Backward-compat: map old flat keys to new granular keys
   const heroBg = d.hero_bgColor ?? d.heroBgColor ?? "#4A86CF";
-  const headingSize = d.carrierProducts_headingFontSize ?? d.headingFontSize ?? "32px";
+  const headingSize =
+    d.carrierProducts_headingFontSize ?? d.headingFontSize ?? "32px";
   const primaryColor = d.button_primaryColor ?? d.primaryColor ?? "#4A86CF";
-  const primaryDarkColor = d.button_primaryDarkColor ?? d.primaryDarkColor ?? "#3A74B8";
+  const primaryDarkColor =
+    d.button_primaryDarkColor ?? d.primaryDarkColor ?? "#3A74B8";
   const buttonRadius = d.button_radius ?? d.buttonRadius ?? "16px";
   const buttonFontSize = d.button_fontSize ?? d.buttonFontSize ?? "14px";
   const sectionPadding = d.section_padding ?? d.sectionPadding ?? "48px";
@@ -168,9 +202,11 @@ function mapDesignSettingsJson(value: unknown): DesignSettings {
     hero_subtitleFontSize: d.hero_subtitleFontSize ?? "18px",
     hero_subtitleColor: d.hero_subtitleColor ?? "rgba(255,255,255,0.85)",
 
-    carrierProducts_bgColor: d.carrierProducts_bgColor ?? d.sectionBgColor ?? "#D6E4F5",
+    carrierProducts_bgColor:
+      d.carrierProducts_bgColor ?? d.sectionBgColor ?? "#D6E4F5",
     carrierProducts_headingFontSize: headingSize,
-    carrierProducts_headingColor: d.carrierProducts_headingColor ?? primaryColor,
+    carrierProducts_headingColor:
+      d.carrierProducts_headingColor ?? primaryColor,
 
     benefits_bgColor: d.benefits_bgColor ?? "#6EA8E0",
     benefits_headingFontSize: d.benefits_headingFontSize ?? headingSize,
@@ -195,7 +231,7 @@ function mapDesignSettingsJson(value: unknown): DesignSettings {
     button_primaryColor: primaryColor,
     button_primaryDarkColor: primaryDarkColor,
 
-    section_padding: sectionPadding
+    section_padding: sectionPadding,
   };
 }
 
@@ -214,19 +250,26 @@ export function mapSiteSettingsRow(row: Record<string, unknown>): SiteSettings {
     footerNotice: String(row.footer_notice ?? ""),
     businessInfo: {
       owner: businessInfo.owner ?? "인터넷공룡",
-      businessNumber: businessInfo.businessNumber ?? businessInfo.business_number ?? "",
-      ecommerceNumber: businessInfo.ecommerceNumber ?? businessInfo.ecommerce_number ?? "",
+      businessNumber:
+        businessInfo.businessNumber ?? businessInfo.business_number ?? "",
+      ecommerceNumber:
+        businessInfo.ecommerceNumber ?? businessInfo.ecommerce_number ?? "",
       address: businessInfo.address ?? "",
-      email: businessInfo.email ?? ""
+      email: businessInfo.email ?? "",
     },
-    designSettings: row.design_settings_json ? mapDesignSettingsJson(row.design_settings_json) : undefined
+    designSettings: row.design_settings_json
+      ? mapDesignSettingsJson(row.design_settings_json)
+      : undefined,
   };
 }
 
 export function mapInquiryRow(row: Record<string, unknown>): InquiryRecord {
   return {
     id: String(row.id),
-    inquiryType: row.inquiry_type === "product" || row.inquiry_type === "apply" ? row.inquiry_type : "quick",
+    inquiryType:
+      row.inquiry_type === "product" || row.inquiry_type === "apply"
+        ? row.inquiry_type
+        : "quick",
     name: String(row.name),
     phone: String(row.phone),
     productId: row.product_id ? String(row.product_id) : null,
@@ -243,11 +286,13 @@ export function mapInquiryRow(row: Record<string, unknown>): InquiryRecord {
         : "new",
     privacyAgreed: Boolean(row.privacy_agreed),
     regionLabel: row.region_label ? String(row.region_label) : null,
-    contactTimePreference: row.contact_time_preference ? String(row.contact_time_preference) : null,
+    contactTimePreference: row.contact_time_preference
+      ? String(row.contact_time_preference)
+      : null,
     payload: asUnknownRecord(row.payload_json),
     utm: asUnknownRecord(row.utm_json),
     adminMemo: row.admin_memo ? String(row.admin_memo) : null,
     createdAt: String(row.created_at),
-    updatedAt: String(row.updated_at)
+    updatedAt: String(row.updated_at),
   };
 }

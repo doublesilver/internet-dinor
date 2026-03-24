@@ -1,14 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 
-const { getAdminSupabaseCookieNamesMock, resolveAdminAuthForMiddlewareMock } = vi.hoisted(() => ({
-  getAdminSupabaseCookieNamesMock: vi.fn(),
-  resolveAdminAuthForMiddlewareMock: vi.fn()
-}));
+const { getAdminSupabaseCookieNamesMock, resolveAdminAuthForMiddlewareMock } =
+  vi.hoisted(() => ({
+    getAdminSupabaseCookieNamesMock: vi.fn(),
+    resolveAdminAuthForMiddlewareMock: vi.fn(),
+  }));
 
 vi.mock("@/lib/auth/admin", () => ({
   getAdminSupabaseCookieNames: getAdminSupabaseCookieNamesMock,
-  resolveAdminAuthForMiddleware: resolveAdminAuthForMiddlewareMock
+  resolveAdminAuthForMiddleware: resolveAdminAuthForMiddlewareMock,
 }));
 
 import { config, middleware } from "../middleware";
@@ -22,14 +23,16 @@ describe("admin middleware", () => {
     vi.resetAllMocks();
     getAdminSupabaseCookieNamesMock.mockReturnValue({
       accessToken: "internet_dinor_admin_access_token",
-      refreshToken: "internet_dinor_admin_refresh_token"
+      refreshToken: "internet_dinor_admin_refresh_token",
     });
-    resolveAdminAuthForMiddlewareMock.mockResolvedValue({ authenticated: false });
+    resolveAdminAuthForMiddlewareMock.mockResolvedValue({
+      authenticated: false,
+    });
   });
 
   it("keeps the configured admin matchers", () => {
     expect(config).toEqual({
-      matcher: ["/admin/:path*", "/api/admin/:path*"]
+      matcher: ["/admin/:path*", "/api/:path*"],
     });
   });
 
@@ -47,7 +50,7 @@ describe("admin middleware", () => {
     expect(response.status).toBe(401);
     await expect(response.json()).resolves.toMatchObject({
       success: false,
-      message: "관리자 인증이 필요합니다."
+      message: "관리자 인증이 필요합니다.",
     });
   });
 
@@ -56,11 +59,15 @@ describe("admin middleware", () => {
 
     expect(resolveAdminAuthForMiddlewareMock).toHaveBeenCalledTimes(1);
     expect(response.status).toBe(307);
-    expect(response.headers.get("location")).toBe("http://localhost/admin/login");
+    expect(response.headers.get("location")).toBe(
+      "http://localhost/admin/login",
+    );
   });
 
   it("allows authenticated admin requests to continue", async () => {
-    resolveAdminAuthForMiddlewareMock.mockResolvedValue({ authenticated: true });
+    resolveAdminAuthForMiddlewareMock.mockResolvedValue({
+      authenticated: true,
+    });
 
     const response = await middleware(createRequest("/api/admin/products"));
 
@@ -75,15 +82,19 @@ describe("admin middleware", () => {
       refreshedSession: {
         accessToken: "new-access-token",
         refreshToken: "new-refresh-token",
-        expiresIn: 3600
-      }
+        expiresIn: 3600,
+      },
     });
 
     const response = await middleware(createRequest("/admin/settings"));
 
     expect(response.headers.get("x-middleware-next")).toBe("1");
     expect(getAdminSupabaseCookieNamesMock).toHaveBeenCalledTimes(1);
-    expect(response.cookies.get("internet_dinor_admin_access_token")?.value).toBe("new-access-token");
-    expect(response.cookies.get("internet_dinor_admin_refresh_token")?.value).toBe("new-refresh-token");
+    expect(
+      response.cookies.get("internet_dinor_admin_access_token")?.value,
+    ).toBe("new-access-token");
+    expect(
+      response.cookies.get("internet_dinor_admin_refresh_token")?.value,
+    ).toBe("new-refresh-token");
   });
 });

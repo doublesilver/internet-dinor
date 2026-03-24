@@ -1,9 +1,26 @@
-export type ContentStatus = "draft" | "published";
+export type ContentStatus = "draft" | "published" | "pending";
+export type ReviewSource = "admin" | "customer";
 export type PostType = "event" | "guide" | "notice";
-export type ReviewType = "internet_only" | "internet_tv" | "moving" | "bundle" | "renewal";
-export type ProductBundleType = "internet_only" | "internet_tv" | "business" | "custom";
+export type ReviewType =
+  | "internet_only"
+  | "internet_tv"
+  | "moving"
+  | "bundle"
+  | "renewal";
+export type ProductBundleType =
+  | "internet_only"
+  | "internet_tv"
+  | "business"
+  | "custom";
 export type InquiryType = "quick" | "product" | "apply";
-export type InquiryStatus = "new" | "pending" | "contacted" | "retry" | "consulted" | "in_progress" | "closed";
+export type InquiryStatus =
+  | "new"
+  | "pending"
+  | "contacted"
+  | "retry"
+  | "consulted"
+  | "in_progress"
+  | "closed";
 
 export interface CarrierInternetOption {
   label: string;
@@ -88,6 +105,8 @@ export interface Review {
   reviewType: ReviewType;
   tags: string[];
   featured: boolean;
+  authorName?: string;
+  source?: ReviewSource;
   publishedAt: string;
   status: ContentStatus;
 }

@@ -1,4 +1,10 @@
-export { getCarriers, getCarrierBySlug, getAllCarriersAdmin, getCarrierById, updateCarrier } from "@/lib/repositories/carriers";
+export {
+  getCarriers,
+  getCarrierBySlug,
+  getAllCarriersAdmin,
+  getCarrierById,
+  updateCarrier,
+} from "@/lib/repositories/carriers";
 export {
   getProducts,
   getAllProductsAdmin,
@@ -9,7 +15,7 @@ export {
   updateProduct,
   createProduct,
   deleteProduct,
-  updateProductStatus
+  updateProductStatus,
 } from "@/lib/repositories/products";
 export {
   getBoardTypeFromCategory,
@@ -26,7 +32,12 @@ export {
   updatePostOrReview,
   createPostOrReview,
   deletePostOrReview,
-  updatePostOrReviewStatus
+  updatePostOrReviewStatus,
+  createCustomerReview,
 } from "@/lib/repositories/posts";
-export { getSiteSettings, updateSiteSettings, updateDesignSettings } from "@/lib/repositories/settings";
+export {
+  getSiteSettings,
+  updateSiteSettings,
+  updateDesignSettings,
+} from "@/lib/repositories/settings";
 export { getRecentInquiries } from "@/lib/repositories/inquiries";

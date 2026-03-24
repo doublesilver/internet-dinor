@@ -1,54 +1,80 @@
 import { z } from "zod";
 
-const statusSchema = z.enum(["draft", "published"]);
+const statusSchema = z.enum(["draft", "published", "pending"]);
 
 const slugSchema = z
   .string()
   .min(1, "슬러그를 입력해주세요.")
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "슬러그는 소문자, 숫자, 하이픈만 사용할 수 있습니다.");
+  .regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "슬러그는 소문자, 숫자, 하이픈만 사용할 수 있습니다.",
+  );
 
-const priceDataSchema = z.object({
-  internetOptions: z.array(z.object({
-    label: z.string(),
-    speed: z.string(),
-    price: z.number()
-  })).default([]),
-  tvOptions: z.array(z.object({
-    label: z.string(),
-    price: z.number()
-  })).default([]),
-  mobileOptions: z.array(z.object({
-    label: z.string(),
-    discount: z.number()
-  })).default([])
-}).optional();
+const priceDataSchema = z
+  .object({
+    internetOptions: z
+      .array(
+        z.object({
+          label: z.string(),
+          speed: z.string(),
+          price: z.number(),
+        }),
+      )
+      .default([]),
+    tvOptions: z
+      .array(
+        z.object({
+          label: z.string(),
+          price: z.number(),
+        }),
+      )
+      .default([]),
+    mobileOptions: z
+      .array(
+        z.object({
+          label: z.string(),
+          discount: z.number(),
+        }),
+      )
+      .default([]),
+  })
+  .optional();
 
 export const carrierEditorSchema = z.object({
   name: z.string().min(1, "통신사명을 입력해주세요."),
   shortName: z.string().min(1, "약칭을 입력해주세요."),
   slug: slugSchema,
-  summary: z.string().min(1, "요약을 입력해주세요.").max(5000, "요약은 5000자 이하로 입력해주세요."),
+  summary: z
+    .string()
+    .min(1, "요약을 입력해주세요.")
+    .max(5000, "요약은 5000자 이하로 입력해주세요."),
   heroTitle: z.string().min(1, "히어로 제목을 입력해주세요."),
   heroDescription: z.string().min(1, "히어로 설명을 입력해주세요."),
   featurePointsText: z.string().optional().default(""),
   priceData: priceDataSchema,
   status: statusSchema,
-  sortOrder: z.coerce.number().int().default(0)
+  sortOrder: z.coerce.number().int().default(0),
 });
 
 export const contentStatusSchema = z.object({
-  status: statusSchema
+  status: statusSchema,
 });
 
 export const postReviewStatusSchema = contentStatusSchema.extend({
-  entityType: z.enum(["post", "review"])
+  entityType: z.enum(["post", "review"]),
 });
 
 export const productEditorSchema = z.object({
   name: z.string().min(1, "상품명을 입력해주세요."),
   slug: slugSchema,
-  summary: z.string().min(1, "요약을 입력해주세요.").max(5000, "요약은 5000자 이하로 입력해주세요."),
-  description: z.string().min(1, "설명을 입력해주세요.").max(10000, "설명은 10000자 이하로 입력해주세요."),
+  summary: z
+    .string()
+    .min(1, "요약을 입력해주세요.")
+    .max(5000, "요약은 5000자 이하로 입력해주세요."),
+  description: z
+    .string()
+    .min(1, "설명을 입력해주세요.")
+    .max(10000, "설명은 10000자 이하로 입력해주세요."),
   carrierId: z.string().min(1, "통신사를 선택해주세요."),
   bundleType: z.enum(["internet_only", "internet_tv", "business", "custom"]),
   internetSpeed: z.string().min(1, "속도를 입력해주세요."),
@@ -63,23 +89,31 @@ export const productEditorSchema = z.object({
   tvIncluded: z.boolean(),
   isFeatured: z.boolean(),
   status: statusSchema,
-  sortOrder: z.coerce.number().int().default(0)
+  sortOrder: z.coerce.number().int().default(0),
 });
 
 export const postEditorSchema = z.object({
   entityType: z.enum(["post", "review"]),
   type: z.enum(["event", "guide", "notice"]).optional(),
-  reviewType: z.enum(["internet_only", "internet_tv", "moving", "bundle", "renewal"]).optional(),
+  reviewType: z
+    .enum(["internet_only", "internet_tv", "moving", "bundle", "renewal"])
+    .optional(),
   title: z.string().min(1, "제목을 입력해주세요."),
   slug: slugSchema,
-  summary: z.string().min(1, "요약을 입력해주세요.").max(5000, "요약은 5000자 이하로 입력해주세요."),
-  body: z.string().min(1, "본문을 입력해주세요.").max(100000, "본문은 100000자 이하로 입력해주세요."),
+  summary: z
+    .string()
+    .min(1, "요약을 입력해주세요.")
+    .max(5000, "요약은 5000자 이하로 입력해주세요."),
+  body: z
+    .string()
+    .min(1, "본문을 입력해주세요.")
+    .max(100000, "본문은 100000자 이하로 입력해주세요."),
   ctaLabel: z.string().optional().default(""),
   relatedProductSlugsText: z.string().optional().default(""),
   tagsText: z.string().optional().default(""),
   isFeatured: z.boolean(),
   status: statusSchema,
-  publishedAt: z.string().min(1, "게시일을 입력해주세요.")
+  publishedAt: z.string().min(1, "게시일을 입력해주세요."),
 });
 
 export const designSettingsSchema = z.object({
@@ -116,7 +150,7 @@ export const designSettingsSchema = z.object({
   button_primaryColor: z.string().optional().default("#4A86CF"),
   button_primaryDarkColor: z.string().optional().default("#3A74B8"),
 
-  section_padding: z.string().optional().default("48px")
+  section_padding: z.string().optional().default("48px"),
 });
 
 export const settingsEditorSchema = z.object({
@@ -134,7 +168,32 @@ export const settingsEditorSchema = z.object({
   ecommerceNumber: z.string().optional().default(""),
   address: z.string().min(1, "주소를 입력해주세요."),
   email: z.string().email("올바른 이메일 형식을 입력해주세요."),
-  designSettings: designSettingsSchema.optional()
+  designSettings: designSettingsSchema.optional(),
+});
+
+export const customerReviewSchema = z.object({
+  authorName: z
+    .string()
+    .trim()
+    .min(1, "이름을 입력해주세요.")
+    .max(20, "이름은 20자 이하로 입력해주세요."),
+  reviewType: z.enum([
+    "internet_only",
+    "internet_tv",
+    "moving",
+    "bundle",
+    "renewal",
+  ]),
+  title: z
+    .string()
+    .trim()
+    .min(2, "제목을 입력해주세요.")
+    .max(100, "제목은 100자 이하로 입력해주세요."),
+  body: z
+    .string()
+    .trim()
+    .min(10, "후기 내용을 10자 이상 입력해주세요.")
+    .max(5000, "후기 내용은 5000자 이하로 입력해주세요."),
 });
 
 export type CarrierEditorValues = z.infer<typeof carrierEditorSchema>;
@@ -144,3 +203,4 @@ export type SettingsEditorValues = z.infer<typeof settingsEditorSchema>;
 export type DesignSettingsValues = z.infer<typeof designSettingsSchema>;
 export type ContentStatusValues = z.infer<typeof contentStatusSchema>;
 export type PostReviewStatusValues = z.infer<typeof postReviewStatusSchema>;
+export type CustomerReviewValues = z.infer<typeof customerReviewSchema>;

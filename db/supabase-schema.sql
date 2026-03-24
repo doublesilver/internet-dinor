@@ -76,8 +76,10 @@ create table if not exists public.reviews (
   review_type text not null default 'internet_tv' check (review_type in ('internet_only', 'internet_tv', 'moving', 'bundle', 'renewal')),
   tags jsonb not null default '[]'::jsonb,
   featured boolean not null default false,
+  author_name text,
+  source text not null default 'admin' check (source in ('admin', 'customer')),
   published_at timestamptz,
-  status text not null default 'draft' check (status in ('draft', 'published')),
+  status text not null default 'draft' check (status in ('draft', 'published', 'pending')),
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );

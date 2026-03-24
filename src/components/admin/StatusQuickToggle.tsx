@@ -12,14 +12,23 @@ interface StatusQuickToggleProps {
 }
 
 function getStatusLabel(status: ContentStatus) {
-  return status === "published" ? "게시중" : "임시저장";
+  if (status === "published") return "게시중";
+  if (status === "pending") return "승인 대기";
+  return "임시저장";
 }
 
 function getStatusClassName(status: ContentStatus) {
-  return status === "published" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600";
+  if (status === "published") return "bg-emerald-50 text-emerald-700";
+  if (status === "pending") return "bg-amber-50 text-amber-700";
+  return "bg-slate-100 text-slate-600";
 }
 
-export function StatusQuickToggle({ endpoint, initialStatus, entityLabel, entityType }: StatusQuickToggleProps) {
+export function StatusQuickToggle({
+  endpoint,
+  initialStatus,
+  entityLabel,
+  entityType,
+}: StatusQuickToggleProps) {
   const router = useRouter();
   const [status, setStatus] = useState(initialStatus);
   const [message, setMessage] = useState<string | null>(null);
@@ -27,7 +36,8 @@ export function StatusQuickToggle({ endpoint, initialStatus, entityLabel, entity
   const [isRefreshing, startTransition] = useTransition();
 
   const isPending = isSaving || isRefreshing;
-  const nextStatus: ContentStatus = status === "published" ? "draft" : "published";
+  const nextStatus: ContentStatus =
+    status === "published" ? "draft" : "published";
 
   async function handleToggle() {
     setMessage(null);
@@ -37,18 +47,23 @@ export function StatusQuickToggle({ endpoint, initialStatus, entityLabel, entity
       const response = await fetch(endpoint, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           status: nextStatus,
-          ...(entityType ? { entityType } : {})
-        })
+          ...(entityType ? { entityType } : {}),
+        }),
       });
 
-      const result = (await response.json()) as { success: boolean; message?: string };
+      const result = (await response.json()) as {
+        success: boolean;
+        message?: string;
+      };
 
       if (!response.ok || !result.success) {
-        setMessage(result.message ?? `${entityLabel} 상태 변경에 실패했습니다.`);
+        setMessage(
+          result.message ?? `${entityLabel} 상태 변경에 실패했습니다.`,
+        );
         return;
       }
 
@@ -66,14 +81,24 @@ export function StatusQuickToggle({ endpoint, initialStatus, entityLabel, entity
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusClassName(status)}`}>{getStatusLabel(status)}</span>
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusClassName(status)}`}
+        >
+          {getStatusLabel(status)}
+        </span>
         <button
           type="button"
           className="inline-flex rounded-2xl border border-brand-border bg-white px-4 py-2 text-xs font-semibold text-brand-graphite transition-colors hover:border-brand-orange hover:text-brand-orange disabled:cursor-not-allowed disabled:opacity-60"
           onClick={handleToggle}
           disabled={isPending}
         >
-          {isPending ? "변경 중..." : status === "published" ? "임시저장으로 전환" : "게시중으로 전환"}
+          {isPending
+            ? "변경 중..."
+            : status === "published"
+              ? "임시저장으로 전환"
+              : status === "pending"
+                ? "승인 (게시중으로 전환)"
+                : "게시중으로 전환"}
         </button>
       </div>
       {message ? <p className="text-xs text-red-600">{message}</p> : null}

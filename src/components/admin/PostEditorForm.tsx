@@ -10,11 +10,19 @@ type ContentEntity =
 
 type Message = { type: "success" | "error"; text: string } | null;
 
-export function PostEditorForm({ content, mode = "edit" }: { content: ContentEntity; mode?: "create" | "edit" }) {
+export function PostEditorForm({
+  content,
+  mode = "edit",
+}: {
+  content: ContentEntity;
+  mode?: "create" | "edit";
+}) {
   const isReview = content.entityType === "review";
   const entity = content.entity;
   const postEntity = content.entityType === "post" ? content.entity : null;
   const reviewEntity = content.entityType === "review" ? content.entity : null;
+
+  const isCustomerReview = isReview && reviewEntity?.source === "customer";
 
   const [form, setForm] = useState({
     entityType: content.entityType,
@@ -29,12 +37,15 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
     tagsText: reviewEntity?.tags.join(", ") ?? "",
     isFeatured: reviewEntity?.featured ?? postEntity?.isFeatured ?? false,
     status: entity.status,
-    publishedAt: entity.publishedAt.slice(0, 16)
+    publishedAt: entity.publishedAt.slice(0, 16),
   });
   const [message, setMessage] = useState<Message>(null);
   const [isPending, startTransition] = useTransition();
 
-  function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
+  function updateField<K extends keyof typeof form>(
+    key: K,
+    value: (typeof form)[K],
+  ) {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
@@ -43,18 +54,30 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
 
     startTransition(async () => {
       try {
-        const response = await fetch(mode === "create" ? "/api/admin/posts" : `/api/admin/posts/${entity.id}`, {
-          method: mode === "create" ? "POST" : "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...form,
-            publishedAt: new Date(form.publishedAt).toISOString()
-          })
-        });
+        const response = await fetch(
+          mode === "create"
+            ? "/api/admin/posts"
+            : `/api/admin/posts/${entity.id}`,
+          {
+            method: mode === "create" ? "POST" : "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ...form,
+              publishedAt: new Date(form.publishedAt).toISOString(),
+            }),
+          },
+        );
 
-        const result = (await response.json()) as { success: boolean; message?: string; data?: { id?: string } };
+        const result = (await response.json()) as {
+          success: boolean;
+          message?: string;
+          data?: { id?: string };
+        };
         if (!response.ok || !result.success) {
-          setMessage({ type: "error", text: result.message ?? "저장에 실패했습니다." });
+          setMessage({
+            type: "error",
+            text: result.message ?? "저장에 실패했습니다.",
+          });
           return;
         }
 
@@ -72,19 +95,46 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
 
   return (
     <div className="surface-card space-y-5">
+      {isCustomerReview && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+          <p className="text-sm font-semibold text-amber-700">고객 작성 후기</p>
+          <p className="mt-1 text-sm text-amber-600">
+            작성자: {reviewEntity?.authorName ?? "-"}
+          </p>
+        </div>
+      )}
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <label className="field-label">제목</label>
-          <input className="field-base" value={form.title} onChange={(event) => updateField("title", event.target.value)} />
+          <input
+            className="field-base"
+            value={form.title}
+            onChange={(event) => updateField("title", event.target.value)}
+          />
         </div>
         <div>
-          <label className="field-label">URL 주소명 <span className="font-normal text-brand-slate">(영문, 숫자, 하이픈만 가능)</span></label>
-          <input className="field-base" value={form.slug} onChange={(event) => updateField("slug", event.target.value)} />
+          <label className="field-label">
+            URL 주소명{" "}
+            <span className="font-normal text-brand-slate">
+              (영문, 숫자, 하이픈만 가능)
+            </span>
+          </label>
+          <input
+            className="field-base"
+            value={form.slug}
+            onChange={(event) => updateField("slug", event.target.value)}
+          />
         </div>
         {!isReview ? (
           <div>
             <label className="field-label">게시물 유형</label>
-            <select className="field-base" value={form.type} onChange={(event) => updateField("type", event.target.value as typeof form.type)}>
+            <select
+              className="field-base"
+              value={form.type}
+              onChange={(event) =>
+                updateField("type", event.target.value as typeof form.type)
+              }
+            >
               <option value="event">이벤트</option>
               <option value="guide">가이드</option>
               <option value="notice">공지사항</option>
@@ -93,7 +143,16 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
         ) : (
           <div>
             <label className="field-label">후기 유형</label>
-            <select className="field-base" value={form.reviewType} onChange={(event) => updateField("reviewType", event.target.value as typeof form.reviewType)}>
+            <select
+              className="field-base"
+              value={form.reviewType}
+              onChange={(event) =>
+                updateField(
+                  "reviewType",
+                  event.target.value as typeof form.reviewType,
+                )
+              }
+            >
               <option value="internet_only">인터넷 단독</option>
               <option value="internet_tv">인터넷+TV</option>
               <option value="moving">이사</option>
@@ -104,56 +163,126 @@ export function PostEditorForm({ content, mode = "edit" }: { content: ContentEnt
         )}
         <div>
           <label className="field-label">게시일</label>
-          <input className="field-base" type="datetime-local" value={form.publishedAt} onChange={(event) => updateField("publishedAt", event.target.value)} />
+          <input
+            className="field-base"
+            type="datetime-local"
+            value={form.publishedAt}
+            onChange={(event) => updateField("publishedAt", event.target.value)}
+          />
         </div>
       </div>
 
       <div>
-        <label className="field-label">요약 <span className="font-normal text-brand-slate">(목록 페이지에 보이는 짧은 설명)</span></label>
-        <textarea className="field-base min-h-24" value={form.summary} onChange={(event) => updateField("summary", event.target.value)} />
+        <label className="field-label">
+          요약{" "}
+          <span className="font-normal text-brand-slate">
+            (목록 페이지에 보이는 짧은 설명)
+          </span>
+        </label>
+        <textarea
+          className="field-base min-h-24"
+          value={form.summary}
+          onChange={(event) => updateField("summary", event.target.value)}
+        />
       </div>
 
       <div>
         <label className="field-label">본문</label>
-        <textarea className="field-base min-h-56" value={form.body} onChange={(event) => updateField("body", event.target.value)} />
+        <textarea
+          className="field-base min-h-56"
+          value={form.body}
+          onChange={(event) => updateField("body", event.target.value)}
+        />
       </div>
 
       {!isReview ? (
         <>
           <div>
-            <label className="field-label">버튼 문구 <span className="font-normal text-brand-slate">(게시물 하단 클릭 유도 버튼)</span></label>
-            <input className="field-base" value={form.ctaLabel} onChange={(event) => updateField("ctaLabel", event.target.value)} />
+            <label className="field-label">
+              버튼 문구{" "}
+              <span className="font-normal text-brand-slate">
+                (게시물 하단 클릭 유도 버튼)
+              </span>
+            </label>
+            <input
+              className="field-base"
+              value={form.ctaLabel}
+              onChange={(event) => updateField("ctaLabel", event.target.value)}
+            />
           </div>
           <div>
-            <label className="field-label">연관 상품 URL명 <span className="font-normal text-brand-slate">(쉼표로 구분, 예: sk-internet-500, kt-giga)</span></label>
-            <input className="field-base" value={form.relatedProductSlugsText} onChange={(event) => updateField("relatedProductSlugsText", event.target.value)} />
+            <label className="field-label">
+              연관 상품 URL명{" "}
+              <span className="font-normal text-brand-slate">
+                (쉼표로 구분, 예: sk-internet-500, kt-giga)
+              </span>
+            </label>
+            <input
+              className="field-base"
+              value={form.relatedProductSlugsText}
+              onChange={(event) =>
+                updateField("relatedProductSlugsText", event.target.value)
+              }
+            />
           </div>
         </>
       ) : (
         <div>
-          <label className="field-label">태그 <span className="font-normal text-brand-slate">(쉼표로 구분, 예: SK브로드밴드, 인터넷+TV)</span></label>
-          <input className="field-base" value={form.tagsText} onChange={(event) => updateField("tagsText", event.target.value)} />
+          <label className="field-label">
+            태그{" "}
+            <span className="font-normal text-brand-slate">
+              (쉼표로 구분, 예: SK브로드밴드, 인터넷+TV)
+            </span>
+          </label>
+          <input
+            className="field-base"
+            value={form.tagsText}
+            onChange={(event) => updateField("tagsText", event.target.value)}
+          />
         </div>
       )}
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="flex items-center gap-3 text-sm text-brand-graphite">
-          <input type="checkbox" checked={form.isFeatured} onChange={(event) => updateField("isFeatured", event.target.checked)} />
+          <input
+            type="checkbox"
+            checked={form.isFeatured}
+            onChange={(event) =>
+              updateField("isFeatured", event.target.checked)
+            }
+          />
           대표 노출
         </label>
         <div>
           <label className="field-label">상태</label>
-          <select className="field-base" value={form.status} onChange={(event) => updateField("status", event.target.value as typeof form.status)}>
+          <select
+            className="field-base"
+            value={form.status}
+            onChange={(event) =>
+              updateField("status", event.target.value as typeof form.status)
+            }
+          >
             <option value="draft">임시저장</option>
             <option value="published">게시중</option>
+            <option value="pending">승인 대기</option>
           </select>
         </div>
       </div>
 
-      {message ? <p className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p> : null}
+      {message ? (
+        <p
+          className={`text-sm ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}
+        >
+          {message.text}
+        </p>
+      ) : null}
       <div className="flex flex-col gap-3 md:flex-row">
         <Button type="button" onClick={handleSave} disabled={isPending}>
-          {isPending ? "저장 중..." : mode === "create" ? "등록하기" : "저장하기"}
+          {isPending
+            ? "저장 중..."
+            : mode === "create"
+              ? "등록하기"
+              : "저장하기"}
         </Button>
         <Button href="/admin/posts" variant="secondary">
           목록으로

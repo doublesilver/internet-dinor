@@ -3,7 +3,10 @@ import { getBoardCategoryConfig } from "@/lib/constants/board";
 import { throwIfSupabaseError } from "@/lib/repositories/errors";
 import { mapPostRow, mapReviewRow } from "@/lib/repositories/mappers";
 import { parseCommaSeparatedText } from "@/lib/repositories/parsers";
-import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/server";
+import {
+  createSupabaseAdminClient,
+  hasSupabaseAdminEnv,
+} from "@/lib/supabase/server";
 import type { ContentStatus, Post, PostType, Review } from "@/types/domain";
 import type { PostEditorValues } from "@/lib/validators/content";
 
@@ -59,7 +62,12 @@ export async function getFeaturedPosts(type: PostType) {
     return [];
   }
 
-  return postsSeed.filter((post) => post.type === type && post.isFeatured && post.status === "published").sort(sortByPublishedAtDesc);
+  return postsSeed
+    .filter(
+      (post) =>
+        post.type === type && post.isFeatured && post.status === "published",
+    )
+    .sort(sortByPublishedAtDesc);
 }
 
 export async function getPostByTypeAndSlug(type: PostType, slug: string) {
@@ -82,13 +90,22 @@ export async function getPostByTypeAndSlug(type: PostType, slug: string) {
     return null;
   }
 
-  return postsSeed.find((post) => post.type === type && post.slug === slug && post.status === "published") ?? null;
+  return (
+    postsSeed.find(
+      (post) =>
+        post.type === type && post.slug === slug && post.status === "published",
+    ) ?? null
+  );
 }
 
 export async function getPostById(id: string): Promise<Post | null> {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("posts").select("*").eq("id", id).maybeSingle();
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
 
     throwIfSupabaseError("posts:getPostById", error);
 
@@ -105,7 +122,10 @@ export async function getPostById(id: string): Promise<Post | null> {
 export async function getAllPostsAdmin() {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("posts").select("*").order("published_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("published_at", { ascending: false });
 
     throwIfSupabaseError("posts:getAllPostsAdmin", error);
 
@@ -137,13 +157,18 @@ export async function getReviews(): Promise<Review[]> {
     return [];
   }
 
-  return reviewsSeed.filter((review) => review.status === "published").sort(sortByPublishedAtDesc);
+  return reviewsSeed
+    .filter((review) => review.status === "published")
+    .sort(sortByPublishedAtDesc);
 }
 
 export async function getAllReviewsAdmin(): Promise<Review[]> {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("reviews").select("*").order("published_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .order("published_at", { ascending: false });
 
     throwIfSupabaseError("posts:getAllReviewsAdmin", error);
 
@@ -176,13 +201,20 @@ export async function getFeaturedReviews() {
     return [];
   }
 
-  return reviewsSeed.filter((review) => review.status === "published" && review.featured).sort(sortByPublishedAtDesc);
+  return reviewsSeed
+    .filter((review) => review.status === "published" && review.featured)
+    .sort(sortByPublishedAtDesc);
 }
 
 export async function getReviewBySlug(slug: string) {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("reviews").select("*").eq("slug", slug).eq("status", "published").maybeSingle();
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .maybeSingle();
 
     throwIfSupabaseError("posts:getReviewBySlug", error);
 
@@ -193,13 +225,21 @@ export async function getReviewBySlug(slug: string) {
     return null;
   }
 
-  return reviewsSeed.find((review) => review.slug === slug && review.status === "published") ?? null;
+  return (
+    reviewsSeed.find(
+      (review) => review.slug === slug && review.status === "published",
+    ) ?? null
+  );
 }
 
 export async function getReviewById(id: string): Promise<Review | null> {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("reviews").select("*").eq("id", id).maybeSingle();
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
 
     throwIfSupabaseError("posts:getReviewById", error);
 
@@ -222,22 +262,37 @@ export async function updatePostOrReview(id: string, input: PostEditorValues) {
       summary: input.summary,
       body: input.body,
       cta_label: input.ctaLabel || null,
-      related_product_slugs: parseCommaSeparatedText(input.relatedProductSlugsText),
+      related_product_slugs: parseCommaSeparatedText(
+        input.relatedProductSlugsText,
+      ),
       is_featured: input.isFeatured,
       status: input.status,
-      published_at: input.publishedAt
+      published_at: input.publishedAt,
     };
 
     if (hasSupabaseAdminEnv()) {
       const supabase = createSupabaseAdminClient();
-      const { data, error } = await supabase.from("posts").update(payload).eq("id", id).select("*").maybeSingle();
+      const { data, error } = await supabase
+        .from("posts")
+        .update(payload)
+        .eq("id", id)
+        .select("*")
+        .maybeSingle();
 
       if (error) {
-        return { success: false, statusCode: 500, message: "게시물 저장 중 오류가 발생했습니다." };
+        return {
+          success: false,
+          statusCode: 500,
+          message: "게시물 저장 중 오류가 발생했습니다.",
+        };
       }
 
       if (!data) {
-        return { success: false, statusCode: 404, message: "게시물 정보를 찾을 수 없습니다." };
+        return {
+          success: false,
+          statusCode: 404,
+          message: "게시물 정보를 찾을 수 없습니다.",
+        };
       }
 
       return { success: true, data: mapPostRow(data) };
@@ -245,7 +300,11 @@ export async function updatePostOrReview(id: string, input: PostEditorValues) {
 
     const post = postsSeed.find((item) => item.id === id);
     if (!post) {
-      return { success: false, statusCode: 404, message: "게시물 정보를 찾을 수 없습니다." };
+      return {
+        success: false,
+        statusCode: 404,
+        message: "게시물 정보를 찾을 수 없습니다.",
+      };
     }
 
     post.type = input.type ?? "guide";
@@ -254,7 +313,9 @@ export async function updatePostOrReview(id: string, input: PostEditorValues) {
     post.summary = input.summary;
     post.body = input.body;
     post.ctaLabel = input.ctaLabel;
-    post.relatedProductSlugs = parseCommaSeparatedText(input.relatedProductSlugsText);
+    post.relatedProductSlugs = parseCommaSeparatedText(
+      input.relatedProductSlugsText,
+    );
     post.isFeatured = input.isFeatured;
     post.status = input.status;
     post.publishedAt = input.publishedAt;
@@ -271,19 +332,32 @@ export async function updatePostOrReview(id: string, input: PostEditorValues) {
     tags: parseCommaSeparatedText(input.tagsText),
     featured: input.isFeatured,
     status: input.status,
-    published_at: input.publishedAt
+    published_at: input.publishedAt,
   };
 
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("reviews").update(payload).eq("id", id).select("*").maybeSingle();
+    const { data, error } = await supabase
+      .from("reviews")
+      .update(payload)
+      .eq("id", id)
+      .select("*")
+      .maybeSingle();
 
     if (error) {
-      return { success: false, statusCode: 500, message: "후기 저장 중 오류가 발생했습니다." };
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 저장 중 오류가 발생했습니다.",
+      };
     }
 
     if (!data) {
-      return { success: false, statusCode: 404, message: "후기 정보를 찾을 수 없습니다." };
+      return {
+        success: false,
+        statusCode: 404,
+        message: "후기 정보를 찾을 수 없습니다.",
+      };
     }
 
     return { success: true, data: mapReviewRow(data) };
@@ -291,7 +365,11 @@ export async function updatePostOrReview(id: string, input: PostEditorValues) {
 
   const review = reviewsSeed.find((item) => item.id === id);
   if (!review) {
-    return { success: false, statusCode: 404, message: "후기 정보를 찾을 수 없습니다." };
+    return {
+      success: false,
+      statusCode: 404,
+      message: "후기 정보를 찾을 수 없습니다.",
+    };
   }
 
   review.title = input.title;
@@ -319,22 +397,36 @@ export async function createPostOrReview(input: PostEditorValues) {
       summary: input.summary,
       body: input.body,
       cta_label: input.ctaLabel || null,
-      related_product_slugs: parseCommaSeparatedText(input.relatedProductSlugsText),
+      related_product_slugs: parseCommaSeparatedText(
+        input.relatedProductSlugsText,
+      ),
       is_featured: input.isFeatured,
       published_at: input.publishedAt,
-      status: input.status
+      status: input.status,
     };
 
     if (hasSupabaseAdminEnv()) {
       const supabase = createSupabaseAdminClient();
-      const { data, error } = await supabase.from("posts").insert(payload).select("*").maybeSingle();
+      const { data, error } = await supabase
+        .from("posts")
+        .insert(payload)
+        .select("*")
+        .maybeSingle();
 
       if (error) {
-        return { success: false, statusCode: 500, message: "게시물 생성 중 오류가 발생했습니다." };
+        return {
+          success: false,
+          statusCode: 500,
+          message: "게시물 생성 중 오류가 발생했습니다.",
+        };
       }
 
       if (!data) {
-        return { success: false, statusCode: 500, message: "게시물 생성 결과를 확인할 수 없습니다." };
+        return {
+          success: false,
+          statusCode: 500,
+          message: "게시물 생성 결과를 확인할 수 없습니다.",
+        };
       }
 
       return { success: true, data: mapPostRow(data) };
@@ -348,10 +440,12 @@ export async function createPostOrReview(input: PostEditorValues) {
       summary: input.summary,
       body: input.body,
       ctaLabel: input.ctaLabel,
-      relatedProductSlugs: parseCommaSeparatedText(input.relatedProductSlugsText),
+      relatedProductSlugs: parseCommaSeparatedText(
+        input.relatedProductSlugsText,
+      ),
       isFeatured: input.isFeatured,
       publishedAt: input.publishedAt,
-      status: input.status
+      status: input.status,
     };
 
     postsSeed.push(created);
@@ -369,19 +463,31 @@ export async function createPostOrReview(input: PostEditorValues) {
     tags: parseCommaSeparatedText(input.tagsText),
     featured: input.isFeatured,
     published_at: input.publishedAt,
-    status: input.status
+    status: input.status,
   };
 
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("reviews").insert(payload).select("*").maybeSingle();
+    const { data, error } = await supabase
+      .from("reviews")
+      .insert(payload)
+      .select("*")
+      .maybeSingle();
 
     if (error) {
-      return { success: false, statusCode: 500, message: "후기 생성 중 오류가 발생했습니다." };
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 생성 중 오류가 발생했습니다.",
+      };
     }
 
     if (!data) {
-      return { success: false, statusCode: 500, message: "후기 생성 결과를 확인할 수 없습니다." };
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 생성 결과를 확인할 수 없습니다.",
+      };
     }
 
     return { success: true, data: mapReviewRow(data) };
@@ -397,7 +503,7 @@ export async function createPostOrReview(input: PostEditorValues) {
     tags: parseCommaSeparatedText(input.tagsText),
     featured: input.isFeatured,
     publishedAt: input.publishedAt,
-    status: input.status
+    status: input.status,
   };
 
   reviewsSeed.push(created);
@@ -405,14 +511,93 @@ export async function createPostOrReview(input: PostEditorValues) {
   return { success: true, data: created };
 }
 
-export async function deletePostOrReview(id: string, entityType: "post" | "review") {
+export async function createCustomerReview(input: {
+  authorName: string;
+  reviewType: string;
+  title: string;
+  body: string;
+}) {
+  const id = crypto.randomUUID();
+  const slug = `review-${Date.now()}`;
+  const now = new Date().toISOString();
+
+  const payload = {
+    id,
+    slug,
+    title: input.title,
+    summary: input.body.slice(0, 100),
+    body: input.body,
+    review_type: input.reviewType,
+    tags: [],
+    featured: false,
+    author_name: input.authorName,
+    source: "customer",
+    published_at: now,
+    status: "pending",
+  };
+
+  if (hasSupabaseAdminEnv()) {
+    const supabase = createSupabaseAdminClient();
+    const { data, error } = await supabase
+      .from("reviews")
+      .insert(payload)
+      .select("*")
+      .maybeSingle();
+
+    if (error) {
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 저장 중 오류가 발생했습니다.",
+      };
+    }
+
+    if (!data) {
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 저장 결과를 확인할 수 없습니다.",
+      };
+    }
+
+    return { success: true, data: mapReviewRow(data) };
+  }
+
+  const created: Review = {
+    id,
+    slug,
+    title: input.title,
+    summary: input.body.slice(0, 100),
+    body: input.body,
+    reviewType: (input.reviewType as Review["reviewType"]) ?? "internet_tv",
+    tags: [],
+    featured: false,
+    authorName: input.authorName,
+    source: "customer",
+    publishedAt: now,
+    status: "pending",
+  };
+
+  reviewsSeed.push(created);
+
+  return { success: true, data: created };
+}
+
+export async function deletePostOrReview(
+  id: string,
+  entityType: "post" | "review",
+) {
   if (entityType === "post") {
     if (hasSupabaseAdminEnv()) {
       const supabase = createSupabaseAdminClient();
       const { error } = await supabase.from("posts").delete().eq("id", id);
 
       if (error) {
-        return { success: false, statusCode: 500, message: "게시물 삭제 중 오류가 발생했습니다." };
+        return {
+          success: false,
+          statusCode: 500,
+          message: "게시물 삭제 중 오류가 발생했습니다.",
+        };
       }
 
       return { success: true };
@@ -420,7 +605,11 @@ export async function deletePostOrReview(id: string, entityType: "post" | "revie
 
     const index = postsSeed.findIndex((item) => item.id === id);
     if (index === -1) {
-      return { success: false, statusCode: 404, message: "게시물 정보를 찾을 수 없습니다." };
+      return {
+        success: false,
+        statusCode: 404,
+        message: "게시물 정보를 찾을 수 없습니다.",
+      };
     }
 
     postsSeed.splice(index, 1);
@@ -432,7 +621,11 @@ export async function deletePostOrReview(id: string, entityType: "post" | "revie
     const { error } = await supabase.from("reviews").delete().eq("id", id);
 
     if (error) {
-      return { success: false, statusCode: 500, message: "후기 삭제 중 오류가 발생했습니다." };
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 삭제 중 오류가 발생했습니다.",
+      };
     }
 
     return { success: true };
@@ -440,25 +633,46 @@ export async function deletePostOrReview(id: string, entityType: "post" | "revie
 
   const index = reviewsSeed.findIndex((item) => item.id === id);
   if (index === -1) {
-    return { success: false, statusCode: 404, message: "후기 정보를 찾을 수 없습니다." };
+    return {
+      success: false,
+      statusCode: 404,
+      message: "후기 정보를 찾을 수 없습니다.",
+    };
   }
 
   reviewsSeed.splice(index, 1);
   return { success: true };
 }
 
-export async function updatePostOrReviewStatus(id: string, entityType: "post" | "review", status: ContentStatus) {
+export async function updatePostOrReviewStatus(
+  id: string,
+  entityType: "post" | "review",
+  status: ContentStatus,
+) {
   if (entityType === "post") {
     if (hasSupabaseAdminEnv()) {
       const supabase = createSupabaseAdminClient();
-      const { data, error } = await supabase.from("posts").update({ status }).eq("id", id).select("*").maybeSingle();
+      const { data, error } = await supabase
+        .from("posts")
+        .update({ status })
+        .eq("id", id)
+        .select("*")
+        .maybeSingle();
 
       if (error) {
-        return { success: false, statusCode: 500, message: "게시물 상태 변경 중 오류가 발생했습니다." };
+        return {
+          success: false,
+          statusCode: 500,
+          message: "게시물 상태 변경 중 오류가 발생했습니다.",
+        };
       }
 
       if (!data) {
-        return { success: false, statusCode: 404, message: "게시물 정보를 찾을 수 없습니다." };
+        return {
+          success: false,
+          statusCode: 404,
+          message: "게시물 정보를 찾을 수 없습니다.",
+        };
       }
 
       return { success: true, data: mapPostRow(data) };
@@ -466,7 +680,11 @@ export async function updatePostOrReviewStatus(id: string, entityType: "post" | 
 
     const post = postsSeed.find((item) => item.id === id);
     if (!post) {
-      return { success: false, statusCode: 404, message: "게시물 정보를 찾을 수 없습니다." };
+      return {
+        success: false,
+        statusCode: 404,
+        message: "게시물 정보를 찾을 수 없습니다.",
+      };
     }
 
     post.status = status;
@@ -476,14 +694,27 @@ export async function updatePostOrReviewStatus(id: string, entityType: "post" | 
 
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("reviews").update({ status }).eq("id", id).select("*").maybeSingle();
+    const { data, error } = await supabase
+      .from("reviews")
+      .update({ status })
+      .eq("id", id)
+      .select("*")
+      .maybeSingle();
 
     if (error) {
-      return { success: false, statusCode: 500, message: "후기 상태 변경 중 오류가 발생했습니다." };
+      return {
+        success: false,
+        statusCode: 500,
+        message: "후기 상태 변경 중 오류가 발생했습니다.",
+      };
     }
 
     if (!data) {
-      return { success: false, statusCode: 404, message: "후기 정보를 찾을 수 없습니다." };
+      return {
+        success: false,
+        statusCode: 404,
+        message: "후기 정보를 찾을 수 없습니다.",
+      };
     }
 
     return { success: true, data: mapReviewRow(data) };
@@ -491,7 +722,11 @@ export async function updatePostOrReviewStatus(id: string, entityType: "post" | 
 
   const review = reviewsSeed.find((item) => item.id === id);
   if (!review) {
-    return { success: false, statusCode: 404, message: "후기 정보를 찾을 수 없습니다." };
+    return {
+      success: false,
+      statusCode: 404,
+      message: "후기 정보를 찾을 수 없습니다.",
+    };
   }
 
   review.status = status;
