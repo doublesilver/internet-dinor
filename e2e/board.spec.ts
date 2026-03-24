@@ -2,8 +2,11 @@ import { expect, test } from "@playwright/test";
 
 test("guide board opens a detail page from the post list", async ({ page }) => {
   await page.goto("/board/guide");
+  await page.waitForLoadState("load");
 
-  await expect(page.getByRole("heading", { name: "꿀TIP 모아보기" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "꿀TIP 모아보기" }),
+  ).toBeVisible();
 
   const detailLink = page.locator("article a[href^='/board/guide/']").first();
   await expect(detailLink).toBeVisible();

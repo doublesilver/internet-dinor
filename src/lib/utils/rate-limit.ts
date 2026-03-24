@@ -4,7 +4,7 @@ import {
   RATE_LIMIT_PREFIX,
   RATE_LIMIT_RETRY_COOLDOWN_MS,
   hasUpstashRateLimitEnv as hasConfiguredUpstashRateLimitEnv,
-  resolveUpstashRateLimitEnv
+  resolveUpstashRateLimitEnv,
 } from "@/lib/utils/rate-limit-config";
 
 // Upstash가 설정되지 않았거나 일시 장애가 있을 때만 인메모리 폴백을 사용합니다.
@@ -28,7 +28,11 @@ function cleanupExpired(now: number) {
   }
 }
 
-function isMemoryRateLimited(key: string, limit: number, windowMs: number): boolean {
+function isMemoryRateLimited(
+  key: string,
+  limit: number,
+  windowMs: number,
+): boolean {
   const now = Date.now();
   cleanupExpired(now);
 
@@ -68,7 +72,10 @@ function markDistributedRateLimitFailure(error: unknown) {
 
   if (now - lastRedisFallbackLogAt >= RATE_LIMIT_RETRY_COOLDOWN_MS) {
     lastRedisFallbackLogAt = now;
-    console.warn("Upstash rate limit check failed. Falling back to in-memory store.", error);
+    console.warn(
+      "Upstash rate limit check failed. Falling back to in-memory store.",
+      error,
+    );
   }
 }
 
@@ -99,7 +106,10 @@ function getRedisClient(): Redis | null {
   return redisClient;
 }
 
-function getUpstashRatelimit(limit: number, windowMs: number): Ratelimit | null {
+function getUpstashRatelimit(
+  limit: number,
+  windowMs: number,
+): Ratelimit | null {
   if (isDistributedRateLimitCoolingDown(Date.now())) {
     return null;
   }
@@ -120,17 +130,28 @@ function getUpstashRatelimit(limit: number, windowMs: number): Ratelimit | null 
     limiter: Ratelimit.slidingWindow(limit, formatWindow(windowMs)),
     analytics: true,
     prefix: RATE_LIMIT_PREFIX,
-    ephemeralCache
+    ephemeralCache,
   });
 
   ratelimiterCache.set(cacheKey, ratelimit);
   return ratelimit;
 }
 
-export async function isRateLimited(key: string, limit: number, windowMs: number): Promise<boolean> {
+function isProduction(): boolean {
+  return process.env.NODE_ENV === "production";
+}
+
+export async function isRateLimited(
+  key: string,
+  limit: number,
+  windowMs: number,
+): Promise<boolean> {
   const ratelimit = getUpstashRatelimit(limit, windowMs);
 
   if (!ratelimit) {
+    if (isProduction()) {
+      return true;
+    }
     return isMemoryRateLimited(key, limit, windowMs);
   }
 
@@ -142,6 +163,9 @@ export async function isRateLimited(key: string, limit: number, windowMs: number
     return !result.success;
   } catch (error) {
     markDistributedRateLimitFailure(error);
+    if (isProduction()) {
+      return true;
+    }
     return isMemoryRateLimited(key, limit, windowMs);
   }
 }

@@ -1,14 +1,32 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const createProductMock = vi.fn();
-const updateProductMock = vi.fn();
-const deleteProductMock = vi.fn();
-const updateProductStatusMock = vi.fn();
-const createPostOrReviewMock = vi.fn();
-const updatePostOrReviewMock = vi.fn();
-const deletePostOrReviewMock = vi.fn();
-const updatePostOrReviewStatusMock = vi.fn();
-const updateSiteSettingsMock = vi.fn();
+const {
+  createProductMock,
+  updateProductMock,
+  deleteProductMock,
+  updateProductStatusMock,
+  createPostOrReviewMock,
+  updatePostOrReviewMock,
+  deletePostOrReviewMock,
+  updatePostOrReviewStatusMock,
+  updateSiteSettingsMock,
+  requireAdminAuthMock,
+} = vi.hoisted(() => ({
+  createProductMock: vi.fn(),
+  updateProductMock: vi.fn(),
+  deleteProductMock: vi.fn(),
+  updateProductStatusMock: vi.fn(),
+  createPostOrReviewMock: vi.fn(),
+  updatePostOrReviewMock: vi.fn(),
+  deletePostOrReviewMock: vi.fn(),
+  updatePostOrReviewStatusMock: vi.fn(),
+  updateSiteSettingsMock: vi.fn(),
+  requireAdminAuthMock: vi.fn(),
+}));
+
+vi.mock("@/lib/auth/admin", () => ({
+  requireAdminAuth: requireAdminAuthMock,
+}));
 
 vi.mock("next/cache", async (importOriginal) => {
   const actual = await importOriginal<typeof import("next/cache")>();
@@ -120,6 +138,7 @@ function createSettingsPayload(overrides: Record<string, unknown> = {}) {
 describe("admin content routes", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    requireAdminAuthMock.mockResolvedValue(null);
   });
 
   it("rejects malformed JSON for product creation before calling the repository", async () => {

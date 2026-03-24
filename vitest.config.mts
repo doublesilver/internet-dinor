@@ -8,7 +8,16 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    exclude: [...configDefaults.exclude, "e2e/**"]
+    exclude: [...configDefaults.exclude, "e2e/**"],
+    coverage: {
+      provider: "v8",
+      thresholds: {
+        statements: 50,
+        branches: 40,
+        functions: 40,
+        lines: 50
+      }
+    }
   },
   resolve: {
     alias: {

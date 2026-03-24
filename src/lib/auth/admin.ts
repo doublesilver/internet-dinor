@@ -1,10 +1,14 @@
 import { timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
-import { createSupabasePublicClient, hasSupabasePublicEnv } from "@/lib/supabase/public";
+import {
+  createSupabasePublicClient,
+  hasSupabasePublicEnv,
+} from "@/lib/supabase/public";
 
 const ADMIN_SESSION_COOKIE = "internet_dinor_admin_session";
 const ADMIN_SUPABASE_ACCESS_TOKEN_COOKIE = "internet_dinor_admin_access_token";
-const ADMIN_SUPABASE_REFRESH_TOKEN_COOKIE = "internet_dinor_admin_refresh_token";
+const ADMIN_SUPABASE_REFRESH_TOKEN_COOKIE =
+  "internet_dinor_admin_refresh_token";
 
 type CookieReader = {
   get(name: string): { value: string } | undefined;
@@ -27,7 +31,7 @@ export function getAdminAuthConfig() {
   return {
     email: process.env.ADMIN_PREVIEW_EMAIL,
     password: process.env.ADMIN_PREVIEW_PASSWORD,
-    sessionSecret: process.env.ADMIN_SESSION_SECRET
+    sessionSecret: process.env.ADMIN_SESSION_SECRET,
   };
 }
 
@@ -67,21 +71,39 @@ export function getAdminAuthSetupMessage() {
   return "ADMIN_PREVIEW_EMAIL, ADMIN_PREVIEW_PASSWORD, ADMIN_SESSION_SECRET을 설정해야 합니다.";
 }
 
-export async function authenticateSupabaseAdmin(email: string, password: string) {
+export async function authenticateSupabaseAdmin(
+  email: string,
+  password: string,
+) {
   const supabase = createSupabasePublicClient();
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (error) {
-    return { success: false, statusCode: 401, message: "이메일 또는 비밀번호가 올바르지 않습니다." as const };
+    return {
+      success: false,
+      statusCode: 401,
+      message: "이메일 또는 비밀번호가 올바르지 않습니다." as const,
+    };
   }
 
   const userEmail = data.user?.email?.toLowerCase() ?? null;
   if (!isAllowedAdminEmail(userEmail)) {
-    return { success: false, statusCode: 403, message: "관리자 허용 이메일이 아닙니다." as const };
+    return {
+      success: false,
+      statusCode: 403,
+      message: "관리자 허용 이메일이 아닙니다." as const,
+    };
   }
 
   if (!data.session?.access_token || !data.session.refresh_token) {
-    return { success: false, statusCode: 500, message: "Supabase 세션 정보를 확인할 수 없습니다." as const };
+    return {
+      success: false,
+      statusCode: 500,
+      message: "Supabase 세션 정보를 확인할 수 없습니다." as const,
+    };
   }
 
   return {
@@ -89,8 +111,8 @@ export async function authenticateSupabaseAdmin(email: string, password: string)
     data: {
       accessToken: data.session.access_token,
       refreshToken: data.session.refresh_token,
-      expiresIn: data.session.expires_in ?? 60 * 60
-    }
+      expiresIn: data.session.expires_in ?? 60 * 60,
+    },
   };
 }
 
@@ -109,7 +131,10 @@ async function verifySupabaseAdminAccessToken(accessToken?: string) {
   return isAllowedAdminEmail(data.user.email);
 }
 
-async function refreshSupabaseAdminSession(accessToken?: string, refreshToken?: string) {
+async function refreshSupabaseAdminSession(
+  accessToken?: string,
+  refreshToken?: string,
+) {
   if (!accessToken || !refreshToken || !hasSupabasePublicEnv()) {
     return { success: false as const };
   }
@@ -117,7 +142,7 @@ async function refreshSupabaseAdminSession(accessToken?: string, refreshToken?: 
   const supabase = createSupabasePublicClient();
   const { data, error } = await supabase.auth.setSession({
     access_token: accessToken,
-    refresh_token: refreshToken
+    refresh_token: refreshToken,
   });
 
   if (error || !data.session?.access_token || !data.session.refresh_token) {
@@ -134,8 +159,8 @@ async function refreshSupabaseAdminSession(accessToken?: string, refreshToken?: 
     data: {
       accessToken: data.session.access_token,
       refreshToken: data.session.refresh_token,
-      expiresIn: data.session.expires_in ?? 60 * 60
-    }
+      expiresIn: data.session.expires_in ?? 60 * 60,
+    },
   };
 }
 
@@ -163,15 +188,21 @@ function isAllowedAdminEmail(email?: string | null) {
   return getAdminAllowedEmails().includes(normalizedEmail);
 }
 
-export async function isAdminAuthenticatedWithCookieStore(cookieStore: CookieReader) {
+export async function isAdminAuthenticatedWithCookieStore(
+  cookieStore: CookieReader,
+) {
   if (getAdminAuthMode() === "supabase") {
-    return verifySupabaseAdminAccessToken(cookieStore.get(ADMIN_SUPABASE_ACCESS_TOKEN_COOKIE)?.value);
+    return verifySupabaseAdminAccessToken(
+      cookieStore.get(ADMIN_SUPABASE_ACCESS_TOKEN_COOKIE)?.value,
+    );
   }
 
   const sessionValue = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   const { sessionSecret } = getAdminAuthConfig();
 
-  return Boolean(sessionValue && sessionSecret && safeCompare(sessionValue, sessionSecret));
+  return Boolean(
+    sessionValue && sessionSecret && safeCompare(sessionValue, sessionSecret),
+  );
 }
 
 export async function isAdminAuthenticated() {
@@ -179,20 +210,41 @@ export async function isAdminAuthenticated() {
   return isAdminAuthenticatedWithCookieStore(store);
 }
 
-export async function resolveAdminAuthForMiddleware(cookieStore: CookieReader): Promise<AdminAuthResolution> {
+export async function requireAdminAuth(): Promise<Response | null> {
+  const authenticated = await isAdminAuthenticated();
+  if (!authenticated) {
+    const { NextResponse } = await import("next/server");
+    return NextResponse.json(
+      { success: false, message: "관리자 인증이 필요합니다." },
+      { status: 401 },
+    );
+  }
+  return null;
+}
+
+export async function resolveAdminAuthForMiddleware(
+  cookieStore: CookieReader,
+): Promise<AdminAuthResolution> {
   if (getAdminAuthMode() === "supabase") {
-    const accessToken = cookieStore.get(ADMIN_SUPABASE_ACCESS_TOKEN_COOKIE)?.value;
-    const refreshToken = cookieStore.get(ADMIN_SUPABASE_REFRESH_TOKEN_COOKIE)?.value;
+    const accessToken = cookieStore.get(
+      ADMIN_SUPABASE_ACCESS_TOKEN_COOKIE,
+    )?.value;
+    const refreshToken = cookieStore.get(
+      ADMIN_SUPABASE_REFRESH_TOKEN_COOKIE,
+    )?.value;
 
     if (await verifySupabaseAdminAccessToken(accessToken)) {
       return { authenticated: true };
     }
 
-    const refreshed = await refreshSupabaseAdminSession(accessToken, refreshToken);
+    const refreshed = await refreshSupabaseAdminSession(
+      accessToken,
+      refreshToken,
+    );
     if (refreshed.success) {
       return {
         authenticated: true,
-        refreshedSession: refreshed.data
+        refreshedSession: refreshed.data,
       };
     }
 
@@ -203,11 +255,16 @@ export async function resolveAdminAuthForMiddleware(cookieStore: CookieReader): 
   const { sessionSecret } = getAdminAuthConfig();
 
   return {
-    authenticated: Boolean(sessionValue && sessionSecret && safeCompare(sessionValue, sessionSecret))
+    authenticated: Boolean(
+      sessionValue && sessionSecret && safeCompare(sessionValue, sessionSecret),
+    ),
   };
 }
 
-export async function signOutSupabaseAdmin(accessToken?: string, refreshToken?: string) {
+export async function signOutSupabaseAdmin(
+  accessToken?: string,
+  refreshToken?: string,
+) {
   if (!accessToken || !refreshToken || !hasSupabasePublicEnv()) {
     return;
   }
@@ -215,7 +272,7 @@ export async function signOutSupabaseAdmin(accessToken?: string, refreshToken?: 
   const supabase = createSupabasePublicClient();
   const { error } = await supabase.auth.setSession({
     access_token: accessToken,
-    refresh_token: refreshToken
+    refresh_token: refreshToken,
   });
 
   if (error) {
@@ -232,6 +289,6 @@ export function getAdminSessionCookieName() {
 export function getAdminSupabaseCookieNames() {
   return {
     accessToken: ADMIN_SUPABASE_ACCESS_TOKEN_COOKIE,
-    refreshToken: ADMIN_SUPABASE_REFRESH_TOKEN_COOKIE
+    refreshToken: ADMIN_SUPABASE_REFRESH_TOKEN_COOKIE,
   };
 }
