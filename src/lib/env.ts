@@ -83,6 +83,10 @@ export function createEnvSchema(env: EnvShape = process.env) {
 }
 
 export function validateEnv(env: EnvShape = process.env) {
+  if (env.SKIP_ENV_VALIDATION === "true") {
+    return env as Record<string, string | undefined>;
+  }
+
   const result = createEnvSchema(env).safeParse(env);
 
   if (!result.success) {

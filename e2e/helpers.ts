@@ -16,26 +16,7 @@ export async function mockJsonResponse(
 }
 
 export async function waitForHydration(page: Page) {
-  // hydration 실패 시 콘솔 에러 캡처
-  const errors: string[] = [];
-  page.on("pageerror", (err) => errors.push(err.message));
-  page.on("console", (msg) => {
-    if (msg.type() === "error") errors.push(msg.text());
-  });
-
-  await page.waitForLoadState("networkidle");
-
-  // data-hydrated 속성이 설정되는지 확인 (3초 대기)
-  try {
-    await page.waitForSelector("form[data-hydrated]", { timeout: 5000 });
-  } catch {
-    // hydration 실패 시 에러 로그 출력 후 계속 진행
-    if (errors.length > 0) {
-      console.log("Browser errors during hydration:", errors.slice(0, 5));
-    }
-    // networkidle 후 추가 대기
-    await page.waitForTimeout(2000);
-  }
+  await page.waitForSelector("form[data-hydrated]", { timeout: 15000 });
 }
 
 export async function fillBasicContactFields(
