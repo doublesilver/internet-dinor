@@ -1,9 +1,18 @@
 import { inquiryFixtures } from "@/data/fixtures/inquiries";
 import { productsSeed } from "@/data/seeds";
 import { mapInquiryRow, mapProductRow } from "@/lib/repositories/mappers";
-import { createSupabaseAdminClient, hasSupabaseAdminEnv } from "@/lib/supabase/server";
+import {
+  createSupabaseAdminClient,
+  createSupabaseAnonClient,
+  hasSupabaseAdminEnv,
+  hasSupabaseAnonEnv,
+} from "@/lib/supabase/server";
 import { formatPhone } from "@/lib/utils/phone";
-import type { InquiryCreateInput, InquiryRecord, InquiryStatus } from "@/types/domain";
+import type {
+  InquiryCreateInput,
+  InquiryRecord,
+  InquiryStatus,
+} from "@/types/domain";
 import type { UpdateInquiryValues } from "@/lib/validators/admin";
 
 function createReadError(entity: string, message: string) {
@@ -12,16 +21,16 @@ function createReadError(entity: string, message: string) {
 
 export async function createInquiry(input: InquiryCreateInput) {
   const phone = formatPhone(input.phone);
-  if (!hasSupabaseAdminEnv()) {
+  if (!hasSupabaseAnonEnv()) {
     return {
       success: false,
       mode: "unavailable" as const,
       statusCode: 503,
-      message: "문의 저장 환경이 설정되지 않았습니다."
+      message: "문의 저장 환경이 설정되지 않았습니다.",
     };
   }
 
-  const supabase = createSupabaseAdminClient();
+  const supabase = createSupabaseAnonClient();
   const { data, error } = await supabase
     .from("inquiries")
     .insert({
@@ -36,7 +45,7 @@ export async function createInquiry(input: InquiryCreateInput) {
       region_label: input.regionLabel ?? null,
       contact_time_preference: input.contactTimePreference ?? null,
       payload_json: input.payload ?? {},
-      utm_json: input.utm ?? {}
+      utm_json: input.utm ?? {},
     })
     .select("id, created_at")
     .single();
@@ -46,7 +55,7 @@ export async function createInquiry(input: InquiryCreateInput) {
       success: false,
       mode: "database" as const,
       statusCode: 500,
-      message: "문의 저장 중 오류가 발생했습니다."
+      message: "문의 저장 중 오류가 발생했습니다.",
     };
   }
 
@@ -54,31 +63,49 @@ export async function createInquiry(input: InquiryCreateInput) {
     success: true,
     mode: "database" as const,
     inquiryId: data.id,
-    createdAt: data.created_at
+    createdAt: data.created_at,
   };
 }
 
-export async function getInquiryFixtures() {
+export async function getInquiryFixtures(options?: {
+  page?: number;
+  limit?: number;
+}) {
+  const page = options?.page ?? 1;
+  const limit = options?.limit ?? 20;
+  const offset = (page - 1) * limit;
+
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("inquiries").select("*").order("created_at", { ascending: false });
+    const { data, error, count } = await supabase
+      .from("inquiries")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       throw createReadError("문의 목록", error.message);
     }
 
-    if (data) {
-      return data.map(mapInquiryRow);
-    }
+    const items = data ? data.map(mapInquiryRow) : [];
+    return { items, total: count ?? items.length, page, limit };
   }
 
-  return inquiryFixtures.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  const sorted = inquiryFixtures.sort((a, b) =>
+    a.createdAt < b.createdAt ? 1 : -1,
+  );
+  const items = sorted.slice(offset, offset + limit);
+  return { items, total: sorted.length, page, limit };
 }
 
 export async function getInquiryById(id: string) {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("inquiries").select("*").eq("id", id).maybeSingle();
+    const { data, error } = await supabase
+      .from("inquiries")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
 
     if (error) {
       throw createReadError("문의 상세", error.message);
@@ -95,8 +122,11 @@ export async function getInquiryById(id: string) {
 }
 
 export async function getInquiryDashboardSummary() {
-  const items = await getInquiryFixtures();
-  const formatter = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" });
+  const result = await getInquiryFixtures({ page: 1, limit: 10000 });
+  const items = result.items;
+  const formatter = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Seoul",
+  });
   const todayDate = formatter.format(new Date());
   const statusCount = items.reduce<Record<InquiryStatus, number>>(
     (acc, item) => {
@@ -110,8 +140,8 @@ export async function getInquiryDashboardSummary() {
       retry: 0,
       consulted: 0,
       in_progress: 0,
-      closed: 0
-    }
+      closed: 0,
+    },
   );
 
   return {
@@ -120,7 +150,7 @@ export async function getInquiryDashboardSummary() {
       const d = new Date(item.createdAt);
       return formatter.format(d) === todayDate;
     }).length,
-    statusCount
+    statusCount,
   };
 }
 
@@ -148,7 +178,7 @@ export async function updateInquiry(id: string, input: UpdateInquiryValues) {
       return {
         success: false,
         statusCode: 500,
-        message: "문의 수정 중 오류가 발생했습니다."
+        message: "문의 수정 중 오류가 발생했습니다.",
       };
     }
 
@@ -156,13 +186,13 @@ export async function updateInquiry(id: string, input: UpdateInquiryValues) {
       return {
         success: false,
         statusCode: 404,
-        message: "문의 정보를 찾을 수 없습니다."
+        message: "문의 정보를 찾을 수 없습니다.",
       };
     }
 
     return {
       success: true,
-      data: mapInquiryRow(data)
+      data: mapInquiryRow(data),
     };
   }
 
@@ -171,7 +201,7 @@ export async function updateInquiry(id: string, input: UpdateInquiryValues) {
     return {
       success: false,
       statusCode: 404,
-      message: "문의 정보를 찾을 수 없습니다."
+      message: "문의 정보를 찾을 수 없습니다.",
     };
   }
 
@@ -187,7 +217,7 @@ export async function updateInquiry(id: string, input: UpdateInquiryValues) {
 
   return {
     success: true,
-    data: inquiry
+    data: inquiry,
   };
 }
 
@@ -199,7 +229,7 @@ export function getInquiryStatusLabel(status: InquiryStatus) {
     retry: "부재/재시도",
     consulted: "상담완료",
     in_progress: "신청진행",
-    closed: "종료/보류"
+    closed: "종료/보류",
   };
 
   return labels[status];
@@ -210,7 +240,11 @@ export async function findProductById(productId?: string | null) {
 
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("products").select("*").eq("id", productId).maybeSingle();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", productId)
+      .maybeSingle();
 
     if (error) {
       throw createReadError("연결 상품", error.message);
@@ -227,7 +261,11 @@ export async function findProductById(productId?: string | null) {
 export async function findProductBySlug(slug: string) {
   if (hasSupabaseAdminEnv()) {
     const supabase = createSupabaseAdminClient();
-    const { data, error } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
 
     if (error) {
       throw createReadError("상품", error.message);

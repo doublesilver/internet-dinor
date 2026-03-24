@@ -2,76 +2,91 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { formatDate } from "@/lib/utils/date";
 
-const { getInquiryFixturesMock, getInquiryByIdMock, getInquiryStatusLabelMock, getProductByIdMock, notFoundMock } = vi.hoisted(
-  () => ({
-    getInquiryFixturesMock: vi.fn(),
-    getInquiryByIdMock: vi.fn(),
-    getInquiryStatusLabelMock: vi.fn(),
-    getProductByIdMock: vi.fn(),
-    notFoundMock: vi.fn()
-  })
-);
+const {
+  getInquiryFixturesMock,
+  getInquiryByIdMock,
+  getInquiryStatusLabelMock,
+  getProductByIdMock,
+  notFoundMock,
+} = vi.hoisted(() => ({
+  getInquiryFixturesMock: vi.fn(),
+  getInquiryByIdMock: vi.fn(),
+  getInquiryStatusLabelMock: vi.fn(),
+  getProductByIdMock: vi.fn(),
+  notFoundMock: vi.fn(),
+}));
 
 vi.mock("@/lib/repositories/inquiries", () => ({
   getInquiryFixtures: getInquiryFixturesMock,
   getInquiryById: getInquiryByIdMock,
-  getInquiryStatusLabel: getInquiryStatusLabelMock
+  getInquiryStatusLabel: getInquiryStatusLabelMock,
 }));
 
 vi.mock("@/lib/repositories/content", () => ({
-  getProductById: getProductByIdMock
+  getProductById: getProductByIdMock,
 }));
 
 vi.mock("next/navigation", () => ({
-  notFound: notFoundMock
+  notFound: notFoundMock,
 }));
 
 vi.mock("@/components/admin/InquiryEditor", () => ({
-  InquiryEditor: ({ inquiry }: { inquiry: { id: string } }) => <div>editor:{inquiry.id}</div>
+  InquiryEditor: ({ inquiry }: { inquiry: { id: string } }) => (
+    <div>editor:{inquiry.id}</div>
+  ),
 }));
 
 describe("admin inquiries pages", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.resetModules();
-    getInquiryStatusLabelMock.mockImplementation((status: string) => `상태:${status}`);
+    getInquiryStatusLabelMock.mockImplementation(
+      (status: string) => `상태:${status}`,
+    );
     notFoundMock.mockImplementation(() => {
       throw new Error("NEXT_NOT_FOUND");
     });
   });
 
   it("renders the inquiries list page with status labels and detail links", async () => {
-    getInquiryFixturesMock.mockResolvedValue([
-      {
-        id: "inq-1",
-        inquiryType: "quick",
-        name: "홍길동",
-        phone: "010-1111-2222",
-        sourcePage: "/",
-        status: "new",
-        privacyAgreed: true,
-        payload: {},
-        utm: {},
-        createdAt: "2026-03-11T09:00:00.000Z",
-        updatedAt: "2026-03-11T09:00:00.000Z"
-      },
-      {
-        id: "inq-2",
-        inquiryType: "apply",
-        name: "김상담",
-        phone: "010-2222-3333",
-        sourcePage: "/apply",
-        status: "consulted",
-        privacyAgreed: true,
-        payload: {},
-        utm: {},
-        createdAt: "2026-03-10T09:00:00.000Z",
-        updatedAt: "2026-03-10T10:00:00.000Z"
-      }
-    ]);
+    getInquiryFixturesMock.mockResolvedValue({
+      items: [
+        {
+          id: "inq-1",
+          inquiryType: "quick",
+          name: "홍길동",
+          phone: "010-1111-2222",
+          sourcePage: "/",
+          status: "new",
+          privacyAgreed: true,
+          payload: {},
+          utm: {},
+          createdAt: "2026-03-11T09:00:00.000Z",
+          updatedAt: "2026-03-11T09:00:00.000Z",
+        },
+        {
+          id: "inq-2",
+          inquiryType: "apply",
+          name: "김상담",
+          phone: "010-2222-3333",
+          sourcePage: "/apply",
+          status: "consulted",
+          privacyAgreed: true,
+          payload: {},
+          utm: {},
+          createdAt: "2026-03-10T09:00:00.000Z",
+          updatedAt: "2026-03-10T10:00:00.000Z",
+        },
+      ],
+      total: 2,
+      page: 1,
+      limit: 20,
+    });
 
     const { default: AdminInquiriesPage } = await import("../page");
-    const html = renderToStaticMarkup(await AdminInquiriesPage());
+    const html = renderToStaticMarkup(
+      await AdminInquiriesPage({ searchParams: Promise.resolve({}) }),
+    );
 
     expect(html).toContain("문의 관리");
     expect(html).toContain("홍길동");
@@ -98,16 +113,18 @@ describe("admin inquiries pages", () => {
       payload: {},
       utm: {},
       createdAt: "2026-03-09T09:00:00.000Z",
-      updatedAt: "2026-03-09T09:00:00.000Z"
+      updatedAt: "2026-03-09T09:00:00.000Z",
     });
     getProductByIdMock.mockResolvedValue({
       id: "product-1",
-      name: "기가라이트인터넷 500M + B tv ALL"
+      name: "기가라이트인터넷 500M + B tv ALL",
     });
 
     const { default: AdminInquiryDetailPage } = await import("../[id]/page");
     const html = renderToStaticMarkup(
-      await AdminInquiryDetailPage({ params: Promise.resolve({ id: "inq-detail-1" }) })
+      await AdminInquiryDetailPage({
+        params: Promise.resolve({ id: "inq-detail-1" }),
+      }),
     );
 
     expect(html).toContain("이고객 문의 상세");
@@ -135,12 +152,14 @@ describe("admin inquiries pages", () => {
       payload: {},
       utm: {},
       createdAt: "2026-03-08T09:00:00.000Z",
-      updatedAt: "2026-03-08T09:00:00.000Z"
+      updatedAt: "2026-03-08T09:00:00.000Z",
     });
 
     const { default: AdminInquiryDetailPage } = await import("../[id]/page");
     const html = renderToStaticMarkup(
-      await AdminInquiryDetailPage({ params: Promise.resolve({ id: "inq-detail-2" }) })
+      await AdminInquiryDetailPage({
+        params: Promise.resolve({ id: "inq-detail-2" }),
+      }),
     );
 
     expect(html).toContain("상품:</strong> -");
@@ -153,7 +172,9 @@ describe("admin inquiries pages", () => {
 
     const { default: AdminInquiryDetailPage } = await import("../[id]/page");
 
-    await expect(AdminInquiryDetailPage({ params: Promise.resolve({ id: "missing-id" }) })).rejects.toThrow("NEXT_NOT_FOUND");
+    await expect(
+      AdminInquiryDetailPage({ params: Promise.resolve({ id: "missing-id" }) }),
+    ).rejects.toThrow("NEXT_NOT_FOUND");
     expect(notFoundMock).toHaveBeenCalledTimes(1);
     expect(getProductByIdMock).not.toHaveBeenCalled();
   });

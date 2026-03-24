@@ -5,7 +5,9 @@ import { mapPostRow, mapReviewRow } from "@/lib/repositories/mappers";
 import { parseCommaSeparatedText } from "@/lib/repositories/parsers";
 import {
   createSupabaseAdminClient,
+  createSupabaseAnonClient,
   hasSupabaseAdminEnv,
+  hasSupabaseAnonEnv,
 } from "@/lib/supabase/server";
 import type { ContentStatus, Post, PostType, Review } from "@/types/domain";
 import type { PostEditorValues } from "@/lib/validators/content";
@@ -536,8 +538,8 @@ export async function createCustomerReview(input: {
     status: "pending",
   };
 
-  if (hasSupabaseAdminEnv()) {
-    const supabase = createSupabaseAdminClient();
+  if (hasSupabaseAnonEnv()) {
+    const supabase = createSupabaseAnonClient();
     const { data, error } = await supabase
       .from("reviews")
       .insert(payload)
